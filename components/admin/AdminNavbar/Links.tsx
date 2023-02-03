@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   Button,
   Stack,
@@ -50,13 +50,11 @@ export const LinkButton: React.FC<ILinkButtonProps> = ({
   isChild,
 }) => {
   const router = useRouter();
-  const isActive = useMemo(() => {
-    return router.route === href;
-  }, [router.route, href]);
-  const isOpen = useMemo(() => {
-    return router.route.startsWith(href);
-  }, [router.route, href]);
+  const isOpen = router.asPath.startsWith(href);
+  const isActive = router.asPath === href;
   const { classes } = useStlyes({ active: isActive, child: Boolean(isChild) });
+
+  console.log(isActive, label, router.asPath, href);
 
   return (
     <>
@@ -105,8 +103,8 @@ export const Links = () => {
       Icon: CirclePlus,
       links: [
         {
-          label: "Attendence",
-          href: "/admin/create/attendence",
+          label: "Attendance",
+          href: "/admin/create/attendance",
           color: "#f06595",
         },
         {

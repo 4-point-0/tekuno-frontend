@@ -1,3 +1,4 @@
+import { CDOForm } from "@/components/admin/PODForm";
 import { Container, Paper } from "@mantine/core";
 import { useRouter } from "next/router";
 
@@ -7,7 +8,7 @@ export default function PODTemplate() {
   return (
     <Container fluid>
       <Paper radius="lg" p="xl">
-        {router.query.template}
+        <CDOForm />
       </Paper>
     </Container>
   );
