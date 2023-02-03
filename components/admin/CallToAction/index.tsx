@@ -26,7 +26,7 @@ export const CallToAction = () => {
           <Group position="left">
             <Button
               component={NextLink}
-              href="/admin/new"
+              href="/admin/create"
               legacyBehavior
               color="dark"
               leftIcon={<CirclePlus size={20} />}
