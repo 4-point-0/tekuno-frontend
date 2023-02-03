@@ -2,6 +2,9 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { MantineProvider } from "@mantine/core";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { Open_Sans } from "@next/font/google";
+
+const OpenSans = Open_Sans({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -19,6 +22,21 @@ export default function App({ Component, pageProps }: AppProps) {
         withNormalizeCSS
         theme={{
           colorScheme: "light",
+          components: {
+            Button: {
+              defaultProps: {
+                radius: "lg",
+              },
+            },
+            Text: {
+              defaultProps: {
+                component: "p",
+                my: 0,
+              },
+            },
+          },
+          fontFamily: OpenSans.style.fontFamily,
+          headings: { fontFamily: OpenSans.style.fontFamily },
         }}
       >
         <AppLayout>
