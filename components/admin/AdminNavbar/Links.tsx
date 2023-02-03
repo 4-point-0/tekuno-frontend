@@ -69,7 +69,7 @@ export const LinkButton: React.FC<ILinkButtonProps> = ({
         leftIcon={
           Icon ? (
             <ThemeIcon size={26} variant="light">
-              <Icon size={14} />
+              <Icon size={19} />
             </ThemeIcon>
           ) : (
             color && (
