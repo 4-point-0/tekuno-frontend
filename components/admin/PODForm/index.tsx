@@ -3,16 +3,16 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "tabler-icons-react";
 
 import { DescriptionStep } from "./steps/DescriptionStep";
-import { PDOStep } from "./steps/PDOStep";
+import { PODStep } from "./steps/PODStep";
 import { RewardStep } from "./steps/RewardStep";
 import { SetupStep } from "./steps/SetupStep";
 import { StyledStepper } from "./StyledStepper";
 
-export const CDOForm = () => {
+export const PODForm = () => {
   const [active, setActive] = useState(0);
 
   return (
-    <Container size="xl">
+    <Container>
       <Stack>
         <StyledStepper active={active} onStepClick={setActive}>
           <Stepper.Step>
@@ -22,7 +22,7 @@ export const CDOForm = () => {
             <DescriptionStep />
           </Stepper.Step>
           <Stepper.Step>
-            <PDOStep />
+            <PODStep />
           </Stepper.Step>
           <Stepper.Step>
             <RewardStep />

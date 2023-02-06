@@ -4,7 +4,7 @@ import React from "react";
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 
-export const PDOStep = () => {
+export const PODStep = () => {
   return (
     <Stack>
       <Field label="POD name">
