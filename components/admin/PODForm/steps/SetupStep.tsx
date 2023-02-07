@@ -13,10 +13,7 @@ export const SetupStep = () => {
   const form = useFormContext();
 
   const handleDrop = (files: Array<FileWithPath>) => {
-    form.setValues((values) => ({
-      ...values,
-      image: files[0],
-    }));
+    form.setFieldValue("image", files[0]);
   };
 
   return (

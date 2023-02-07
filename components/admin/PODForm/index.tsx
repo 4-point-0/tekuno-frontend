@@ -44,6 +44,7 @@ export const PODForm = () => {
       name: "",
       limitDate: false,
       dateRange: [null, null],
+      documents: [],
     },
     validate: getValidateInput(active),
   });

@@ -71,6 +71,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
             backgroundSize: "cover",
             backgroundPosition: "center",
           },
+          inner: { pointerEvents: "all" },
         }}
         onDrop={handleDrop}
         {...rest}

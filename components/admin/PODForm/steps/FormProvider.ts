@@ -6,6 +6,9 @@ export interface IFormValues {
   limitDate: boolean;
   dateRange: Array<Date | null>;
   image?: FileWithPath;
+  description?: string;
+  additonalDescription?: string;
+  documents: Array<FileWithPath>;
 }
 
 export const [FormProvider, useFormContext, useForm] =
