@@ -1,8 +1,7 @@
+import { IndigoButton } from "@/components/core/IndigoButton";
 import { templateData, TEMPLATES } from "@/enums/PODTempalates";
 import {
-  Button,
   Card,
-  createStyles,
   Group,
   Image,
   List,
@@ -14,25 +13,7 @@ import { NextLink } from "@mantine/next";
 import React from "react";
 import { CirclePlus } from "tabler-icons-react";
 
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: theme.colors.indigo[0],
-
-    "&:hover": {
-      backgroundColor: theme.colors.indigo[1],
-    },
-  },
-  label: {
-    color: theme.colors.dark,
-  },
-  leftIcon: {
-    color: theme.colors.dark,
-  },
-}));
-
 export const PODTemplates = () => {
-  const { classes } = useStyles();
-
   return (
     <SimpleGrid cols={3} maw={1200}>
       {TEMPLATES.map((template) => {
@@ -64,16 +45,9 @@ export const PODTemplates = () => {
               </List>
             </Stack>
             <Group sx={{ position: "absolute", bottom: "12px" }}>
-              <Button
-                component={NextLink}
-                color="indigo"
-                href={href}
-                legacyBehavior
-                leftIcon={<CirclePlus size={20} />}
-                classNames={classes}
-              >
+              <IndigoButton leftIcon={<CirclePlus size={20} />}>
                 Create POD
-              </Button>
+              </IndigoButton>
             </Group>
           </Card>
         );

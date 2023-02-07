@@ -9,6 +9,9 @@ interface IPODTemplateDatum {
     image: string;
     perks: Array<string>;
   };
+  form: {
+    hasRewards: boolean;
+  };
 }
 
 export const templateData: Record<PODTemplate, IPODTemplateDatum> = {
@@ -22,6 +25,9 @@ export const templateData: Record<PODTemplate, IPODTemplateDatum> = {
         "Non transferable",
       ],
     },
+    form: {
+      hasRewards: false,
+    },
   },
   [PODTemplate.LOYALTY]: {
     card: {
@@ -34,6 +40,9 @@ export const templateData: Record<PODTemplate, IPODTemplateDatum> = {
         "Transferable",
         "Lead generation",
       ],
+    },
+    form: {
+      hasRewards: true,
     },
   },
 };

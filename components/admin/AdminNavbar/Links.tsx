@@ -54,8 +54,6 @@ export const LinkButton: React.FC<ILinkButtonProps> = ({
   const isActive = router.asPath === href;
   const { classes } = useStlyes({ active: isActive, child: Boolean(isChild) });
 
-  console.log(isActive, label, router.asPath, href);
-
   return (
     <>
       <Button
