@@ -1,11 +1,10 @@
-import { CampaignDetails } from "@/components/admin/CampaignDetails";
 import { Container, Paper } from "@mantine/core";
 
-export default function ManageCampaign() {
+export default function PreviewCampaign() {
   return (
     <Container fluid>
       <Paper radius="lg" p="xl">
-        <CampaignDetails />
+        preview
       </Paper>
     </Container>
   );

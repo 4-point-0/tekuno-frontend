@@ -1,4 +1,9 @@
-import { Button, ButtonProps, createStyles } from "@mantine/core";
+import {
+  Button,
+  ButtonProps,
+  createPolymorphicComponent,
+  createStyles,
+} from "@mantine/core";
 import { PolymorphicComponentProps } from "@mantine/utils";
 import React from "react";
 
@@ -21,10 +26,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const IndigoButton: React.FC<
-  PolymorphicComponentProps<"button", ButtonProps>
-> = (props) => {
-  const { classes } = useStyles();
+export const IndigoButton = createPolymorphicComponent<"button", ButtonProps>(
+  (props: PolymorphicComponentProps<"button", ButtonProps>) => {
+    const { classes } = useStyles();
 
-  return <Button color="indigo" classNames={classes} {...props} />;
-};
+    return <Button color="indigo" classNames={classes} {...props} />;
+  }
+);

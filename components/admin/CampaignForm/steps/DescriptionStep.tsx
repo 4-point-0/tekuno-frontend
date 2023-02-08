@@ -15,6 +15,7 @@ import { Field } from "@/components/form/Field";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
 import { useFormContext } from "./FormProvider";
+import { IndigoBadge } from "@/components/core/IndigoBadge";
 
 export const DescriptionStep = () => {
   const form = useFormContext();
@@ -79,30 +80,21 @@ export const DescriptionStep = () => {
 
             <Stack spacing={8} align="flex-start">
               {documents.map((file) => (
-                <Badge
+                <IndigoBadge
                   key={file.path}
-                  color="indigo"
                   leftSection={
                     <ActionIcon
-                      color="indigo"
-                      sx={{ color: "#000" }}
+                      variant="transparent"
+                      color="dark"
                       onClick={handleRemove(file)}
                     >
                       <X size={14} />
                     </ActionIcon>
                   }
                   size="lg"
-                  styles={{
-                    root: {
-                      paddingLeft: 4,
-                      color: "black",
-                      textTransform: "none",
-                      fontWeight: 600,
-                    },
-                  }}
                 >
                   {file.name}
-                </Badge>
+                </IndigoBadge>
               ))}
             </Stack>
           </Stack>

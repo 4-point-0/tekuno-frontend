@@ -25,7 +25,7 @@ export const CampaignList = () => {
   return (
     <Grid>
       {campaigns.map((campaign) => (
-        <Grid.Col span="content">
+        <Grid.Col key={campaign.id} span="content">
           <Card
             component={NextLink}
             href={`/admin/previous/${campaign.id}`}

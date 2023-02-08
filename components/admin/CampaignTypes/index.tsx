@@ -23,6 +23,7 @@ export const CampaignTypes = () => {
 
         return (
           <Card
+            key={template}
             component={NextLink}
             href={href}
             legacyBehavior
@@ -40,7 +41,7 @@ export const CampaignTypes = () => {
               <Title order={3}>{title}</Title>
               <List size="sm">
                 {perks.map((perk) => (
-                  <List.Item>{perk}</List.Item>
+                  <List.Item key={perk}>{perk}</List.Item>
                 ))}
               </List>
             </Stack>
