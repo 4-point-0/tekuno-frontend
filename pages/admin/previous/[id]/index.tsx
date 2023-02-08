@@ -1,10 +1,10 @@
 import { Container, Paper } from "@mantine/core";
 
-export default function PreviousPODs() {
+export default function ManageCampaign() {
   return (
     <Container fluid>
       <Paper radius="lg" p="xl">
-        previous
+        manage
       </Paper>
     </Container>
   );
