@@ -1,5 +1,6 @@
-import { CallToAction } from "@/components/admin/CallToAction";
 import { Container, Paper } from "@mantine/core";
+
+import { CallToAction } from "@/components/admin/CallToAction";
 
 export default function Admin() {
   return (

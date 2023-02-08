@@ -1,10 +1,11 @@
-import { PODTemplates } from "@/components/admin/PODTemplates";
 import { Container, Paper } from "@mantine/core";
+
+import { CampaignTypes } from "@/components/admin/CampaignTypes";
 
 export default function SelectPODTemplate() {
   return (
     <Container fluid>
-      <PODTemplates />
+      <CampaignTypes />
     </Container>
   );
 }

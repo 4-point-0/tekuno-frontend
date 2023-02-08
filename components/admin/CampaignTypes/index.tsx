@@ -1,5 +1,5 @@
 import { IndigoButton } from "@/components/core/IndigoButton";
-import { templateData, TEMPLATES } from "@/enums/PODTempalates";
+import { campaignTypeData, TYPES } from "@/enums/CampaignType";
 import {
   Card,
   Group,
@@ -13,11 +13,11 @@ import { NextLink } from "@mantine/next";
 import React from "react";
 import { CirclePlus } from "tabler-icons-react";
 
-export const PODTemplates = () => {
+export const CampaignTypes = () => {
   return (
     <SimpleGrid cols={3} maw={1200}>
-      {TEMPLATES.map((template) => {
-        const { title, image, perks } = templateData[template].card;
+      {TYPES.map((template) => {
+        const { title, image, perks } = campaignTypeData[template].card;
 
         const href = `/admin/create/${template}`;
 

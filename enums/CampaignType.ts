@@ -1,9 +1,9 @@
-export enum PODTemplate {
+export enum CampaignType {
   ATTENDANCE = "attendance",
   LOYALTY = "loyalty",
 }
 
-interface IPODTemplateDatum {
+interface ICampaignTypeDatum {
   card: {
     title: string;
     image: string;
@@ -14,8 +14,8 @@ interface IPODTemplateDatum {
   };
 }
 
-export const templateData: Record<PODTemplate, IPODTemplateDatum> = {
-  [PODTemplate.ATTENDANCE]: {
+export const campaignTypeData: Record<CampaignType, ICampaignTypeDatum> = {
+  [CampaignType.ATTENDANCE]: {
     card: {
       title: "Attendance",
       image: "/images/attendance.png",
@@ -29,7 +29,7 @@ export const templateData: Record<PODTemplate, IPODTemplateDatum> = {
       hasRewards: false,
     },
   },
-  [PODTemplate.LOYALTY]: {
+  [CampaignType.LOYALTY]: {
     card: {
       title: "Loyalty / Rewards",
       image: "/images/loyalty.png",
@@ -47,4 +47,4 @@ export const templateData: Record<PODTemplate, IPODTemplateDatum> = {
   },
 };
 
-export const TEMPLATES = Object.values(PODTemplate);
+export const TYPES = Object.values(CampaignType);

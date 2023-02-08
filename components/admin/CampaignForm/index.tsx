@@ -1,10 +1,11 @@
-import { IndigoButton } from "@/components/core/IndigoButton";
-import { PODTemplate, templateData } from "@/enums/PODTempalates";
 import { Button, Container, Group, Stack, Stepper } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Check, ChevronRight } from "tabler-icons-react";
+
+import { IndigoButton } from "@/components/core/IndigoButton";
+import { CampaignType, campaignTypeData } from "@/enums/CampaignType";
 
 import { DescriptionStep } from "./steps/DescriptionStep";
 import { FormProvider, IFormValues, useForm } from "./steps/FormProvider";
@@ -29,12 +30,12 @@ function getValidateInput(step: number) {
   return {};
 }
 
-export const PODForm = () => {
+export const CampaignForm = () => {
   const router = useRouter();
   const [active, setActiveStep] = useState(0);
 
   const { hasRewards } =
-    templateData[router.query.template as PODTemplate].form;
+    campaignTypeData[router.query.type as CampaignType].form;
 
   const maxSteps = hasRewards ? 4 : 3;
   const isLastStep = active + 1 === maxSteps;
