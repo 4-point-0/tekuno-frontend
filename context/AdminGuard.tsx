@@ -11,8 +11,6 @@ export const AdminGuard: React.FC<PropsWithChildren> = ({ children }) => {
 
   const { status } = useSession({ required: isAdminRoute });
 
-  console.log(status);
-
   return (
     <AdminGuardContext.Provider value={null}>
       {isAdminRoute && status !== "authenticated" ? (
