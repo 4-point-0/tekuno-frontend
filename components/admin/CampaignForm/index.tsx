@@ -3,10 +3,14 @@ import { FileWithPath } from "@mantine/dropzone";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Check, ChevronRight } from "tabler-icons-react";
+import { useIsMutating } from "@tanstack/react-query";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
-import { CampaignType, campaignTypeData } from "@/enums/CampaignType";
-
+import {
+  CampaignType,
+  campaignTypeData,
+  ICampaignFormConfig,
+} from "@/enums/CampaignType";
 import { DescriptionStep } from "./steps/DescriptionStep";
 import {
   FormProvider,
@@ -18,9 +22,23 @@ import { PODStep } from "./steps/PODStep";
 import { RewardStep } from "./steps/RewardStep";
 import { SetupStep } from "./steps/SetupStep";
 import { StyledStepper } from "./StyledStepper";
-import { useIsMutating } from "@tanstack/react-query";
 
-function getValidateInput(step: number) {
+const getNftValidator = (enabled: boolean) => {
+  if (!enabled) {
+    return {};
+  }
+
+  return {
+    name: (value?: string) => (!value ? "Name is required" : null),
+    supply: (value?: number) =>
+      !value || value <= 0 ? "Supply should be greater than 0" : null,
+  };
+};
+
+function getValidateInput(
+  step: number,
+  { hasPoap, hasRewards }: ICampaignFormConfig
+) {
   if (step === 0)
     return {
       name: (value: string) =>
@@ -36,6 +54,14 @@ function getValidateInput(step: number) {
         value?.response ? null : "Image is required",
     };
 
+  if (step === 2) {
+    return {
+      poap: getNftValidator(hasPoap),
+      collectibles: getNftValidator(hasRewards),
+      reward: getNftValidator(hasRewards),
+    };
+  }
+
   return {};
 }
 
@@ -45,7 +71,7 @@ export const CampaignForm = () => {
 
   const isMutating = useIsMutating();
 
-  const { hasRewards } =
+  const { hasRewards, hasPoap } =
     campaignTypeData[router.query.type as CampaignType].form;
 
   const maxSteps = hasRewards ? 4 : 3;
@@ -58,8 +84,17 @@ export const CampaignForm = () => {
       startDate: null,
       endDate: null,
       documents: [],
+      collectibles: [
+        { name: "", description: "", supply: 0 },
+        { name: "", description: "", supply: 0 },
+      ],
+      poap: {
+        name: "",
+        description: "",
+        supply: 1,
+      },
     },
-    validate: getValidateInput(active),
+    validate: getValidateInput(active, { hasPoap, hasRewards }),
   });
 
   const handleStepClick = (step: number) => {
@@ -82,6 +117,14 @@ export const CampaignForm = () => {
     }
   };
 
+  const handleComplete = async () => {
+    form.validate();
+
+    if (!form.isValid) {
+      return;
+    }
+  };
+
   return (
     <FormProvider form={form}>
       <Container>
@@ -94,7 +137,7 @@ export const CampaignForm = () => {
               <DescriptionStep />
             </Stepper.Step>
             <Stepper.Step>
-              <PODStep />
+              <PODStep hasPoap={hasPoap} />
             </Stepper.Step>
             {hasRewards && (
               <Stepper.Step>
@@ -114,7 +157,11 @@ export const CampaignForm = () => {
               </IndigoButton>
             )}
             {isLastStep && (
-              <Button color="dark" leftIcon={<Check size={14} />}>
+              <Button
+                color="dark"
+                onClick={handleComplete}
+                leftIcon={<Check size={14} />}
+              >
                 Complete campaign
               </Button>
             )}

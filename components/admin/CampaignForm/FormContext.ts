@@ -7,6 +7,14 @@ export interface IUploadedFile {
   response?: FileDto;
 }
 
+export interface IFormNFT {
+  name: string;
+  file: IUploadedFile;
+  description: string;
+  attributes: Record<string, string>;
+  supply: number;
+}
+
 export interface IFormValues {
   name: string;
   limitDate: boolean;
@@ -16,6 +24,9 @@ export interface IFormValues {
   description?: string;
   additonalDescription?: string;
   documents: Array<IUploadedFile>;
+  reward?: Partial<IFormNFT>;
+  poap?: Partial<IFormNFT>;
+  collectibles: Array<Partial<IFormNFT>>;
 }
 
 export const [FormProvider, useFormContext, useForm] =

@@ -81,7 +81,7 @@ export async function adminFetch<
       const { file, tags } = body as any;
 
       formData.append("file", file);
-      formData.append("tags", tags.toString());
+      formData.append("tags", tags?.toString());
     }
 
     console.log(formData);
