@@ -1,14 +1,15 @@
 import { MantineProvider } from "@mantine/core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { SessionProvider } from "next-auth/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
 import { AppLayout } from "@/components/layout/AppLayout";
-import { tekunoTheme } from "@/styles/theme";
 import { AdminGuard } from "@/context/AdminGuard";
+import { tekunoTheme } from "@/styles/theme";
+import { NotificationsProvider } from "@mantine/notifications";
 
 export default function App({
   Component,
@@ -32,9 +33,11 @@ export default function App({
               withNormalizeCSS
               theme={tekunoTheme}
             >
-              <AppLayout>
-                <Component {...pageProps} />
-              </AppLayout>
+              <NotificationsProvider>
+                <AppLayout>
+                  <Component {...pageProps} />
+                </AppLayout>
+              </NotificationsProvider>
             </MantineProvider>
           </QueryClientProvider>
         </AdminGuard>
