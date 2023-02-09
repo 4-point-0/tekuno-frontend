@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "api:codegen:admin": "npx openapi-codegen gen tekunoAdmin",
+    "api:codegen:client": "npx openapi-codegen gen tekunoClient"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -20,6 +22,7 @@
     "@mantine/notifications": "^5.10.2",
     "@next/font": "13.1.6",
     "@ramper/near": "^0.0.30",
+    "@tanstack/react-query": "^4.24.4",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
@@ -27,9 +30,9 @@
     "dayjs": "^1.11.7",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
-    "near-api-js": "^1.1.0",
     "http-proxy": "^1.18.1",
     "isomorphic-fetch": "^3.0.0",
+    "near-api-js": "^1.1.0",
     "next": "13.1.6",
     "next-auth": "^4.19.2",
     "react": "18.2.0",
@@ -38,6 +41,8 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@openapi-codegen/cli": "^2.0.0",
+    "@openapi-codegen/typescript": "^6.1.0",
     "@types/bn.js": "^5.1.1",
     "@types/http-proxy": "^1.17.9",
     "@types/isomorphic-fetch": "^0.0.36"
