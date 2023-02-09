@@ -6,13 +6,31 @@ import { Calendar } from "tabler-icons-react";
 
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { useFormContext } from "./FormProvider";
+import { useFormContext } from "../FormContext";
+import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
 
 export const SetupStep = () => {
   const form = useFormContext();
+  const uploadFile = useFileControllerUploadFile({});
 
-  const handleDrop = (files: Array<FileWithPath>) => {
-    form.setFieldValue("image", files[0]);
+  const handleDrop = async (files: Array<FileWithPath>) => {
+    const file = files[0];
+
+    try {
+      const response = await uploadFile.mutateAsync({
+        body: {
+          file,
+          tags: ["image"],
+        },
+      });
+
+      form.setFieldValue("image", {
+        file,
+        response,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleDateRangeChange = ([startDate, endDate]: [
@@ -71,12 +89,13 @@ export const SetupStep = () => {
           title="Upload Image"
           description="Darg’n’ drop the campaign photo here. File size preferable between x and xy .png"
           label="Select Image"
-          formValue={[form.getInputProps("image").value]}
+          formValue={[form.getInputProps("image").value.file]}
           error={form.getInputProps("image").error}
           dropzone={{
             multiple: false,
             accept: IMAGE_MIME_TYPE,
             onDrop: handleDrop,
+            disabled: uploadFile.isLoading,
           }}
         />
       </Box>

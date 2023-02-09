@@ -8,11 +8,17 @@ import { IndigoButton } from "@/components/core/IndigoButton";
 import { CampaignType, campaignTypeData } from "@/enums/CampaignType";
 
 import { DescriptionStep } from "./steps/DescriptionStep";
-import { FormProvider, IFormValues, useForm } from "./steps/FormProvider";
+import {
+  FormProvider,
+  IFormValues,
+  IUploadedFile,
+  useForm,
+} from "./FormContext";
 import { PODStep } from "./steps/PODStep";
 import { RewardStep } from "./steps/RewardStep";
 import { SetupStep } from "./steps/SetupStep";
 import { StyledStepper } from "./StyledStepper";
+import { useIsMutating } from "@tanstack/react-query";
 
 function getValidateInput(step: number) {
   if (step === 0)
@@ -26,7 +32,8 @@ function getValidateInput(step: number) {
           ? "Date range must be selected if the campaing date is limited"
           : null;
       },
-      image: (value?: FileWithPath) => (value ? null : "Image is required"),
+      image: (value?: IUploadedFile) =>
+        value?.response ? null : "Image is required",
     };
 
   return {};
@@ -35,6 +42,8 @@ function getValidateInput(step: number) {
 export const CampaignForm = () => {
   const router = useRouter();
   const [active, setActiveStep] = useState(0);
+
+  const isMutating = useIsMutating();
 
   const { hasRewards } =
     campaignTypeData[router.query.type as CampaignType].form;
@@ -54,6 +63,10 @@ export const CampaignForm = () => {
   });
 
   const handleStepClick = (step: number) => {
+    if (isMutating > 0) {
+      return;
+    }
+
     form.validate();
 
     if (form.isValid()) {
@@ -95,6 +108,7 @@ export const CampaignForm = () => {
               <IndigoButton
                 rightIcon={<ChevronRight size={14} />}
                 onClick={handleNextStepClick}
+                disabled={isMutating > 0}
               >
                 Next
               </IndigoButton>

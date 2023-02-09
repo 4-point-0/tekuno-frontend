@@ -14,7 +14,7 @@ import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
-import { useFormContext } from "./FormProvider";
+import { useFormContext } from "../FormContext";
 import { IndigoBadge } from "@/components/core/IndigoBadge";
 
 export const DescriptionStep = () => {

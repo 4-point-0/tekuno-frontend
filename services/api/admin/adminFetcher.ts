@@ -72,16 +72,32 @@ export async function adminFetch<
       delete requestHeaders["Content-Type"];
     }
 
+    const isFileUpload = body?.hasOwnProperty("file");
+    let formData = new FormData();
+
+    if (isFileUpload) {
+      delete requestHeaders["Content-Type"];
+
+      const { file, tags } = body as any;
+
+      formData.append("file", file);
+      formData.append("tags", tags.toString());
+    }
+
+    console.log(formData);
+
+    const serializedBody = body
+      ? body instanceof FormData
+        ? body
+        : JSON.stringify(body)
+      : undefined;
+
     const response = await fetch(
       `${baseUrl}${resolveUrl(url, queryParams, pathParams)}`,
       {
         signal,
         method: method.toUpperCase(),
-        body: body
-          ? body instanceof FormData
-            ? body
-            : JSON.stringify(body)
-          : undefined,
+        body: formData || serializedBody,
         headers: requestHeaders,
       }
     );
