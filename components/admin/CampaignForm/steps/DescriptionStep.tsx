@@ -1,44 +1,56 @@
-import {
-  Box,
-  Group,
-  Stack,
-  Textarea,
-  Text,
-  Badge,
-  ActionIcon,
-  Title,
-} from "@mantine/core";
-import React, { useState } from "react";
+import { Group, Stack, Textarea, Text, ActionIcon, Title } from "@mantine/core";
+import React from "react";
+import { FileWithPath } from "@mantine/dropzone";
+import { X } from "tabler-icons-react";
 
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { FileWithPath } from "@mantine/dropzone";
-import { X } from "tabler-icons-react";
-import { useFormContext } from "../FormContext";
 import { IndigoBadge } from "@/components/core/IndigoBadge";
+import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
+import { IUploadedFile, useFormContext } from "../FormContext";
 
 export const DescriptionStep = () => {
   const form = useFormContext();
-  const [documents, setDocuments] = useState<Array<FileWithPath>>(
-    () => form.values.documents
-  );
 
-  const handleDrop = (files: Array<FileWithPath>) => {
-    setDocuments((previous) => {
-      const uniqueFiles = files.filter(({ path }) => {
-        return !documents.some((document) => document.path === path);
-      });
+  const { documents } = form.values;
 
-      const newDocuments = [...previous, ...uniqueFiles];
+  const uploadFile = useFileControllerUploadFile();
 
-      form.setFieldValue("documents", newDocuments);
+  const handleDrop = async (files: Array<FileWithPath>) => {
+    const previous = documents;
 
-      return newDocuments;
+    const uniqueFiles = files.filter(({ path }) => {
+      return !documents.some((document) => document.file.path === path);
     });
+
+    const respones = await Promise.all(
+      uniqueFiles.map((file) => {
+        return uploadFile.mutateAsync({
+          body: {
+            file,
+            tags: ["document"],
+          },
+        });
+      })
+    );
+
+    const newDocuments = uniqueFiles.map((file, i) => {
+      return {
+        file,
+        response: respones[i],
+      };
+    });
+
+    form.setFieldValue("documents", previous.concat(...newDocuments));
   };
 
-  const handleRemove = (file: FileWithPath) => {
-    return () => setDocuments((previous) => previous.filter((f) => f !== file));
+  const handleRemove = (file: IUploadedFile) => {
+    return () => {
+      form.setFieldValue(
+        "documents",
+        documents.filter((document) => document !== file)
+      );
+    };
   };
 
   return (
@@ -71,6 +83,7 @@ export const DescriptionStep = () => {
             dropzone={{
               onDrop: handleDrop,
               multiple: true,
+              disabled: uploadFile.isLoading,
             }}
           />
           <Stack spacing="md">
@@ -79,21 +92,21 @@ export const DescriptionStep = () => {
             {documents.length === 0 && <Text>No files</Text>}
 
             <Stack spacing={8} align="flex-start">
-              {documents.map((file) => (
+              {documents.map((document) => (
                 <IndigoBadge
-                  key={file.path}
+                  key={document.file.path}
                   leftSection={
                     <ActionIcon
                       variant="transparent"
                       color="dark"
-                      onClick={handleRemove(file)}
+                      onClick={handleRemove(document)}
                     >
                       <X size={14} />
                     </ActionIcon>
                   }
                   size="lg"
                 >
-                  {file.name}
+                  {document.file.name}
                 </IndigoBadge>
               ))}
             </Stack>

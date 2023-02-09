@@ -89,7 +89,7 @@ export const SetupStep = () => {
           title="Upload Image"
           description="Darg’n’ drop the campaign photo here. File size preferable between x and xy .png"
           label="Select Image"
-          formValue={[form.getInputProps("image").value.file]}
+          formValue={[form.getInputProps("image").value?.file]}
           error={form.getInputProps("image").error}
           dropzone={{
             multiple: false,
