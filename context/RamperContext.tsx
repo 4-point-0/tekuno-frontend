@@ -1,3 +1,9 @@
+import {
+  fetchUserControllerRegister,
+  useChainControllerFindAll,
+} from "@/services/api/client/clientComponents";
+import { UserDto } from "@/services/api/client/clientSchemas";
+import { notifications } from "@/utils/notifications";
 import { useMantineTheme } from "@mantine/core";
 import {
   AUTH_PROVIDER,
@@ -8,28 +14,26 @@ import {
   signOut as signOutRamper,
   SUPPORTED_NEAR_NETWORKS,
   THEME,
-  User,
   WALLET_PROVIDER,
 } from "@ramper/near";
 import React, { useContext, useEffect, useState } from "react";
 
 interface UseRamper {
-  user: User | null;
-  publicKey: string | null;
+  user: UserDto | null;
   loading: boolean;
   openWallet: () => void;
   signIn: () => Promise<void>;
   signOut: () => void;
-  refreshUserData: () => void;
+  refreshUserData: () => Promise<void>;
 }
 
 const RamperContext = React.createContext<UseRamper | null>(null);
 
 export const RamperProvider = ({ children }: any) => {
   const theme = useMantineTheme();
-  const [user, setUser] = useState<User | null>(null);
-  const [publicKey, setPublicKey] = useState<string | null>(null);
+  const [user, setUser] = useState<UserDto | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const { isLoading, data: chainData } = useChainControllerFindAll({});
 
   useEffect(() => {
     const initRamper = async () => {
@@ -49,21 +53,19 @@ export const RamperProvider = ({ children }: any) => {
         appId: "siycfmkhwu", // TODO: Change this to production app id later
       });
 
-      const user = getUserRamper();
-      setUser(user);
-      setPublicKey(user?.wallets["near"].publicKey ?? null);
+      await registerUser();
     };
 
     initRamper();
   }, [theme.colorScheme]);
 
   useEffect(() => {
-    if (publicKey) {
-      localStorage.setItem("account_id", publicKey);
+    if (user?.profile?.wallet_address) {
+      localStorage.setItem("account_id", user.profile.wallet_address);
     } else {
       localStorage.removeItem("account_id");
     }
-  }, [publicKey]);
+  }, [user]);
 
   const openWallet = () => {
     openWalletRamper();
@@ -71,30 +73,83 @@ export const RamperProvider = ({ children }: any) => {
 
   const signIn = async () => {
     setLoading(true);
-    await signInRamper();
-    const user = getUserRamper();
-    setUser(user);
-    setPublicKey(user?.wallets["near"].publicKey ?? null);
-    setLoading(false);
+    const result = await signInRamper();
+
+    // Check if user stopped the sing in process
+    if (!result.user) {
+      setLoading(false);
+      return;
+    }
+
+    await registerUser();
   };
 
   const signOut = () => {
     setUser(null);
-    setPublicKey(null);
     signOutRamper();
   };
 
-  const refreshUserData = () => {
+  const refreshUserData = async () => {
+    await registerUser();
+  };
+
+  const registerUser = async () => {
     const user = getUserRamper();
-    setUser(user);
-    setPublicKey(user?.wallets["near"].publicKey ?? null);
+
+    if (!user) {
+      signOut();
+      return;
+    }
+
+    notifications.create({ message: "Connecting you to Tekuno" });
+
+    const currentChain = "near";
+    const chainId = chainData?.results.filter(
+      (chain) => chain.name === currentChain
+    )[0].id;
+    const walletAddress = user?.wallets[currentChain].publicKey || "";
+    const walletType =
+      user?.signupSource === "near_wallet" ? "SelfCreated" : "Ramper";
+
+    if (!chainId || !walletAddress) {
+      notifications.error({
+        message: "Something went wrong. Please try again.",
+      });
+      signOut();
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const userData = await fetchUserControllerRegister({
+        body: {
+          email: user?.email,
+          wallet_address: walletAddress,
+          chain_id: chainId,
+          wallet_type: walletType,
+        },
+      });
+
+      setUser(userData);
+
+      notifications.success({
+        message: "Connected successfully.",
+      });
+    } catch {
+      notifications.error({
+        message: "Something went wrong. Please try again.",
+      });
+
+      signOut();
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <RamperContext.Provider
       value={{
         user,
-        publicKey,
         loading,
         openWallet,
         signIn,
