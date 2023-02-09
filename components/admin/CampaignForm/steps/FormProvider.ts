@@ -4,7 +4,8 @@ import { createFormContext } from "@mantine/form";
 export interface IFormValues {
   name: string;
   limitDate: boolean;
-  dateRange: Array<Date | null>;
+  startDate: Date | null;
+  endDate: Date | null;
   image?: FileWithPath;
   description?: string;
   additonalDescription?: string;

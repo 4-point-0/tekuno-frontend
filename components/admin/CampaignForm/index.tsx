@@ -19,8 +19,10 @@ function getValidateInput(step: number) {
     return {
       name: (value: string) =>
         value.length < 2 ? "Name must have at least 2 letters" : null,
-      dateRange: (value: Array<Date | null>, { limitDate }: IFormValues) => {
-        return limitDate && value?.filter(Boolean).length !== 2
+      startDate: (value: Date | null) =>
+        !value ? "Start date is required" : null,
+      endDate: (value: Date | null, { limitDate }: IFormValues) => {
+        return limitDate && !value
           ? "Date range must be selected if the campaing date is limited"
           : null;
       },
@@ -44,7 +46,8 @@ export const CampaignForm = () => {
     initialValues: {
       name: "",
       limitDate: false,
-      dateRange: [null, null],
+      startDate: null,
+      endDate: null,
       documents: [],
     },
     validate: getValidateInput(active),

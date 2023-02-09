@@ -1,7 +1,6 @@
 import React from "react";
-import dayjs from "dayjs";
 import { Box, Group, Input, Stack, Switch } from "@mantine/core";
-import { DateRangePicker } from "@mantine/dates";
+import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
 
@@ -14,6 +13,14 @@ export const SetupStep = () => {
 
   const handleDrop = (files: Array<FileWithPath>) => {
     form.setFieldValue("image", files[0]);
+  };
+
+  const handleDateRangeChange = ([startDate, endDate]: [
+    Date | null,
+    Date | null
+  ]) => {
+    form.setFieldValue("startDate", startDate);
+    form.setFieldValue("endDate", endDate);
   };
 
   return (
@@ -38,14 +45,23 @@ export const SetupStep = () => {
           />
 
           <Group miw="40%" maw={300}>
-            <DateRangePicker
-              w="100%"
-              placeholder="Pick dates range"
-              minDate={dayjs(new Date()).startOf("day").toDate()}
-              icon={<Calendar size={16} />}
-              disabled={!form.values.limitDate}
-              {...form.getInputProps("dateRange")}
-            />
+            {form.values.limitDate ? (
+              <DateRangePicker
+                w="100%"
+                placeholder="Pick dates range"
+                icon={<Calendar size={16} />}
+                disabled={!form.values.limitDate}
+                value={[form.values.startDate, form.values.endDate]}
+                onChange={handleDateRangeChange}
+                error={form.getInputProps("endDate").error}
+              />
+            ) : (
+              <DatePicker
+                placeholder="Select start date"
+                icon={<Calendar size={16} />}
+                {...form.getInputProps("startDate")}
+              />
+            )}
           </Group>
         </Stack>
       </Field>
