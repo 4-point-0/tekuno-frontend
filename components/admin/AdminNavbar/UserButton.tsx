@@ -1,3 +1,4 @@
+import { useAdminControllerFindMe } from "@/services/api/admin/adminComponents";
 import {
   UnstyledButton,
   UnstyledButtonProps,
@@ -6,45 +7,54 @@ import {
   Text,
   createStyles,
 } from "@mantine/core";
+import { NextLink } from "@mantine/next";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { ChevronRight } from "tabler-icons-react";
 
-const useStyles = createStyles((theme) => ({
+interface IButtonProps {
+  active: boolean;
+}
+
+const useStyles = createStyles((theme, { active }: IButtonProps) => ({
   user: {
     display: "block",
     width: "100%",
     padding: theme.spacing.md,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+    color: theme.black,
+    borderRadius: theme.radius.md,
+    backgroundColor: active ? theme.colors.blue[0] : undefined,
 
     "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[8]
-          : theme.colors.gray[0],
+      backgroundColor: active ? theme.colors.blue[0] : theme.colors.gray[0],
     },
   },
 }));
 
-interface IUserButtonProps extends UnstyledButtonProps {
-  image: string;
-  name: string;
-  email: string;
-}
+export const UserButton: React.FC<UnstyledButtonProps> = ({ ...rest }) => {
+  const router = useRouter();
+  const { classes } = useStyles({ active: router.route === "/admin/user" });
 
-export function UserButton({ image, name, email, ...rest }: IUserButtonProps) {
-  const { classes } = useStyles();
+  const { data: session } = useSession();
 
   return (
-    <UnstyledButton className={classes.user} {...rest}>
+    <UnstyledButton
+      component={NextLink}
+      href="/admin/user"
+      legacyBehavior
+      className={classes.user}
+      {...rest}
+    >
       <Group>
-        <Avatar src={image} radius="xl" />
+        <Avatar src={session?.user?.image} radius="xl" />
 
         <div style={{ flex: 1 }}>
           <Text size="sm" weight={500}>
-            {name}
+            {session?.user?.name}
           </Text>
 
           <Text color="dimmed" size="xs">
-            {email}
+            {session?.user?.email}
           </Text>
         </div>
 
@@ -52,4 +62,4 @@ export function UserButton({ image, name, email, ...rest }: IUserButtonProps) {
       </Group>
     </UnstyledButton>
   );
-}
+};

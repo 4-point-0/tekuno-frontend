@@ -8,6 +8,7 @@ const queryClient = new QueryClient();
 
 import { AppLayout } from "@/components/layout/AppLayout";
 import { tekunoTheme } from "@/styles/theme";
+import { AdminGuard } from "@/context/AdminGuard";
 
 export default function App({
   Component,
@@ -24,17 +25,19 @@ export default function App({
       </Head>
 
       <SessionProvider session={session}>
-        <QueryClientProvider client={queryClient}>
-          <MantineProvider
-            withGlobalStyles
-            withNormalizeCSS
-            theme={tekunoTheme}
-          >
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-          </MantineProvider>
-        </QueryClientProvider>
+        <AdminGuard>
+          <QueryClientProvider client={queryClient}>
+            <MantineProvider
+              withGlobalStyles
+              withNormalizeCSS
+              theme={tekunoTheme}
+            >
+              <AppLayout>
+                <Component {...pageProps} />
+              </AppLayout>
+            </MantineProvider>
+          </QueryClientProvider>
+        </AdminGuard>
       </SessionProvider>
     </>
   );
