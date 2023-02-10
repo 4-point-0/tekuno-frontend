@@ -84,8 +84,6 @@ export async function adminFetch<
       formData.append("tags", tags?.toString());
     }
 
-    console.log(formData);
-
     const serializedBody = body
       ? body instanceof FormData
         ? body
@@ -97,7 +95,7 @@ export async function adminFetch<
       {
         signal,
         method: method.toUpperCase(),
-        body: formData || serializedBody,
+        body: isFileUpload ? formData : serializedBody,
         headers: requestHeaders,
       }
     );
