@@ -10,11 +10,16 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { AdminGuard } from "@/context/AdminGuard";
 import { tekunoTheme } from "@/styles/theme";
 import { NotificationsProvider } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  const router = useRouter();
+
+  const isAdmin = router.route.startsWith("/admin");
+
   return (
     <>
       <Head>
@@ -31,7 +36,11 @@ export default function App({
             <MantineProvider
               withGlobalStyles
               withNormalizeCSS
-              theme={tekunoTheme}
+              theme={
+                isAdmin
+                  ? tekunoTheme
+                  : { ...tekunoTheme, primaryColor: "violet" }
+              }
             >
               <NotificationsProvider>
                 <AppLayout>
