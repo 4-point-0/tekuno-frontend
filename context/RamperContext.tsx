@@ -52,18 +52,20 @@ export const RamperProvider = ({ children }: any) => {
         logoURI: `https://i.imgur.com/BF6sZhU.png`, // TODO: Point this to production url later
         appId: "siycfmkhwu", // TODO: Change this to production app id later
       });
-
-      await registerUser();
     };
 
     initRamper();
+
+    if (localStorage.getItem("tkn_user")) {
+      setUser(JSON.parse(localStorage.getItem("tkn_user") || "{}"));
+    }
   }, [theme.colorScheme]);
 
   useEffect(() => {
-    if (user?.profile?.wallet_address) {
-      localStorage.setItem("account_id", user.profile.wallet_address);
+    if (user) {
+      localStorage.setItem("tkn_user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("account_id");
+      localStorage.removeItem("tkn_user");
     }
   }, [user]);
 
@@ -97,7 +99,6 @@ export const RamperProvider = ({ children }: any) => {
     const user = getUserRamper();
 
     if (!user) {
-      signOut();
       return;
     }
 
