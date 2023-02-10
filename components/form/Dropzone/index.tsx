@@ -1,3 +1,4 @@
+import { CAMPAIGN_IMAGE_TYPES } from "@/components/admin/CampaignForm/FormContext";
 import {
   Group,
   useMantineTheme,
@@ -10,7 +11,6 @@ import {
   Dropzone as MantineDropzone,
   DropzoneProps,
   FileWithPath,
-  IMAGE_MIME_TYPE,
 } from "@mantine/dropzone";
 import React, { useMemo, useRef } from "react";
 import { Photo, Upload, X } from "tabler-icons-react";
@@ -48,7 +48,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
 
   const previewUrl = useMemo(() => {
     const showPreview =
-      !dropzone.multiple && dropzone.accept === IMAGE_MIME_TYPE;
+      !dropzone.multiple && dropzone.accept === CAMPAIGN_IMAGE_TYPES;
 
     if (!(showPreview && value?.[0])) {
       return;

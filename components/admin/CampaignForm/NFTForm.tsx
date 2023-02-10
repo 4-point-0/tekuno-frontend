@@ -2,9 +2,9 @@ import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
 import { Group, Input, NumberInput, Select } from "@mantine/core";
-import { FileWithPath, IMAGE_MIME_TYPE, MIME_TYPES } from "@mantine/dropzone";
+import { FileWithPath } from "@mantine/dropzone";
 import React from "react";
-import { useFormContext } from "./FormContext";
+import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
 
 interface INFTFormProps {
   formKey: string;
@@ -55,7 +55,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
           label="Select Asset"
           dropzone={{
             onDrop: handleDrop,
-            accept: [...IMAGE_MIME_TYPE, MIME_TYPES.mp4],
+            accept: NFT_ASSET_TYPES,
           }}
         />
       </Group>

@@ -7,7 +7,11 @@ import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
-import { IUploadedFile, useFormContext } from "../FormContext";
+import {
+  CAMPAIGN_DOCUMENT_TYPES,
+  IUploadedFile,
+  useFormContext,
+} from "../FormContext";
 
 export const DescriptionStep = () => {
   const form = useFormContext();
@@ -83,6 +87,7 @@ export const DescriptionStep = () => {
             dropzone={{
               onDrop: handleDrop,
               multiple: true,
+              accept: CAMPAIGN_DOCUMENT_TYPES,
               disabled: uploadFile.isLoading,
             }}
           />

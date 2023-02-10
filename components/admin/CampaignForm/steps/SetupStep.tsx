@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Group, Input, Stack, Switch } from "@mantine/core";
 import { DatePicker, DateRangePicker } from "@mantine/dates";
-import { FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
 
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { useFormContext } from "../FormContext";
+import { CAMPAIGN_IMAGE_TYPES, useFormContext } from "../FormContext";
 import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
 
 export const SetupStep = () => {
@@ -93,7 +93,7 @@ export const SetupStep = () => {
           error={form.getInputProps("image").error}
           dropzone={{
             multiple: false,
-            accept: IMAGE_MIME_TYPE,
+            accept: CAMPAIGN_IMAGE_TYPES,
             onDrop: handleDrop,
             disabled: uploadFile.isLoading,
           }}

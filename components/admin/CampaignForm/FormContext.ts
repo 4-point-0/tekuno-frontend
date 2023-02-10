@@ -1,6 +1,16 @@
-import { FileDto } from "@/services/api/admin/adminSchemas";
-import { FileWithPath } from "@mantine/dropzone";
+import { FileWithPath, MIME_TYPES } from "@mantine/dropzone";
 import { createFormContext } from "@mantine/form";
+
+import { FileDto } from "@/services/api/admin/adminSchemas";
+
+export const CAMPAIGN_IMAGE_TYPES = [MIME_TYPES.jpeg, MIME_TYPES.png];
+export const NFT_ASSET_TYPES = [
+  MIME_TYPES.jpeg,
+  MIME_TYPES.png,
+  MIME_TYPES.gif,
+  MIME_TYPES.mp4,
+];
+export const CAMPAIGN_DOCUMENT_TYPES = [MIME_TYPES.pdf];
 
 export interface IUploadedFile {
   file: FileWithPath;
