@@ -84,9 +84,12 @@ export default function Profile() {
         href={`/campaign/${campaign.id}`}
         variant="light"
         radius={"md"}
+        sx={(theme) => ({
+          color: theme.colors.dark,
+        })}
         rightIcon={<ChevronRight size={20} />}
       >
-        {campaign.name}
+        <Text fw={700}>{campaign.name}</Text>
       </Button>
     ));
   };
@@ -108,6 +111,10 @@ export default function Profile() {
               mt={"lg"}
               variant="light"
               radius={"xl"}
+              color="indigo.0"
+              sx={(theme) => ({
+                color: theme.colors.dark,
+              })}
               onClick={openWallet}
             >
               Open Wallet
@@ -118,6 +125,10 @@ export default function Profile() {
               mt={"lg"}
               variant="light"
               radius={"xl"}
+              color="indigo.0"
+              sx={(theme) => ({
+                color: theme.colors.dark,
+              })}
               onClick={onSignOut}
             >
               Sign Out
