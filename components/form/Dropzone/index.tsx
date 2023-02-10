@@ -1,4 +1,7 @@
-import { CAMPAIGN_IMAGE_TYPES } from "@/components/admin/CampaignForm/FormContext";
+import {
+  CAMPAIGN_IMAGE_TYPES,
+  MAX_FILE_SIZE,
+} from "@/components/admin/CampaignForm/FormContext";
 import {
   Group,
   useMantineTheme,
@@ -74,6 +77,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
           inner: { pointerEvents: "all" },
         }}
         onDrop={handleDrop}
+        maxSize={MAX_FILE_SIZE}
         {...rest}
       >
         <Box

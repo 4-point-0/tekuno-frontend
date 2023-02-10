@@ -12,6 +12,9 @@ export const NFT_ASSET_TYPES = [
 ];
 export const CAMPAIGN_DOCUMENT_TYPES = [MIME_TYPES.pdf];
 
+// 20 mb
+export const MAX_FILE_SIZE = 20 * 1024 ** 2;
+
 export interface IUploadedFile {
   file: FileWithPath;
   response?: FileDto;
