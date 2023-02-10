@@ -8,12 +8,14 @@ import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
 
 interface INFTFormProps {
   formKey: string;
+  isReward?: boolean;
   allowAttribues?: boolean;
 }
 
 export const NFTForm: React.FC<INFTFormProps> = ({
   formKey,
   allowAttribues,
+  isReward,
 }) => {
   const form = useFormContext();
   const uploadFile = useFileControllerUploadFile({});
@@ -37,17 +39,21 @@ export const NFTForm: React.FC<INFTFormProps> = ({
     }
   };
 
+  const label = isReward ? "Reward" : "POD";
+
   return (
     <>
       <Field
-        label="POD name"
+        label={`${label} name`}
+        withAsterisk
         error={form.getInputProps(`${formKey}.name`).error}
       >
         <Input
-          placeholder="Fun name for your POD"
+          placeholder={`Fun name for your ${label}`}
           {...form.getInputProps(`${formKey}.name`)}
         />
       </Field>
+
       <Group>
         <Dropzone
           title="Upload NFT Image, Video or GIF"
@@ -59,17 +65,19 @@ export const NFTForm: React.FC<INFTFormProps> = ({
           }}
         />
       </Group>
+
       <Field
-        label="Describe your POD"
+        label={`Describe your ${label}`}
         description="The description will be visible to users while claiming"
       >
         <Input
-          placeholder="Minted as part of the Project Name digital collectible campaign."
+          placeholder={`Minted as part of the ${form.values.name} digital collectible campaign.`}
           {...form.getInputProps(`${formKey}.description`)}
         />
       </Field>
+
       <Field
-        label="How many PODs do you want to mint?"
+        label={`How many ${label}s do you want to mint?`}
         description="This is the suppply of NFTs available for users / customers / public to claim"
       >
         <NumberInput
@@ -78,6 +86,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
           {...form.getInputProps(`${formKey}.supply`)}
         />
       </Field>
+
       {allowAttribues && (
         <Field
           label="Attributes"

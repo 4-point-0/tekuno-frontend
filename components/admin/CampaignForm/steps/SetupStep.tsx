@@ -44,6 +44,7 @@ export const SetupStep = () => {
   return (
     <Stack>
       <Field
+        withAsterisk
         label="Set up your POD"
         description="This is the name of the POD campaign "
         error={form.getInputProps("name").error}
@@ -52,6 +53,7 @@ export const SetupStep = () => {
       </Field>
 
       <Field
+        withAsterisk
         label="How long does your campaign last?"
         description="Set the start date, and limit the time available to claim Attendance PODs"
       >
@@ -66,6 +68,7 @@ export const SetupStep = () => {
             {form.values.limitDate ? (
               <DateRangePicker
                 w="100%"
+                withAsterisk
                 placeholder="Pick dates range"
                 icon={<Calendar size={16} />}
                 disabled={!form.values.limitDate}
@@ -75,6 +78,7 @@ export const SetupStep = () => {
               />
             ) : (
               <DatePicker
+                withAsterisk
                 placeholder="Select start date"
                 icon={<Calendar size={16} />}
                 {...form.getInputProps("startDate")}
