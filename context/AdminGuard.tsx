@@ -16,7 +16,7 @@ export const AdminGuard: React.FC<PropsWithChildren> = ({ children }) => {
       {isAdminRoute && status !== "authenticated" ? (
         <Container h="calc(100vh - 16px)">
           <Center h="100%">
-            <Loader />
+            <Loader color="indigo" />
           </Center>
         </Container>
       ) : (

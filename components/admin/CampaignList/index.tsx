@@ -1,30 +1,53 @@
 import { IndigoButton } from "@/components/core/IndigoButton";
-import { Card, Image, Stack, Title, Group, Text, Grid } from "@mantine/core";
+import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
+import { CampaignDto } from "@/services/api/admin/adminSchemas";
+import {
+  Card,
+  Image,
+  Stack,
+  Title,
+  Group,
+  Text,
+  Grid,
+  Paper,
+  Center,
+  Loader,
+} from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import React from "react";
 import { Pencil } from "tabler-icons-react";
+import { CallToAction } from "../CallToAction";
 
 export const CampaignList = () => {
-  const campaigns = [
-    {
-      id: "1",
-      name: "Moneymotion x Mastercard",
-      description:
-        "Collecting our special Mastercard Pods to win exclusive gifts from Mastercard after completing the entire collection.",
-      imageUrl: "https://via.placeholder.com/332",
-    },
-    {
-      id: "2",
-      name: "BlockSplit 3.0",
-      description:
-        "BlockSplit 3 is an international conference for blockchain and development, which offers an opportunity to get acquainted with cutting edge technologies and network with leading experts in the industry.",
-      imageUrl: "https://via.placeholder.com/332",
-    },
-  ];
+  const { data, isLoading } = useCampaignControllerFindAll({});
+
+  const getCampaingImage = (campaign: CampaignDto) => {
+    const imageFile = campaign.files?.find((file) =>
+      file.tags.includes("image")
+    );
+
+    return imageFile?.url || null;
+  };
+
+  if (isLoading) {
+    return (
+      <Center h="100%">
+        <Loader color="indigo" />
+      </Center>
+    );
+  }
+
+  if (!isLoading && data?.results.length === 0) {
+    return (
+      <Paper radius="lg" p="xl" h="100%">
+        <CallToAction emptyState />
+      </Paper>
+    );
+  }
 
   return (
     <Grid>
-      {campaigns.map((campaign) => (
+      {data?.results.map((campaign) => (
         <Grid.Col key={campaign.id} span="content">
           <Card
             component={NextLink}
@@ -39,7 +62,7 @@ export const CampaignList = () => {
           >
             <Card.Section mb="xl">
               <Image
-                src={campaign.imageUrl}
+                src={getCampaingImage(campaign)}
                 w="100%"
                 height={184}
                 alt={campaign.name}

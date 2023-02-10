@@ -3,10 +3,8 @@ import { Box, Container } from "@mantine/core";
 
 export default function PreviousCampaings() {
   return (
-    <Container fluid>
-      <Box p="xl">
-        <CampaignList />
-      </Box>
+    <Container fluid sx={{ height: "100%" }}>
+      <CampaignList />
     </Container>
   );
 }

@@ -12,7 +12,11 @@ import { NextLink } from "@mantine/next";
 import React from "react";
 import { CirclePlus } from "tabler-icons-react";
 
-export const CallToAction = () => {
+interface ICallToActionProps {
+  emptyState?: boolean;
+}
+
+export const CallToAction: React.FC<ICallToActionProps> = ({ emptyState }) => {
   return (
     <Paper sx={{ backgroundColor: "#ffe6e6" }} p={40} maw={810}>
       <Group spacing={48}>
@@ -22,7 +26,9 @@ export const CallToAction = () => {
 
         <Stack>
           <Title order={4}>Create your new Proof Of Doing</Title>
-          <Text>Digital Collectible PODs</Text>
+          <Text>
+            {emptyState ? "No previous PODs found" : "Digital Collectible PODs"}
+          </Text>
           <Group position="left">
             <Button
               component={NextLink}
