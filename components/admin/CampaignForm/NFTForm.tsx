@@ -83,6 +83,9 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         <NumberInput
           mt="xs"
           min={1}
+          styles={{
+            input: { borderTopRightRadius: 0, borderBottomRightRadius: 0 },
+          }}
           {...form.getInputProps(`${formKey}.supply`)}
         />
       </Field>

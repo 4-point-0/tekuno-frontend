@@ -16,6 +16,7 @@ import {
   FormProvider,
   IFormValues,
   IUploadedFile,
+  NFT_INITIAL_VALUE,
   useForm,
 } from "./FormContext";
 import { PODStep } from "./steps/PODStep";
@@ -47,6 +48,8 @@ function getValidateInput(
   step: number,
   { hasPoap, hasRewards }: ICampaignFormConfig
 ) {
+  return {};
+
   if (step === 0)
     return {
       name: (value: string) =>
@@ -102,12 +105,9 @@ export const CampaignForm = () => {
       startDate: null,
       endDate: null,
       documents: [],
-      collectibles: [],
-      poap: {
-        name: "",
-        description: "",
-        supply: 1,
-      },
+      collectibles: hasRewards ? [NFT_INITIAL_VALUE] : [],
+      poap: hasPoap ? NFT_INITIAL_VALUE : undefined,
+      reward: hasRewards ? NFT_INITIAL_VALUE : undefined,
     },
     validate: getValidateInput(active, { hasPoap, hasRewards }),
   });
@@ -203,7 +203,7 @@ export const CampaignForm = () => {
                 <DescriptionStep />
               </Stepper.Step>
               <Stepper.Step>
-                <PODStep hasPoap={hasPoap} />
+                <PODStep />
               </Stepper.Step>
               {hasRewards && (
                 <Stepper.Step>

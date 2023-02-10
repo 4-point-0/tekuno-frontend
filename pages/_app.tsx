@@ -9,6 +9,7 @@ const queryClient = new QueryClient();
 import { AppLayout } from "@/components/layout/AppLayout";
 import { tekunoTheme } from "@/styles/theme";
 import { AdminGuard } from "@/context/AdminGuard";
+import { ModalsProvider } from "@mantine/modals";
 
 export default function App({
   Component,
@@ -32,9 +33,11 @@ export default function App({
               withNormalizeCSS
               theme={tekunoTheme}
             >
-              <AppLayout>
-                <Component {...pageProps} />
-              </AppLayout>
+              <ModalsProvider>
+                <AppLayout>
+                  <Component {...pageProps} />
+                </AppLayout>
+              </ModalsProvider>
             </MantineProvider>
           </QueryClientProvider>
         </AdminGuard>
