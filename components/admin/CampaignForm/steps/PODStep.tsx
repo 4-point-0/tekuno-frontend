@@ -44,7 +44,7 @@ export const PODStep: React.FC = ({}) => {
     <>
       {poap && (
         <Stack>
-          <NFTForm formKey="poap" />
+          <NFTForm formKey="poap" withAttributes />
         </Stack>
       )}
 
@@ -56,7 +56,7 @@ export const PODStep: React.FC = ({}) => {
 
               {collectibles.length > 1 && <Title order={5}>{i + 1}.</Title>}
 
-              <NFTForm formKey={`collectibles.${i}`} />
+              <NFTForm formKey={`collectibles.${i}`} withAttributes />
 
               {collectibles.length > 1 && (
                 <Group position="right">

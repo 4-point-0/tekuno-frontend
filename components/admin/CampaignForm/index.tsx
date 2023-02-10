@@ -14,6 +14,7 @@ import {
 import { DescriptionStep } from "./steps/DescriptionStep";
 import {
   FormProvider,
+  IFormAttribute,
   IFormValues,
   IUploadedFile,
   NFT_INITIAL_VALUE,
@@ -41,6 +42,15 @@ const getNftValidator = (enabled: boolean) => {
       value?.response ? null : "Asset is required",
     supply: (value?: number) =>
       !value || value <= 0 ? "Supply should be greater than 0" : null,
+    attributes: (value?: Array<IFormAttribute>) => {
+      if (!value) {
+        return null;
+      }
+
+      return value.some(({ key, value }: IFormAttribute) => key && !value)
+        ? "Attribute values are required"
+        : null;
+    },
   };
 };
 
@@ -48,8 +58,6 @@ function getValidateInput(
   step: number,
   { hasPoap, hasRewards }: ICampaignFormConfig
 ) {
-  return {};
-
   if (step === 0)
     return {
       name: (value: string) =>

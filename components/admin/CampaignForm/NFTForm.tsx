@@ -4,17 +4,18 @@ import { useFileControllerUploadFile } from "@/services/api/admin/adminComponent
 import { Group, Input, NumberInput, Select } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import React from "react";
+import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
 
 interface INFTFormProps {
   formKey: string;
   isReward?: boolean;
-  allowAttribues?: boolean;
+  withAttributes?: boolean;
 }
 
 export const NFTForm: React.FC<INFTFormProps> = ({
   formKey,
-  allowAttribues,
+  withAttributes,
   isReward,
 }) => {
   const form = useFormContext();
@@ -90,21 +91,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         />
       </Field>
 
-      {allowAttribues && (
-        <Field
-          label="Attributes"
-          description="Add attributes to your POD (Optional)"
-        >
-          <Group>
-            <Select
-              placeholder="Select Attribute type"
-              data={["Rarity", "Tier", "Privacy"]}
-            />
-
-            <Input placeholder="Set value" disabled />
-          </Group>
-        </Field>
-      )}
+      {withAttributes && <AttributesForm formKey={formKey} />}
     </>
   );
 };

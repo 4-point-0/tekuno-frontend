@@ -15,10 +15,16 @@ export const CAMPAIGN_DOCUMENT_TYPES = [MIME_TYPES.pdf];
 // 20 mb
 export const MAX_FILE_SIZE = 20 * 1024 ** 2;
 
+export const ATTRIBUTE_INITIAL_VALUE = {
+  key: "",
+  value: "",
+};
+
 export const NFT_INITIAL_VALUE = {
   name: "",
   description: "",
   supply: 1,
+  attributes: [ATTRIBUTE_INITIAL_VALUE],
 };
 
 export interface IUploadedFile {
@@ -26,11 +32,16 @@ export interface IUploadedFile {
   response?: FileDto;
 }
 
+export interface IFormAttribute {
+  key: string;
+  value: string;
+}
+
 export interface IFormNFT {
   name: string;
   file: IUploadedFile;
   description: string;
-  attributes: Record<string, string>;
+  attributes: Array<IFormAttribute>;
   supply: number;
 }
 
