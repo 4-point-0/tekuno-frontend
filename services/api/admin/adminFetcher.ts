@@ -81,7 +81,10 @@ export async function adminFetch<
       const { file, tags } = body as any;
 
       formData.append("file", file);
-      formData.append("tags", tags?.toString());
+
+      if (tags) {
+        formData.append("tags", tags.toString());
+      }
     }
 
     const serializedBody = body
@@ -99,8 +102,10 @@ export async function adminFetch<
         headers: requestHeaders,
       }
     );
+
     if (!response.ok) {
       let error: ErrorWrapper<TError>;
+
       try {
         error = await response.json();
       } catch (e) {

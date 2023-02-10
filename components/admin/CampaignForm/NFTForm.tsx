@@ -1,9 +1,11 @@
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
-import { Group, Input, NumberInput, Select } from "@mantine/core";
+import { ActionIcon, Group, Input, NumberInput, Select } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import React from "react";
+import { Trash } from "tabler-icons-react";
+import { AssetPreview } from "./AssetPreview";
 import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
 
@@ -21,6 +23,12 @@ export const NFTForm: React.FC<INFTFormProps> = ({
   const form = useFormContext();
   const uploadFile = useFileControllerUploadFile({});
 
+  const label = isReward ? "Reward" : "POD";
+
+  const { error: fileError, value: fileValue } = form.getInputProps(
+    `${formKey}.file`
+  );
+
   const handleDrop = async (files: Array<FileWithPath>) => {
     const file = files[0];
 
@@ -36,11 +44,16 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         response,
       });
     } catch (error) {
-      console.error(error);
+      form.setFieldError(
+        `${formKey}.file`,
+        (error as any)?.stack?.message || "Failed to upload asset"
+      );
     }
   };
 
-  const label = isReward ? "Reward" : "POD";
+  const handleFileRemove = () => {
+    form.setFieldValue(`${formKey}.file`, undefined);
+  };
 
   return (
     <>
@@ -55,16 +68,28 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         />
       </Field>
 
-      <Group>
-        <Dropzone
-          title="Upload NFT Image, Video or GIF"
-          description="Darg’n’ drop the NFT here. File size: 200px x 200px .png up to xy MB"
-          label="Select Asset"
-          dropzone={{
-            onDrop: handleDrop,
-            accept: NFT_ASSET_TYPES,
-          }}
-        />
+      <Group align="flex-end" noWrap>
+        {!fileValue && (
+          <Dropzone
+            title="Upload NFT Image, Video or GIF"
+            description="Darg’n’ drop the NFT here. File size: 200px x 200px .png up to xy MB"
+            label="Select Asset"
+            error={fileError}
+            dropzone={{
+              onDrop: handleDrop,
+              accept: NFT_ASSET_TYPES,
+            }}
+          />
+        )}
+
+        {fileValue && (
+          <>
+            <AssetPreview file={fileValue.response} />
+            <ActionIcon color="red" onClick={handleFileRemove}>
+              <Trash size={14}></Trash>
+            </ActionIcon>
+          </>
+        )}
       </Group>
 
       <Field
