@@ -74,7 +74,7 @@ export const DescriptionStep = () => {
         <Textarea
           mt="sm"
           placeholder="Placeholder text"
-          {...form.getInputProps("additonalDescription")}
+          {...form.getInputProps("additionalDescription")}
         />
       </Field>
 

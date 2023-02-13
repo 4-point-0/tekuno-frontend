@@ -18,9 +18,12 @@ export default function CreatePOD() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { type } = ctx.query;
-
-  if (!(typeof type === "string" && TYPES.includes(type as CampaignType))) {
+  if (
+    !(
+      typeof ctx.query.type === "string" &&
+      TYPES.includes(ctx.query.type as CampaignType)
+    )
+  ) {
     return {
       redirect: {
         destination: "/404",

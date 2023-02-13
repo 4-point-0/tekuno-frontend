@@ -1,5 +1,4 @@
 import { Button, Container, Group, Stack, Stepper } from "@mantine/core";
-import { FileWithPath } from "@mantine/dropzone";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Check, ChevronRight } from "tabler-icons-react";
@@ -15,6 +14,7 @@ import { DescriptionStep } from "./steps/DescriptionStep";
 import {
   FormProvider,
   IFormAttribute,
+  IFormNFT,
   IFormValues,
   IUploadedFile,
   NFT_INITIAL_VALUE,
@@ -30,8 +30,10 @@ import {
   useChainControllerFindAll,
   useNftTypeControllerFindAll,
 } from "@/services/api/admin/adminComponents";
+import { CreateNftDto, NftTypeDto } from "@/services/api/admin/adminSchemas";
+import { notifications } from "@/utils/notifications";
 
-const getNftValidator = (enabled: boolean) => {
+function getNftValidator(enabled: boolean) {
   if (!enabled) {
     return {};
   }
@@ -47,12 +49,14 @@ const getNftValidator = (enabled: boolean) => {
         return null;
       }
 
-      return value.some(({ key, value }: IFormAttribute) => key && !value)
+      return value.some(
+        ({ trait_type: key, value }: IFormAttribute) => key && !value
+      )
         ? "Attribute values are required"
         : null;
     },
   };
-};
+}
 
 function getValidateInput(
   step: number,
@@ -89,11 +93,60 @@ function getValidateInput(
   return {};
 }
 
+function getCreateNftDto(formValue: IFormNFT, nftTypeId: string): CreateNftDto {
+  return {
+    properties: {
+      attributes:
+        formValue.attributes?.filter(({ trait_type }) => Boolean(trait_type)) ||
+        [],
+    },
+    name: formValue?.name,
+    description: formValue?.description,
+    file_id: formValue?.file?.response?.id as string,
+    supply: formValue?.supply,
+    nft_type_id: nftTypeId,
+  };
+}
+
+function getNftsFromForm(
+  { poap, reward, collectibles }: IFormValues,
+  nftTypes: Array<NftTypeDto>
+) {
+  const nfts: Array<CreateNftDto> = [];
+  const poapTypeId = nftTypes.find((nftType) => nftType.name === "poap")?.id;
+  const rewardTypeId = nftTypes.find(
+    (nftType) => nftType.name === "reward"
+  )?.id;
+  const collectibleTypeId = nftTypes.find(
+    (nftType) => nftType.name === "collectible"
+  )?.id;
+
+  if (poap && poapTypeId) {
+    nfts.push(getCreateNftDto(poap as IFormNFT, poapTypeId));
+  }
+
+  if (reward && rewardTypeId) {
+    nfts.push(getCreateNftDto(reward as IFormNFT, rewardTypeId));
+  }
+
+  if (collectibleTypeId) {
+    collectibles.forEach((collectible) => {
+      nfts.push(getCreateNftDto(collectible as IFormNFT, collectibleTypeId));
+    });
+  }
+
+  return nfts;
+}
+
 export const CampaignForm = () => {
   const router = useRouter();
   const [active, setActiveStep] = useState(0);
   const isMutating = useIsMutating();
-  const createCampaign = useCampaignControllerCreate({});
+  const createCampaign = useCampaignControllerCreate({
+    onSuccess: (campaign) => {
+      router.push(`/admin/previous/${campaign.id}`);
+    },
+  });
 
   const { data: nftTypes } = useNftTypeControllerFindAll({});
   const { data: campaignTypes } = useCampaignTypeControllerFindAll({});
@@ -140,21 +193,16 @@ export const CampaignForm = () => {
     }
   };
 
-  const handleSubmit = async ({
-    name,
-    startDate,
-    endDate,
-    image,
-    description,
-    additonalDescription,
-    documents,
-    poap,
-  }: IFormValues) => {
+  const handleSubmit = async (values: IFormValues) => {
     form.validate();
 
     if (!form.isValid) {
       return;
     }
+
+    notifications.create({
+      title: "Creating the campaign",
+    });
 
     const chainId = chains?.results[0].id;
     const campaignTypeId = campaignTypes?.results.find(
@@ -165,10 +213,26 @@ export const CampaignForm = () => {
       return;
     }
 
+    const {
+      name,
+      startDate,
+      endDate,
+      image,
+      description,
+      additionalDescription,
+      documents,
+    } = values;
+
     const fileIds = [
       image?.response?.id,
       ...documents.map(({ response }) => response?.id),
-    ];
+    ].filter(Boolean) as Array<string>;
+
+    const nfts = getNftsFromForm(values, nftTypes.results);
+
+    if (!nfts) {
+      return;
+    }
 
     try {
       await createCampaign.mutate({
@@ -179,23 +243,21 @@ export const CampaignForm = () => {
           start_date: startDate?.toISOString() as string,
           end_date: endDate?.toISOString(),
           description,
-          additonal_description: additonalDescription,
-          nfts: [
-            {
-              attributes: {},
-              name: poap?.name,
-              description: poap?.description,
-              file_id: poap?.file?.response?.id,
-              supply: poap?.supply,
-              nft_type_id: nftTypes?.results.find(
-                (nftType) => nftType.name === "poap"
-              )?.id,
-            } as any,
-          ],
+          additional_description: additionalDescription,
+          nfts,
           file_ids: fileIds as Array<string>,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+      notifications.error({
+        title: "Error while creating the campaign",
+      });
+    } finally {
+      notifications.success({
+        title: "Campaign successfully created!",
+      });
+    }
   };
 
   return (

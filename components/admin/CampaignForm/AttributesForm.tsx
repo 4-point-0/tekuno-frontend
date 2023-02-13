@@ -21,16 +21,21 @@ export const AttributesForm: React.FC<IAttributesFormProps> = ({ formKey }) => {
     ATTRIBUTE_KEYS.map((key) => ({ label: key, value: key }))
   );
   const form = useFormContext();
-  const { attributes } = form.getInputProps(formKey).value;
+  const attributes = form.getInputProps(formKey).value
+    .attributes as Array<IFormAttribute>;
   const { error } = form.getInputProps(`${formKey}.attributes`);
 
-  const keyValues = attributes.map(({ key }: IFormAttribute) => key);
-  const unselectedKeys = data.filter(({ value }) => !keyValues.includes(value));
-  const hasEmptyAttributes = keyValues.some((key: string) => !key);
+  const traitTypeValues = attributes.map(
+    ({ trait_type }: IFormAttribute) => trait_type
+  );
+  const unselectedKeys = data.filter(
+    ({ value }) => !traitTypeValues.includes(value)
+  );
+  const hasEmptyAttributes = traitTypeValues.some((key: string) => !key);
 
-  const getData = ({ key }: IFormAttribute) => {
-    const data = key
-      ? [...unselectedKeys, { label: key, value: key }]
+  const getData = ({ trait_type }: IFormAttribute) => {
+    const data = trait_type
+      ? [...unselectedKeys, { label: trait_type, value: trait_type }]
       : unselectedKeys;
 
     return data.sort(({ label: labelA }, { label: labelB }) =>
@@ -67,17 +72,17 @@ export const AttributesForm: React.FC<IAttributesFormProps> = ({ formKey }) => {
       >
         <Stack my="md" align="flex-start">
           {attributes.map((attribute: IFormAttribute, i: number) => (
-            <Group key={attribute.key} align="baseline">
+            <Group key={attribute.trait_type} align="baseline">
               <Select
                 searchable
                 getCreateLabel={(query) =>
-                  keyValues.includes(query) ? "" : `+ Add ${query}`
+                  traitTypeValues.includes(query) ? "" : `+ Add ${query}`
                 }
                 creatable
                 nothingFound="Write custom attribute"
                 placeholder="Select Attribute type"
                 onCreate={(query) => {
-                  if (keyValues.includes(query)) {
+                  if (traitTypeValues.includes(query)) {
                     return;
                   }
 
@@ -86,14 +91,14 @@ export const AttributesForm: React.FC<IAttributesFormProps> = ({ formKey }) => {
                   return item;
                 }}
                 data={getData(attribute)}
-                {...form.getInputProps(`${formKey}.attributes.${i}.key`)}
+                {...form.getInputProps(`${formKey}.attributes.${i}.trait_type`)}
               />
 
               <TextInput
                 max={1}
                 placeholder="Set value"
                 {...form.getInputProps(`${formKey}.attributes.${i}.value`)}
-                disabled={!attribute.key}
+                disabled={!attribute.trait_type}
               />
 
               <ActionIcon color="red" onClick={handleRemove(i)}>

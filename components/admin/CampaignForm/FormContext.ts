@@ -16,7 +16,7 @@ export const CAMPAIGN_DOCUMENT_TYPES = [MIME_TYPES.pdf];
 export const MAX_FILE_SIZE = 20 * 1024 ** 2;
 
 export const ATTRIBUTE_INITIAL_VALUE = {
-  key: "",
+  trait_type: "",
   value: "",
 };
 
@@ -33,7 +33,7 @@ export interface IUploadedFile {
 }
 
 export interface IFormAttribute {
-  key: string;
+  trait_type: string;
   value: string;
 }
 
@@ -52,7 +52,7 @@ export interface IFormValues {
   endDate: Date | null;
   image?: IUploadedFile;
   description?: string;
-  additonalDescription?: string;
+  additionalDescription?: string;
   documents: Array<IUploadedFile>;
   reward?: Partial<IFormNFT>;
   poap?: Partial<IFormNFT>;
