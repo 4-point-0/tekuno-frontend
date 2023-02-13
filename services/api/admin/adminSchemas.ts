@@ -15,12 +15,21 @@ export type PaginatedDto = {
   results: any[];
 };
 
+export type NearNftAttribute = {
+  trait_type: string;
+  value: string;
+};
+
+export type NearNftAttributes = {
+  attributes: NearNftAttribute[];
+};
+
 export type CreateNftDto = {
   name: string;
   nft_type_id: string;
   file_id: string;
   description?: string | null;
-  attributes?: Record<string, any> | null;
+  properties?: NearNftAttributes;
   supply?: number | null;
 };
 
@@ -37,7 +46,7 @@ export type CreateCampaingDto = {
    */
   end_date?: string | null;
   description?: string | null;
-  additonal_description?: string | null;
+  additional_description?: string | null;
   nfts: CreateNftDto[];
   file_ids?: string[];
 };
@@ -84,8 +93,9 @@ export type NftDto = {
   campaign_id?: string | null;
   nft_type: NftTypeDto;
   name: string;
+  nft_initiated?: boolean;
   description?: string | null;
-  attributes?: Record<string, any> | null;
+  properties?: Record<string, any> | null;
   supply?: number | null;
   file: FileDto;
 };

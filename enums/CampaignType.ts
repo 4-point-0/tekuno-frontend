@@ -3,15 +3,18 @@ export enum CampaignType {
   LOYALTY = "loyalty",
 }
 
+export interface ICampaignFormConfig {
+  hasPoap: boolean;
+  hasRewards: boolean;
+}
+
 interface ICampaignTypeDatum {
   card: {
     title: string;
     image: string;
     perks: Array<string>;
   };
-  form: {
-    hasRewards: boolean;
-  };
+  form: ICampaignFormConfig;
 }
 
 export const campaignTypeData: Record<CampaignType, ICampaignTypeDatum> = {
@@ -26,6 +29,7 @@ export const campaignTypeData: Record<CampaignType, ICampaignTypeDatum> = {
       ],
     },
     form: {
+      hasPoap: true,
       hasRewards: false,
     },
   },
@@ -42,6 +46,7 @@ export const campaignTypeData: Record<CampaignType, ICampaignTypeDatum> = {
       ],
     },
     form: {
+      hasPoap: false,
       hasRewards: true,
     },
   },

@@ -11,14 +11,12 @@ export const AdminGuard: React.FC<PropsWithChildren> = ({ children }) => {
 
   const { status } = useSession({ required: isAdminRoute });
 
-  console.log(status);
-
   return (
     <AdminGuardContext.Provider value={null}>
       {isAdminRoute && status !== "authenticated" ? (
         <Container h="calc(100vh - 16px)">
           <Center h="100%">
-            <Loader />
+            <Loader color="indigo" />
           </Center>
         </Container>
       ) : (

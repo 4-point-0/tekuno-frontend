@@ -1,54 +1,89 @@
-import { Group, Input, Select, Stack } from "@mantine/core";
+import { Box, Button, Divider, Group, Stack, Text, Title } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import React from "react";
+import { CirclePlus, Trash } from "tabler-icons-react";
 
-import { Dropzone } from "@/components/form/Dropzone";
-import { Field } from "@/components/form/Field";
+import { NFT_INITIAL_VALUE, useFormContext } from "../FormContext";
+import { NFTForm } from "../NFTForm";
 
-export const PODStep = () => {
+export const PODStep: React.FC = ({}) => {
+  const form = useFormContext();
+
+  const { poap, collectibles } = form.values;
+
+  const handleAddNew = () => {
+    form.setFieldValue("collectibles", [...collectibles, NFT_INITIAL_VALUE]);
+  };
+
+  const handleRemove = (index: number) => {
+    return () => {
+      const remove = () => {
+        let value = collectibles;
+        collectibles.splice(index, 1);
+        form.setFieldValue("collectibles", value);
+      };
+
+      if (form.isDirty(`collectibles.${index}`)) {
+        openConfirmModal({
+          title: "Remove POD?",
+          children: <Text>All of the inputed data will be lost.</Text>,
+          labels: { confirm: "Remove", cancel: "Cancel" },
+          confirmProps: {
+            variant: "light",
+            color: "red",
+          },
+          onConfirm: remove,
+        });
+      } else {
+        remove();
+      }
+    };
+  };
+
   return (
-    <Stack>
-      <Field label="POD name">
-        <Input placeholder="Fun name for your POD" />
-      </Field>
+    <>
+      {poap && (
+        <Stack>
+          <NFTForm formKey="poap" withAttributes />
+        </Stack>
+      )}
 
-      <Group>
-        <Dropzone
-          title="Upload NFT Image, Video or GIF"
-          description="Darg’n’ drop the NFT here. File size: 200px x 200px .png up to xy MB"
-          label="Select Asset"
-          dropzone={{
-            onDrop: (files) => console.log("accepted files", files),
-          }}
-        />
-      </Group>
+      {Boolean(collectibles.length) && (
+        <Stack>
+          {collectibles.map((_, i) => (
+            <React.Fragment key={i}>
+              {i !== 0 && <Divider my="xl" />}
 
-      <Field
-        label="Describe your POD"
-        description="The description will be visible to users while claiming"
-      >
-        <Input placeholder="Minted as part of the Project Name digital collectible campaign. " />
-      </Field>
+              {collectibles.length > 1 && <Title order={5}>{i + 1}.</Title>}
 
-      <Field
-        label="How many PODs do you want to mint?"
-        description="This is the suppply of NFTs available for users / customers / public to claim"
-      >
-        <Input placeholder="12345" />
-      </Field>
+              <NFTForm formKey={`collectibles.${i}`} withAttributes />
 
-      <Field
-        label="Attributes"
-        description="Add attributes to your POD (Optional)"
-      >
-        <Group>
-          <Select
-            placeholder="Select Attribute type"
-            data={["Rarity", "Tier", "Privacy"]}
-          />
+              {collectibles.length > 1 && (
+                <Group position="right">
+                  <Button
+                    color="red"
+                    variant="light"
+                    leftIcon={<Trash size={14} />}
+                    onClick={handleRemove(i)}
+                  >
+                    Remove
+                  </Button>
+                </Group>
+              )}
+            </React.Fragment>
+          ))}
 
-          <Input placeholder="Set value" disabled />
-        </Group>
-      </Field>
-    </Stack>
+          <Group>
+            <Button
+              onClick={handleAddNew}
+              color="dark"
+              leftIcon={<CirclePlus size={14} />}
+            >
+              Add New POD to collection
+            </Button>
+          </Group>
+        </Stack>
+      )}
+    </>
   );
 };

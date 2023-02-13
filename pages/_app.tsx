@@ -8,6 +8,7 @@ const queryClient = new QueryClient();
 
 import { AppLayout } from "@/components/layout/AppLayout";
 import { AdminGuard } from "@/context/AdminGuard";
+import { ModalsProvider } from "@mantine/modals";
 import { tekunoTheme } from "@/styles/theme";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useRouter } from "next/router";
@@ -42,11 +43,13 @@ export default function App({
                   : { ...tekunoTheme, primaryColor: "violet" }
               }
             >
-              <NotificationsProvider>
-                <AppLayout>
-                  <Component {...pageProps} />
-                </AppLayout>
-              </NotificationsProvider>
+              <ModalsProvider>
+                <NotificationsProvider>
+                  <AppLayout>
+                    <Component {...pageProps} />
+                  </AppLayout>
+                </NotificationsProvider>
+              </ModalsProvider>
             </MantineProvider>
           </QueryClientProvider>
         </AdminGuard>
