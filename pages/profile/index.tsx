@@ -1,3 +1,4 @@
+import { CopyActionButton } from "@/components/core/CopyActionButton";
 import { useRamper } from "@/context/RamperContext";
 import {
   Anchor,
@@ -15,6 +16,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { ChevronRight, Logout, Wallet } from "tabler-icons-react";
 
 // TODO: Get campaigns from API
@@ -36,16 +38,32 @@ const campaigns = [
 export default function Profile() {
   const isBigScreen = useMediaQuery("(min-width: 900px)");
 
-  const { user, publicKey, loading, openWallet, signOut } = useRamper();
+  const { user, loading, openWallet, signOut } = useRamper();
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [router, user]);
 
   const onSignOut = () => {
     signOut();
     router.push("/");
   };
 
+  const getWalletAdress = () => {
+    return user?.profile?.wallet_address || "";
+  };
+
+  const isWalletAdressTooLong = () => {
+    return getWalletAdress().length > 20;
+  };
+
   const getAvatarPublicKeySeed = () => {
+    const publicKey = user?.profile?.wallet_address;
+
     if (publicKey?.includes(".testnet"))
       return publicKey?.replace(".testnet", "");
     if (publicKey?.includes(".mainnet"))
@@ -66,20 +84,14 @@ export default function Profile() {
         href={`/campaign/${campaign.id}`}
         variant="light"
         radius={"md"}
+        sx={(theme) => ({
+          color: theme.colors.dark,
+        })}
         rightIcon={<ChevronRight size={20} />}
       >
-        {campaign.name}
+        <Text fw={700}>{campaign.name}</Text>
       </Button>
     ));
-  };
-
-  const shorterPublicKey = () => {
-    if (!publicKey) return "";
-    if (publicKey.length < 25) return publicKey;
-    return `${publicKey.substring(0, 20)}...${publicKey.substring(
-      publicKey.length - 4,
-      publicKey.length
-    )}`;
   };
 
   const getContent = () => {
@@ -99,6 +111,10 @@ export default function Profile() {
               mt={"lg"}
               variant="light"
               radius={"xl"}
+              color="indigo.0"
+              sx={(theme) => ({
+                color: theme.colors.dark,
+              })}
               onClick={openWallet}
             >
               Open Wallet
@@ -109,6 +125,10 @@ export default function Profile() {
               mt={"lg"}
               variant="light"
               radius={"xl"}
+              color="indigo.0"
+              sx={(theme) => ({
+                color: theme.colors.dark,
+              })}
               onClick={onSignOut}
             >
               Sign Out
@@ -116,21 +136,50 @@ export default function Profile() {
           </Group>
         </Stack>
         <Stack align={"start"} spacing={24}>
-          <Tooltip disabled={(publicKey?.length ?? 0) < 20} label={publicKey}>
-            <Title order={2}>{shorterPublicKey() ?? "Not connected"}</Title>
-          </Tooltip>
-          <Stack hidden={!Object.hasOwn(user ?? {}, "email")} spacing={4}>
+          <Group>
+            <Tooltip
+              disabled={!isWalletAdressTooLong()}
+              label={getWalletAdress()}
+            >
+              <Title
+                sx={{
+                  width: !isWalletAdressTooLong()
+                    ? "auto"
+                    : isBigScreen
+                    ? 300
+                    : 240,
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+                order={2}
+              >
+                {getWalletAdress()}
+              </Title>
+            </Tooltip>
+            <CopyActionButton value={getWalletAdress()} />
+          </Group>
+          <Stack hidden={!user?.email} spacing={4}>
             <Text fz={"lg"}>Email Address</Text>
             <Text fz={"md"}>{user?.email}</Text>
           </Stack>
           <Stack spacing={4}>
             <Text fz={"lg"}>Wallet ID</Text>
-            <Tooltip disabled={(publicKey?.length ?? 0) < 20} label={publicKey}>
+            <Tooltip
+              disabled={!isWalletAdressTooLong()}
+              label={getWalletAdress()}
+            >
               <Anchor
-                href={`https://explorer.testnet.near.org/accounts/${publicKey}`}
+                href={`https://explorer.testnet.near.org/accounts/${getWalletAdress()}`}
                 target="_blank"
+                sx={{
+                  width: 240,
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
               >
-                {shorterPublicKey()}
+                {getWalletAdress()}
               </Anchor>
             </Tooltip>
           </Stack>

@@ -9,9 +9,15 @@ export default function Login() {
   const { signIn, loading, user } = useRamper();
   const router = useRouter();
 
+  const { redirect } = router.query;
+
   useEffect(() => {
     if (user) {
-      router.push("/");
+      if (redirect) {
+        router.push(redirect as string);
+      } else {
+        router.push("/");
+      }
     }
   }, [router, user]);
 
