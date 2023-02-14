@@ -27,6 +27,7 @@ import { QRPreview } from "./QRPreview";
 import { DownloadAll } from "./DownloadAll";
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
+import { StatusButtons } from "./StatusButtons";
 
 const stats = [
   {
@@ -109,23 +110,29 @@ export const CampaignDetails = () => {
         </Box>
 
         <Group position="right">
-          <IndigoButton
-            component={NextLink}
-            href={`${router.query.id}/preview`}
-            legacyBehavior
-            leftIcon={<Eye size={14} />}
-          >
-            Preview
-          </IndigoButton>
-          <Button
-            component={NextLink}
-            href={`/admin/previous/${router.query.id}/edit`}
-            legacyBehavior
-            leftIcon={<Pencil size={14} />}
-            color="dark"
-          >
-            Edit
-          </Button>
+          {campaign?.status !== "Ended" && (
+            <>
+              <IndigoButton
+                component={NextLink}
+                href={`${router.query.id}/preview`}
+                legacyBehavior
+                leftIcon={<Eye size={14} />}
+              >
+                Preview
+              </IndigoButton>
+              <Button
+                component={NextLink}
+                href={`/admin/previous/${router.query.id}/edit`}
+                legacyBehavior
+                leftIcon={<Pencil size={14} />}
+                color="dark"
+              >
+                Edit
+              </Button>
+            </>
+          )}
+
+          <StatusButtons status={campaign?.status} />
         </Group>
 
         {campaign?.description && <Text fz="lg">{campaign.description}</Text>}

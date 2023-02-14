@@ -18,6 +18,7 @@ import { NextLink } from "@mantine/next";
 import React from "react";
 import { Pencil } from "tabler-icons-react";
 import { CallToAction } from "../CallToAction";
+import { CampaignStatus } from "../CampaignStatus";
 
 export const CampaignList = () => {
   const { data, isLoading } = useCampaignControllerFindAll({});
@@ -73,7 +74,13 @@ export const CampaignList = () => {
             <Stack>
               <Title order={4}>{campaign.name}</Title>
 
-              <Text fz="sm">{campaign.description}</Text>
+              {campaign.description && (
+                <Text fz="sm">{campaign.description}</Text>
+              )}
+
+              <Group position="right" noWrap>
+                <CampaignStatus status={campaign.status} />
+              </Group>
             </Stack>
             <Group sx={{ position: "absolute", bottom: "12px" }}>
               <IndigoButton leftIcon={<Pencil size={14} />}>

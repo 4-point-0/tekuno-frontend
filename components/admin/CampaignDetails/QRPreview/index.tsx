@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { QRCode } from "react-qrcode-logo";
 import { Box, Group } from "@mantine/core";
-import { Download } from "tabler-icons-react";
+import { Download, Qrcode } from "tabler-icons-react";
 import { saveAs } from "file-saver";
 
 import { NftDto } from "@/services/api/admin/adminSchemas";
@@ -42,7 +42,11 @@ export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
         />
       </Box>
 
-      <IndigoButton leftIcon={<Download size={14} />} onClick={handleDowload}>
+      <IndigoButton
+        leftIcon={<Download size={14} />}
+        rightIcon={<Qrcode size={14} />}
+        onClick={handleDowload}
+      >
         Download
       </IndigoButton>
     </Group>
