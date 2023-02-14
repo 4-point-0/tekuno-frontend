@@ -6,11 +6,13 @@ import { PlayerPause, PlayerPlay, PlayerStop } from "tabler-icons-react";
 import { openConfirmModal } from "@mantine/modals";
 
 import {
+  useCampaignControllerFindAll,
   useCampaignControllerFindOne,
   useCampaignControllerPause,
 } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
+
 interface IStatusButtonsProps {
   status?: CampaignDto["status"];
 }
@@ -25,6 +27,7 @@ export const StatusButtons: React.FC<IStatusButtonsProps> = ({ status }) => {
       id: router.query.id as string,
     },
   });
+  const { refetch: refetchAll } = useCampaignControllerFindAll({});
 
   const disabled = isMutating > 0;
 
@@ -42,6 +45,7 @@ export const StatusButtons: React.FC<IStatusButtonsProps> = ({ status }) => {
       });
 
       refetch();
+      refetchAll();
       notifications.success({ title: "Campaign status changed" });
     } catch {
       notifications.error({ title: "Failed to update status" });

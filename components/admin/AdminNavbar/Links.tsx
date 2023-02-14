@@ -6,15 +6,25 @@ import {
   createStyles,
   Box,
   Collapse,
+  MantineColor,
 } from "@mantine/core";
-import { CirclePlus, Clock, Icon } from "tabler-icons-react";
+import { CircleDot, CirclePlus, Clock, Icon } from "tabler-icons-react";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
+import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
+import { CampaignDto } from "@/services/api/admin/adminSchemas";
 
 interface IButtonProps {
   active: boolean;
   child: boolean;
 }
+
+const COLORS: Record<CampaignDto["status"], MantineColor> = {
+  Created: "green",
+  Started: "violet",
+  Ended: "gray",
+  Paused: "pink",
+};
 
 const useStlyes = createStyles((theme, { active, child }: IButtonProps) => ({
   root: {
@@ -64,7 +74,7 @@ export const LinkButton: React.FC<ILinkButtonProps> = ({
         variant="subtle"
         leftIcon={
           Icon ? (
-            <ThemeIcon size={26} variant="light">
+            <ThemeIcon color={color} size={26} variant="light">
               <Icon size={19} />
             </ThemeIcon>
           ) : (
@@ -94,6 +104,10 @@ export const LinkButton: React.FC<ILinkButtonProps> = ({
 };
 
 export const Links = () => {
+  const { data } = useCampaignControllerFindAll({});
+
+  const previousCampaings = data?.results;
+
   const links = [
     {
       label: "Create POD",
@@ -116,6 +130,14 @@ export const Links = () => {
       label: "Previous PODs",
       href: "/admin/previous",
       Icon: Clock,
+      links: previousCampaings?.map(({ name, id, status }) => {
+        return {
+          label: name,
+          href: `/admin/previous/${id}`,
+          Icon: CircleDot,
+          color: COLORS[status],
+        };
+      }),
     },
   ];
 

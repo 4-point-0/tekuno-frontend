@@ -7,7 +7,7 @@ interface ICampaignStatusProps {
 }
 
 const COLORS: Record<CampaignDto["status"], MantineColor> = {
-  Created: "blue",
+  Created: "green",
   Started: "violet",
   Ended: "gray",
   Paused: "pink",
