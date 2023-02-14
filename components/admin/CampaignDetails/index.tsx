@@ -25,6 +25,8 @@ import { NFTCard } from "@/components/core/NFTCard";
 import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
 import { QRPreview } from "./QRPreview";
 import { DownloadAll } from "./DownloadAll";
+import { NftDto } from "@/services/api/admin/adminSchemas";
+import { getImageUrl } from "@/utils/file";
 
 const stats = [
   {
@@ -69,9 +71,7 @@ export const CampaignDetails = () => {
     },
   });
 
-  const imageUrl = campaign?.files?.find(({ tags }) =>
-    tags.includes("image")
-  )?.url;
+  const image = campaign?.files?.find(({ tags }) => tags.includes("image"));
 
   const documents = campaign?.files?.filter(
     ({ tags }) => !tags.includes("image")
@@ -90,7 +90,7 @@ export const CampaignDetails = () => {
       <Stack>
         <Skeleton visible={isLoading}>
           <Box>
-            <Image src={imageUrl} radius="lg" />
+            <Image src={getImageUrl(image)} radius="lg" />
           </Box>
         </Skeleton>
 
@@ -119,7 +119,7 @@ export const CampaignDetails = () => {
           </IndigoButton>
           <Button
             component={NextLink}
-            href={`${router.query.id}/edit`}
+            href={`/admin/previous/${router.query.id}/edit`}
             legacyBehavior
             leftIcon={<Pencil size={14} />}
             color="dark"
@@ -169,7 +169,9 @@ export const CampaignDetails = () => {
 
         <Group position="apart">
           <Title order={4}>Digital collectibles</Title>
-          {campaign && nfts && <DownloadAll campaign={campaign} nfts={nfts} />}
+          {campaign && (nfts?.length || 0) > 1 && (
+            <DownloadAll campaign={campaign} nfts={nfts as Array<NftDto>} />
+          )}
         </Group>
 
         <Grid>
@@ -180,14 +182,14 @@ export const CampaignDetails = () => {
           )}
 
           {nfts?.map((nft) => (
-            <>
+            <React.Fragment key={nft.id}>
               <Grid.Col span={8}>
                 <NFTCard key={nft.id} nft={nft} />
               </Grid.Col>
               <Grid.Col span={4}>
                 <QRPreview nft={nft} />
               </Grid.Col>
-            </>
+            </React.Fragment>
           ))}
         </Grid>
       </Stack>

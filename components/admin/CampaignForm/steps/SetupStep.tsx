@@ -8,6 +8,7 @@ import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { CAMPAIGN_IMAGE_TYPES, useFormContext } from "../FormContext";
 import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
+import { getImageUrl } from "@/utils/file";
 
 export const SetupStep = () => {
   const form = useFormContext();
@@ -93,7 +94,7 @@ export const SetupStep = () => {
           title="Upload Image"
           description="Darg’n’ drop the campaign photo here. File size preferable between x and xy .png"
           label="Select Image"
-          formValue={[form.getInputProps("image").value?.file]}
+          previewUrl={getImageUrl(form.values.image?.response)}
           error={form.getInputProps("image").error}
           dropzone={{
             multiple: false,

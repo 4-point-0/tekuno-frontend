@@ -1,7 +1,4 @@
-import {
-  CAMPAIGN_IMAGE_TYPES,
-  MAX_FILE_SIZE,
-} from "@/components/admin/CampaignForm/FormContext";
+import { MAX_FILE_SIZE } from "@/components/admin/CampaignForm/FormContext";
 import {
   Group,
   useMantineTheme,
@@ -23,6 +20,7 @@ interface IDropzoneProps extends Partial<DropzoneProps> {
   description: string;
   label: string;
   error?: string;
+  previewUrl?: string;
   formValue?: Array<FileWithPath>;
   dropzone: Omit<DropzoneProps, "children">;
 }
@@ -32,33 +30,17 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
   description,
   label,
   error,
-  formValue,
+  previewUrl,
   dropzone,
 }) => {
-  const [value, setValue] = React.useState<Array<FileWithPath> | undefined>(
-    () => formValue
-  );
-
   const openRef = useRef<() => void>(null);
   const theme = useMantineTheme();
 
   const { onDrop, ...rest } = dropzone;
 
   const handleDrop = (files: Array<FileWithPath>) => {
-    setValue(files);
     onDrop(files);
   };
-
-  const previewUrl = useMemo(() => {
-    const showPreview =
-      !dropzone.multiple && dropzone.accept === CAMPAIGN_IMAGE_TYPES;
-
-    if (!(showPreview && value?.[0])) {
-      return;
-    }
-
-    return URL.createObjectURL(value[0]);
-  }, [dropzone.multiple, dropzone.accept, value?.[0]]);
 
   return (
     <>

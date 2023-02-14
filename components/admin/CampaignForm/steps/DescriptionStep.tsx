@@ -24,7 +24,7 @@ export const DescriptionStep = () => {
     const previous = documents;
 
     const uniqueFiles = files.filter(({ path }) => {
-      return !documents.some((document) => document.file.path === path);
+      return !documents.some((document) => document.file?.path === path);
     });
 
     const respones = await Promise.all(
@@ -99,7 +99,7 @@ export const DescriptionStep = () => {
             <Stack spacing={8} align="flex-start">
               {documents.map((document) => (
                 <IndigoBadge
-                  key={document.file.path}
+                  key={document.file?.path}
                   leftSection={
                     <ActionIcon
                       variant="transparent"
@@ -111,7 +111,7 @@ export const DescriptionStep = () => {
                   }
                   size="lg"
                 >
-                  {document.file.name}
+                  {document.file?.name}
                 </IndigoBadge>
               ))}
             </Stack>

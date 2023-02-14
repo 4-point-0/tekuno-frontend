@@ -1,6 +1,7 @@
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
+import { getImageUrl } from "@/utils/file";
 import {
   Card,
   Image,
@@ -26,7 +27,7 @@ export const CampaignList = () => {
       file.tags.includes("image")
     );
 
-    return imageFile?.url || null;
+    return getImageUrl(imageFile);
   };
 
   if (isLoading) {
