@@ -9,142 +9,6 @@ import type * as Fetcher from "./clientFetcher";
 import { clientFetch } from "./clientFetcher";
 import type * as Schemas from "./clientSchemas";
 
-export type UserNftControllerFindAllQueryParams = {
-  user_id: string;
-  name?: string;
-  nft_type_id?: string;
-  offset?: number;
-  limit?: number;
-};
-
-export type UserNftControllerFindAllError = Fetcher.ErrorWrapper<undefined>;
-
-export type UserNftControllerFindAllResponse = {
-  total: number;
-  limit: number;
-  offset: number;
-  count: number;
-  results: Schemas.UserNftDto[];
-};
-
-export type UserNftControllerFindAllVariables = {
-  queryParams: UserNftControllerFindAllQueryParams;
-} & ClientContext["fetcherOptions"];
-
-export const fetchUserNftControllerFindAll = (
-  variables: UserNftControllerFindAllVariables,
-  signal?: AbortSignal
-) =>
-  clientFetch<
-    UserNftControllerFindAllResponse,
-    UserNftControllerFindAllError,
-    undefined,
-    {},
-    UserNftControllerFindAllQueryParams,
-    {}
-  >({ url: "/api/v1/user-nft", method: "get", ...variables, signal });
-
-export const useUserNftControllerFindAll = <
-  TData = UserNftControllerFindAllResponse
->(
-  variables: UserNftControllerFindAllVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      UserNftControllerFindAllResponse,
-      UserNftControllerFindAllError,
-      TData
-    >,
-    "queryKey" | "queryFn"
-  >
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } =
-    useClientContext(options);
-  return reactQuery.useQuery<
-    UserNftControllerFindAllResponse,
-    UserNftControllerFindAllError,
-    TData
-  >(
-    queryKeyFn({
-      path: "/api/v1/user-nft",
-      operationId: "userNftControllerFindAll",
-      variables,
-    }),
-    ({ signal }) =>
-      fetchUserNftControllerFindAll(
-        { ...fetcherOptions, ...variables },
-        signal
-      ),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
-};
-
-export type UserNftControllerFindOnePathParams = {
-  userId: string;
-  nftId: string;
-};
-
-export type UserNftControllerFindOneError = Fetcher.ErrorWrapper<undefined>;
-
-export type UserNftControllerFindOneVariables = {
-  pathParams: UserNftControllerFindOnePathParams;
-} & ClientContext["fetcherOptions"];
-
-export const fetchUserNftControllerFindOne = (
-  variables: UserNftControllerFindOneVariables,
-  signal?: AbortSignal
-) =>
-  clientFetch<
-    Schemas.UserNftDto,
-    UserNftControllerFindOneError,
-    undefined,
-    {},
-    {},
-    UserNftControllerFindOnePathParams
-  >({
-    url: "/api/v1/user-nft/{userId}/{nftId}",
-    method: "get",
-    ...variables,
-    signal,
-  });
-
-export const useUserNftControllerFindOne = <TData = Schemas.UserNftDto>(
-  variables: UserNftControllerFindOneVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      Schemas.UserNftDto,
-      UserNftControllerFindOneError,
-      TData
-    >,
-    "queryKey" | "queryFn"
-  >
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } =
-    useClientContext(options);
-  return reactQuery.useQuery<
-    Schemas.UserNftDto,
-    UserNftControllerFindOneError,
-    TData
-  >(
-    queryKeyFn({
-      path: "/api/v1/user-nft/{user_id}/{nft_id}",
-      operationId: "userNftControllerFindOne",
-      variables,
-    }),
-    ({ signal }) =>
-      fetchUserNftControllerFindOne(
-        { ...fetcherOptions, ...variables },
-        signal
-      ),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
-};
-
 export type ChainControllerFindAllQueryParams = {
   name?: string;
   offset?: number;
@@ -308,17 +172,250 @@ export const useUserControllerRegister = (
   );
 };
 
+export type NftControllerFindAllQueryParams = {
+  account_id: string;
+  name?: string;
+  nft_type_id?: string;
+  campaign_id?: string;
+  offset?: number;
+  limit?: number;
+};
+
+export type NftControllerFindAllError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerFindAllResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.UserNftDto[];
+};
+
+export type NftControllerFindAllVariables = {
+  queryParams: NftControllerFindAllQueryParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerFindAll = (
+  variables: NftControllerFindAllVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    NftControllerFindAllResponse,
+    NftControllerFindAllError,
+    undefined,
+    {},
+    NftControllerFindAllQueryParams,
+    {}
+  >({ url: "/api/v1/nft", method: "get", ...variables, signal });
+
+export const useNftControllerFindAll = <TData = NftControllerFindAllResponse>(
+  variables: NftControllerFindAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NftControllerFindAllResponse,
+      NftControllerFindAllError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    NftControllerFindAllResponse,
+    NftControllerFindAllError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft",
+      operationId: "nftControllerFindAll",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerFindAll({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type NftControllerFindOnePathParams = {
+  nftId: string;
+  accountId: string;
+};
+
+export type NftControllerFindOneError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerFindOneVariables = {
+  pathParams: NftControllerFindOnePathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerFindOne = (
+  variables: NftControllerFindOneVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.UserNftDto,
+    NftControllerFindOneError,
+    undefined,
+    {},
+    {},
+    NftControllerFindOnePathParams
+  >({
+    url: "/api/v1/nft/{nftId}/{accountId}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useNftControllerFindOne = <TData = Schemas.UserNftDto>(
+  variables: NftControllerFindOneVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.UserNftDto,
+      NftControllerFindOneError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.UserNftDto,
+    NftControllerFindOneError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft/{nft_id}/{account_id}",
+      operationId: "nftControllerFindOne",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerFindOne({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type NftControllerDropNftPathParams = {
+  nftId: string;
+  accountId: string;
+};
+
+export type NftControllerDropNftError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerDropNftVariables = {
+  pathParams: NftControllerDropNftPathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerDropNft = (
+  variables: NftControllerDropNftVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.UserNftDto,
+    NftControllerDropNftError,
+    undefined,
+    {},
+    {},
+    NftControllerDropNftPathParams
+  >({
+    url: "/api/v1/nft/drop/{nftId}/{accountId}",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useNftControllerDropNft = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UserNftDto,
+      NftControllerDropNftError,
+      NftControllerDropNftVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useClientContext();
+  return reactQuery.useMutation<
+    Schemas.UserNftDto,
+    NftControllerDropNftError,
+    NftControllerDropNftVariables
+  >(
+    (variables: NftControllerDropNftVariables) =>
+      fetchNftControllerDropNft({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type NftControllerGetNftMediaPathParams = {
+  tokenId: string;
+};
+
+export type NftControllerGetNftMediaError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerGetNftMediaVariables = {
+  pathParams: NftControllerGetNftMediaPathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerGetNftMedia = (
+  variables: NftControllerGetNftMediaVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.StreamableFile,
+    NftControllerGetNftMediaError,
+    undefined,
+    {},
+    {},
+    NftControllerGetNftMediaPathParams
+  >({
+    url: "/api/v1/nft/{tokenId}/media",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useNftControllerGetNftMedia = <TData = Schemas.StreamableFile>(
+  variables: NftControllerGetNftMediaVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.StreamableFile,
+      NftControllerGetNftMediaError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.StreamableFile,
+    NftControllerGetNftMediaError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft/{tokenId}/media",
+      operationId: "nftControllerGetNftMedia",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerGetNftMedia(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type QueryOperation =
-  | {
-      path: "/api/v1/user-nft";
-      operationId: "userNftControllerFindAll";
-      variables: UserNftControllerFindAllVariables;
-    }
-  | {
-      path: "/api/v1/user-nft/{user_id}/{nft_id}";
-      operationId: "userNftControllerFindOne";
-      variables: UserNftControllerFindOneVariables;
-    }
   | {
       path: "/api/v1/chain";
       operationId: "chainControllerFindAll";
@@ -328,4 +425,19 @@ export type QueryOperation =
       path: "/api/v1/chain/{id}";
       operationId: "chainControllerFindOne";
       variables: ChainControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/nft";
+      operationId: "nftControllerFindAll";
+      variables: NftControllerFindAllVariables;
+    }
+  | {
+      path: "/api/v1/nft/{nft_id}/{account_id}";
+      operationId: "nftControllerFindOne";
+      variables: NftControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/nft/{tokenId}/media";
+      operationId: "nftControllerGetNftMedia";
+      variables: NftControllerGetNftMediaVariables;
     };

@@ -5,6 +5,7 @@ import {
 import { UserDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
 import { useMantineTheme } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import {
   AUTH_PROVIDER,
   getUser as getUserRamper,
@@ -31,9 +32,19 @@ const RamperContext = React.createContext<UseRamper | null>(null);
 
 export const RamperProvider = ({ children }: any) => {
   const theme = useMantineTheme();
+  const [storedUser, storeUser] = useLocalStorage<UserDto | null>({
+    key: "tkn_user",
+    deserialize: (value) => (value === undefined ? null : JSON.parse(value)),
+    serialize: (value) => JSON.stringify(value),
+  });
   const [user, setUser] = useState<UserDto | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { isLoading, data: chainData } = useChainControllerFindAll({});
+
+  const saveUser = (user: UserDto | null) => {
+    setUser(user);
+    storeUser(user);
+  };
 
   useEffect(() => {
     const initRamper = async () => {
@@ -56,18 +67,10 @@ export const RamperProvider = ({ children }: any) => {
 
     initRamper();
 
-    if (localStorage.getItem("tkn_user")) {
-      setUser(JSON.parse(localStorage.getItem("tkn_user") || "{}"));
+    if (storedUser) {
+      setUser(storedUser);
     }
   }, [theme.colorScheme]);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("tkn_user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("tkn_user");
-    }
-  }, [user]);
 
   const openWallet = () => {
     openWalletRamper();
@@ -87,7 +90,8 @@ export const RamperProvider = ({ children }: any) => {
   };
 
   const signOut = () => {
-    setUser(null);
+    saveUser(null);
+    localStorage.removeItem("tkn_user");
     signOutRamper();
   };
 
@@ -131,7 +135,7 @@ export const RamperProvider = ({ children }: any) => {
         },
       });
 
-      setUser(userData);
+      saveUser(userData);
 
       notifications.success({
         message: "Connected successfully.",

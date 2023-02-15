@@ -11,43 +11,6 @@ export type PaginatedDto = {
   results: any[];
 };
 
-export type NftTypeDto = {
-  id: string;
-  name: string;
-  description?: string | null;
-};
-
-export type FileDto = {
-  id: string;
-  name: string;
-  tags: string[];
-  mime_type: string;
-  url: string;
-  key: string;
-  campaign_id: string;
-  created_by_id: string;
-  /**
-   * @format date-time
-   */
-  created_at?: string;
-  /**
-   * @format date-time
-   */
-  updated_at?: string;
-};
-
-export type UserNftDto = {
-  nft_id: string;
-  user_id: string;
-  campaign_id?: string | null;
-  nft_type: NftTypeDto;
-  name: string;
-  description?: string | null;
-  attributes?: Record<string, any> | null;
-  supply?: number | null;
-  file: FileDto;
-};
-
 export type ChainDto = {
   id: string;
   name: string;
@@ -86,3 +49,70 @@ export type UserDto = {
   provider_id?: string;
   profile?: ProfileDto;
 };
+
+export type NftTypeDto = {
+  id: string;
+  name: string;
+  description?: string | null;
+};
+
+export type FileDto = {
+  id: string;
+  name: string;
+  tags: string[];
+  mime_type: string;
+  url: string;
+  key: string;
+  campaign_id: string;
+  created_by_id: string;
+  /**
+   * @format date-time
+   */
+  created_at?: string;
+  /**
+   * @format date-time
+   */
+  updated_at?: string;
+};
+
+export type CampaignUserNftDto = {
+  id: string;
+  campaign_id?: string | null;
+  nft_type: NftTypeDto;
+  name: string;
+  description?: string | null;
+  properties?: Record<string, any> | null;
+  supply?: number | null;
+  file: FileDto;
+};
+
+export type CampaignUserDto = {
+  id: string;
+  name: string;
+  description?: string | null;
+  additonal_description?: string | null;
+  nfts: CampaignUserNftDto[] | null;
+};
+
+export type NearNftAttribute = {
+  trait_type: string;
+  value: string;
+};
+
+export type NearNftAttributes = {
+  attributes: NearNftAttribute[];
+};
+
+export type UserNftDto = {
+  nft_id: string;
+  user_id: string;
+  campaign?: CampaignUserDto;
+  nft_type: NftTypeDto;
+  name: string;
+  description?: string | null;
+  properties?: NearNftAttributes;
+  supply?: number | null;
+  file: FileDto;
+};
+
+export type StreamableFile = {};
