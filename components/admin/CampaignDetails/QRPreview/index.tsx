@@ -21,14 +21,14 @@ export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
 
   return (
     <Group p="md">
-      <QRCode
+      {/* <QRCode
         style={{ display: "none" }}
         id={`preview-${nft.id}`}
         value={`http://localhost:3000/claim/${nft.id}`}
         size={88}
         quietZone={0}
         ecLevel="L"
-      />
+      /> */}
 
       <Box display="none">
         <QRCode

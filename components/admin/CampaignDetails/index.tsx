@@ -171,7 +171,7 @@ export const CampaignDetails = () => {
           )}
         </Group>
 
-        <Grid>
+        <Grid align="center">
           {reward && (
             <Grid.Col span={12}>
               <NFTCard nft={reward} />
