@@ -78,7 +78,10 @@ export const DescriptionStep = () => {
         />
       </Field>
 
-      <Field label="Upload files related to your campaign (optional)">
+      <Field
+        sx={{ display: "none" }}
+        label="Upload files related to your campaign (optional)"
+      >
         <Group mt="sm" grow align="flex-start" spacing="xl">
           <Dropzone
             title="Upload Documents"
