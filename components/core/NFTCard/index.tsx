@@ -11,7 +11,7 @@ export const NFTCard: React.FC<INFTCardProps> = ({ nft }) => {
   const isReward = nft.nft_type.name === "reward";
 
   return (
-    <Group p="md" align="flex-start">
+    <Group p="md" align="flex-start" noWrap>
       <Box w={88} sx={{ position: "relative" }}>
         <Image src={nft.file.url} radius="lg" />
         {isReward && (
