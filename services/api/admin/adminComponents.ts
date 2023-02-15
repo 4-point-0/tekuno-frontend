@@ -548,6 +548,51 @@ export const useFileControllerUpdateFile = (
   );
 };
 
+export type FileControllerRemovePathParams = {
+  id: string;
+};
+
+export type FileControllerRemoveError = Fetcher.ErrorWrapper<undefined>;
+
+export type FileControllerRemoveVariables = {
+  pathParams: FileControllerRemovePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchFileControllerRemove = (
+  variables: FileControllerRemoveVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    string,
+    FileControllerRemoveError,
+    undefined,
+    {},
+    {},
+    FileControllerRemovePathParams
+  >({ url: "/api/v1/file/{id}", method: "delete", ...variables, signal });
+
+export const useFileControllerRemove = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      string,
+      FileControllerRemoveError,
+      FileControllerRemoveVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    string,
+    FileControllerRemoveError,
+    FileControllerRemoveVariables
+  >(
+    (variables: FileControllerRemoveVariables) =>
+      fetchFileControllerRemove({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type ChainControllerFindAllQueryParams = {
   name?: string;
   offset?: number;

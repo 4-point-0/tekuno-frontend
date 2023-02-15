@@ -16,10 +16,9 @@ import { NextLink } from "@mantine/next";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React from "react";
-import { Download, Eye, Pencil } from "tabler-icons-react";
+import { Eye, Pencil } from "tabler-icons-react";
 
 import { StatBox } from "./StatBox";
-import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { NFTCard } from "@/components/core/NFTCard";
 import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
@@ -28,6 +27,7 @@ import { DownloadAll } from "./DownloadAll";
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
 import { StatusButtons } from "./StatusButtons";
+import { DownloadBadge } from "@/components/core/DownloadBadge";
 
 const stats = [
   {
@@ -158,17 +158,7 @@ export const CampaignDetails = () => {
 
             <Group position="right">
               {documents?.map((document) => (
-                <IndigoBadge
-                  key={document.name}
-                  size="lg"
-                  leftSection={
-                    <ActionIcon variant="transparent" color="dark">
-                      <Download size={14} />
-                    </ActionIcon>
-                  }
-                >
-                  {document.name}
-                </IndigoBadge>
+                <DownloadBadge document={document} />
               ))}
             </Group>
           </Group>
