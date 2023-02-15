@@ -16,8 +16,9 @@ import {
   SUPPORTED_NEAR_NETWORKS,
   THEME,
   WALLET_PROVIDER,
+  RamperInstance,
 } from "@ramper/near";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 interface UseRamper {
   user: UserDto | null;
@@ -32,23 +33,25 @@ const RamperContext = React.createContext<UseRamper | null>(null);
 
 export const RamperProvider = ({ children }: any) => {
   const theme = useMantineTheme();
-  const [storedUser, storeUser] = useLocalStorage<UserDto | null>({
+
+  const [user, setUser] = useLocalStorage<UserDto | null>({
     key: "tkn_user",
     deserialize: (value) => (value === undefined ? null : JSON.parse(value)),
     serialize: (value) => JSON.stringify(value),
+    defaultValue: null,
+    getInitialValueInEffect: true,
   });
-  const [user, setUser] = useState<UserDto | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { isLoading, data: chainData } = useChainControllerFindAll({});
 
-  const saveUser = (user: UserDto | null) => {
-    setUser(user);
-    storeUser(user);
-  };
+  const [ramper, setRamper] = useState<RamperInstance>();
 
   useEffect(() => {
+    const ramperTheme =
+      theme.colorScheme === "light" ? THEME.LIGHT : THEME.DARK;
+
     const initRamper = async () => {
-      await init({
+      const instance = await init({
         appName: "Tekuno",
         authProviders: [
           AUTH_PROVIDER.GOOGLE,
@@ -63,14 +66,14 @@ export const RamperProvider = ({ children }: any) => {
         logoURI: `https://i.imgur.com/BF6sZhU.png`, // TODO: Point this to production url later
         appId: "siycfmkhwu", // TODO: Change this to production app id later
       });
+
+      setRamper(instance);
     };
 
-    initRamper();
-
-    if (storedUser) {
-      setUser(storedUser);
+    if (!(ramper && ramper.config.theme === ramperTheme)) {
+      initRamper();
     }
-  }, [theme.colorScheme]);
+  }, [theme.colorScheme, ramper, setRamper]);
 
   const openWallet = () => {
     openWalletRamper();
@@ -90,7 +93,7 @@ export const RamperProvider = ({ children }: any) => {
   };
 
   const signOut = () => {
-    saveUser(null);
+    setUser(null);
     signOutRamper();
   };
 
@@ -134,7 +137,7 @@ export const RamperProvider = ({ children }: any) => {
         },
       });
 
-      saveUser(userData);
+      setUser(userData);
 
       notifications.success({
         message: "Connected successfully.",

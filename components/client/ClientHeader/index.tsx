@@ -12,12 +12,13 @@ import {
   Menu,
   NavLink,
   ScrollArea,
+  Skeleton,
   Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
@@ -72,6 +73,12 @@ export function ClientHeader() {
 
   const { user } = useRamper();
 
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, [setIsClient]);
+
   useEffect(() => {
     router.events.on("routeChangeStart", (url, { shallow }) => {
       closeDrawer();
@@ -89,19 +96,21 @@ export function ClientHeader() {
         active={router.pathname === "/profile"}
       />
     ) : (
-      <NavLink
-        component={Link}
-        href="/login"
-        label="Log In"
-        icon={<User size={16} />}
-        variant="subtle"
-        active={router.pathname === "/login"}
-      />
+      <Skeleton visible={!isClient}>
+        <NavLink
+          component={Link}
+          href="/login"
+          label="Log In"
+          icon={<User size={16} />}
+          variant="subtle"
+          active={router.pathname === "/login"}
+        />
+      </Skeleton>
     );
   };
 
   const campaignDropdownLinks = (campaigns: any[]) => {
-    if (!user) return null;
+    if (!(isClient && user)) return null;
 
     const menuItems = campaigns.map((campaign) => (
       <Menu.Item
