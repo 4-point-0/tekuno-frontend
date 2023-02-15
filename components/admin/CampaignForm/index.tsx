@@ -178,6 +178,11 @@ export const CampaignForm = () => {
       return;
     }
 
+    if (step < active) {
+      setActiveStep(step);
+      return;
+    }
+
     form.validate();
 
     if (form.isValid()) {
