@@ -91,7 +91,6 @@ export const RamperProvider = ({ children }: any) => {
 
   const signOut = () => {
     saveUser(null);
-    localStorage.removeItem("tkn_user");
     signOutRamper();
   };
 
