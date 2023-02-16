@@ -50,7 +50,7 @@ export type UserDto = {
   profile?: ProfileDto;
 };
 
-export type NftTypeDto = {
+export type CampaignTypeDto = {
   id: string;
   name: string;
   description?: string | null;
@@ -75,23 +75,43 @@ export type FileDto = {
   updated_at?: string;
 };
 
-export type CampaignUserNftDto = {
+export type NftTypeDto = {
+  id: string;
+  name: string;
+  description?: string | null;
+};
+
+export type NftDto = {
   id: string;
   campaign_id?: string | null;
+  campaign?: Record<string, any> | null;
   nft_type: NftTypeDto;
   name: string;
+  nft_initiated?: boolean;
   description?: string | null;
   properties?: Record<string, any> | null;
   supply?: number | null;
   file: FileDto;
 };
 
-export type CampaignUserDto = {
+export type CampaignDto = {
   id: string;
   name: string;
+  /**
+   * @format date-time
+   */
+  start_date: string;
+  campaign_type: CampaignTypeDto;
+  chain: ChainDto;
+  /**
+   * @format date-time
+   */
+  end_date?: string | null;
   description?: string | null;
-  additonal_description?: string | null;
-  nfts: CampaignUserNftDto[] | null;
+  additional_description?: string | null;
+  files?: FileDto[];
+  nfts: NftDto[] | null;
+  status: "Created" | "Started" | "Paused" | "Ended";
 };
 
 export type NearNftAttribute = {
@@ -106,7 +126,7 @@ export type NearNftAttributes = {
 export type UserNftDto = {
   nft_id: string;
   user_id: string;
-  campaign?: CampaignUserDto;
+  campaign?: CampaignDto;
   nft_type: NftTypeDto;
   name: string;
   description?: string | null;

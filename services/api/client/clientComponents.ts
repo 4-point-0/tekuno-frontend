@@ -301,6 +301,61 @@ export const useNftControllerFindOne = <TData = Schemas.UserNftDto>(
   );
 };
 
+export type NftControllerFindOneNftPathParams = {
+  nftId: string;
+};
+
+export type NftControllerFindOneNftError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerFindOneNftVariables = {
+  pathParams: NftControllerFindOneNftPathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerFindOneNft = (
+  variables: NftControllerFindOneNftVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.NftDto,
+    NftControllerFindOneNftError,
+    undefined,
+    {},
+    {},
+    NftControllerFindOneNftPathParams
+  >({ url: "/api/v1/nft/{nftId}", method: "get", ...variables, signal });
+
+export const useNftControllerFindOneNft = <TData = Schemas.NftDto>(
+  variables: NftControllerFindOneNftVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.NftDto,
+      NftControllerFindOneNftError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.NftDto,
+    NftControllerFindOneNftError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft/{nft_id}",
+      operationId: "nftControllerFindOneNft",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerFindOneNft({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type NftControllerDropNftPathParams = {
   nftId: string;
   accountId: string;
@@ -415,6 +470,207 @@ export const useNftControllerGetNftMedia = <TData = Schemas.StreamableFile>(
   );
 };
 
+export type CampaignUserControllerFindOnePathParams = {
+  campaignId: string;
+};
+
+export type CampaignUserControllerFindOneError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignUserControllerFindOneVariables = {
+  pathParams: CampaignUserControllerFindOnePathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchCampaignUserControllerFindOne = (
+  variables: CampaignUserControllerFindOneVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.CampaignDto,
+    CampaignUserControllerFindOneError,
+    undefined,
+    {},
+    {},
+    CampaignUserControllerFindOnePathParams
+  >({
+    url: "/api/v1/campaign-user/{campaignId}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useCampaignUserControllerFindOne = <TData = Schemas.CampaignDto>(
+  variables: CampaignUserControllerFindOneVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.CampaignDto,
+      CampaignUserControllerFindOneError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.CampaignDto,
+    CampaignUserControllerFindOneError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/campaign-user/{campaign_id}",
+      operationId: "campaignUserControllerFindOne",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchCampaignUserControllerFindOne(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type CampaignUserControllerFindAllQueryParams = {
+  account_id: string;
+  offset?: number;
+  limit?: number;
+};
+
+export type CampaignUserControllerFindAllError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignUserControllerFindAllResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.CampaignDto[];
+};
+
+export type CampaignUserControllerFindAllVariables = {
+  queryParams: CampaignUserControllerFindAllQueryParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchCampaignUserControllerFindAll = (
+  variables: CampaignUserControllerFindAllVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    CampaignUserControllerFindAllResponse,
+    CampaignUserControllerFindAllError,
+    undefined,
+    {},
+    CampaignUserControllerFindAllQueryParams,
+    {}
+  >({ url: "/api/v1/campaign-user", method: "get", ...variables, signal });
+
+export const useCampaignUserControllerFindAll = <
+  TData = CampaignUserControllerFindAllResponse
+>(
+  variables: CampaignUserControllerFindAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      CampaignUserControllerFindAllResponse,
+      CampaignUserControllerFindAllError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    CampaignUserControllerFindAllResponse,
+    CampaignUserControllerFindAllError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/campaign-user",
+      operationId: "campaignUserControllerFindAll",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchCampaignUserControllerFindAll(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type CampaignUserControllerGetNftMediaPathParams = {
+  fileId: string;
+};
+
+export type CampaignUserControllerGetNftMediaError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignUserControllerGetNftMediaVariables = {
+  pathParams: CampaignUserControllerGetNftMediaPathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchCampaignUserControllerGetNftMedia = (
+  variables: CampaignUserControllerGetNftMediaVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.StreamableFile,
+    CampaignUserControllerGetNftMediaError,
+    undefined,
+    {},
+    {},
+    CampaignUserControllerGetNftMediaPathParams
+  >({
+    url: "/api/v1/campaign-user/{fileId}/media",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useCampaignUserControllerGetNftMedia = <
+  TData = Schemas.StreamableFile
+>(
+  variables: CampaignUserControllerGetNftMediaVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.StreamableFile,
+      CampaignUserControllerGetNftMediaError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.StreamableFile,
+    CampaignUserControllerGetNftMediaError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/campaign-user/{file_id}/media",
+      operationId: "campaignUserControllerGetNftMedia",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchCampaignUserControllerGetNftMedia(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type QueryOperation =
   | {
       path: "/api/v1/chain";
@@ -437,7 +693,27 @@ export type QueryOperation =
       variables: NftControllerFindOneVariables;
     }
   | {
+      path: "/api/v1/nft/{nft_id}";
+      operationId: "nftControllerFindOneNft";
+      variables: NftControllerFindOneNftVariables;
+    }
+  | {
       path: "/api/v1/nft/{tokenId}/media";
       operationId: "nftControllerGetNftMedia";
       variables: NftControllerGetNftMediaVariables;
+    }
+  | {
+      path: "/api/v1/campaign-user/{campaign_id}";
+      operationId: "campaignUserControllerFindOne";
+      variables: CampaignUserControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/campaign-user";
+      operationId: "campaignUserControllerFindAll";
+      variables: CampaignUserControllerFindAllVariables;
+    }
+  | {
+      path: "/api/v1/campaign-user/{file_id}/media";
+      operationId: "campaignUserControllerGetNftMedia";
+      variables: CampaignUserControllerGetNftMediaVariables;
     };
