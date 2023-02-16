@@ -13,7 +13,6 @@ import {
   Title,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React from "react";
 import { Eye, Pencil } from "tabler-icons-react";
@@ -78,7 +77,7 @@ export const CampaignDetails = () => {
         </Box>
 
         <Group position="right">
-          {campaign?.status !== "Ended" && (
+          {campaign?.status === "Created" && (
             <>
               <IndigoButton
                 component="a"
@@ -105,11 +104,11 @@ export const CampaignDetails = () => {
         </Group>
 
         {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
-        {campaign?.additonal_description && (
-          <Text fz="sm">{campaign.additonal_description}</Text>
+        {campaign?.additional_description && (
+          <Text fz="sm">{campaign.additional_description}</Text>
         )}
 
-        {/* <SimpleGrid cols={4}>
+        <SimpleGrid display="none" cols={4}>
           {stats.map((stat) => (
             <StatBox
               key={stat.label}
@@ -118,7 +117,7 @@ export const CampaignDetails = () => {
               subLabel={stat.subLabel}
             />
           ))}
-        </SimpleGrid> */}
+        </SimpleGrid>
         {documents?.length !== 0 && (
           <Group position="apart" align="flex-start" noWrap>
             <Group miw={200}>

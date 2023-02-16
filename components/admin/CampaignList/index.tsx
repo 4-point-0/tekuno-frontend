@@ -84,7 +84,7 @@ export const CampaignList = () => {
             </Stack>
             <Group sx={{ position: "absolute", bottom: "12px" }}>
               <IndigoButton leftIcon={<Pencil size={14} />}>
-                Campaign Manager
+                POD Manager
               </IndigoButton>
             </Group>
           </Card>
