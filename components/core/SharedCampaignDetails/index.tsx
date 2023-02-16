@@ -15,10 +15,11 @@ import { getCampaignAssets } from "@/utils/campaign";
 import { getImageUrl } from "@/utils/file";
 import { formatDateRange } from "@/utils/date";
 import { NFTCard } from "../NFTCard";
+import { UserNftDto } from "@/services/api/client/clientSchemas";
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
-  collectedNfts?: Array<NftDto>;
+  collectedNfts?: Array<NftDto | UserNftDto>;
 }
 
 export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
@@ -28,7 +29,15 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
   const { image, reward, nfts } = getCampaignAssets(campaign);
 
   const isCollected = (nft: NftDto) => {
-    return collectedNfts.some(({ id }) => id === nft.id);
+    return collectedNfts.some((collected) => {
+      if ("id" in collected) {
+        return collected.id === nft.id;
+      }
+
+      if ("nft_id" in collected) {
+        return collected.nft_id === nft.id;
+      }
+    });
   };
 
   const progress =
@@ -48,8 +57,8 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
       </Box>
 
       {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
-      {campaign?.additonal_description && (
-        <Text fz="sm">{campaign.additonal_description}</Text>
+      {campaign?.additional_description && (
+        <Text fz="sm">{campaign.additional_description}</Text>
       )}
 
       <Group>
@@ -73,7 +82,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
           </NFTCard>
         )}
         {nfts?.map((nft) => (
-          <NFTCard key={nft.id} nft={nft} isCollected={isCollected(nft)} />
+          <NFTCard key={nft.file.id} nft={nft} isCollected={isCollected(nft)} />
         ))}
       </Stack>
     </Stack>
