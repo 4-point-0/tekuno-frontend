@@ -1,4 +1,5 @@
 import { useRamper } from "@/context/RamperContext";
+import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import {
   Box,
   Burger,
@@ -48,22 +49,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-// TODO: Get campaigns from API
-const campaigns = [
-  {
-    id: 1,
-    name: "Campaign 1",
-  },
-  {
-    id: 2,
-    name: "Campaign 2",
-  },
-  {
-    id: 3,
-    name: "Campaign 3",
-  },
-];
-
 export function ClientHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -74,6 +59,17 @@ export function ClientHeader() {
   const { user } = useRamper();
 
   const [isClient, setIsClient] = useState(false);
+
+  const { data: campaigns } = useCampaignUserControllerFindAll(
+    {
+      queryParams: {
+        account_id: user?.profile?.wallet_address as string,
+      },
+    },
+    {
+      enabled: Boolean(user?.profile?.wallet_address),
+    }
+  );
 
   useEffect(() => {
     setIsClient(true);
@@ -109,10 +105,10 @@ export function ClientHeader() {
     );
   };
 
-  const campaignDropdownLinks = (campaigns: any[]) => {
+  const campaignDropdownLinks = (campaigns?: any[]) => {
     if (!(isClient && user)) return null;
 
-    const menuItems = campaigns.map((campaign) => (
+    const menuItems = campaigns?.map((campaign) => (
       <Menu.Item
         component={Link}
         href={`/campaign/${campaign.id}`}
@@ -143,10 +139,10 @@ export function ClientHeader() {
     return null;
   };
 
-  const campaignLinks = (campaigns: any[]) => {
+  const campaignLinks = (campaigns?: any[]) => {
     if (!user) return null;
 
-    return campaigns.map((campaign) => (
+    return campaigns?.map((campaign) => (
       <NavLink
         component={Link}
         href={`/campaign/${campaign.id}`}
@@ -169,7 +165,7 @@ export function ClientHeader() {
               </Box>
             </Link>
             <Group className={classes.hiddenMobile}>
-              {campaignDropdownLinks(campaigns)}
+              {campaignDropdownLinks(campaigns?.results)}
 
               <Box>{profileLink()}</Box>
             </Group>
@@ -201,7 +197,7 @@ export function ClientHeader() {
           <Stack mt={"lg"} spacing={4}>
             {profileLink()}
 
-            {campaignLinks(campaigns)}
+            {campaignLinks(campaigns?.results)}
             <NavLink
               component={Link}
               href="/about"
