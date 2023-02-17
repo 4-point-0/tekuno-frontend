@@ -16,6 +16,7 @@ import { getImageUrl } from "@/utils/file";
 import { formatDateRange } from "@/utils/date";
 import { NFTCard } from "../NFTCard";
 import { UserNftDto } from "@/services/api/client/clientSchemas";
+import { useIsClient } from "@/hooks/useIsClient";
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
@@ -27,6 +28,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
   collectedNfts = [],
 }) => {
   const { image, reward, nfts } = getCampaignAssets(campaign);
+  const isClient = useIsClient();
 
   const isCollected = (nft: NftDto) => {
     return collectedNfts.some((collected) => {
@@ -52,7 +54,8 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
       <Box>
         <Title order={2}>{campaign?.name}</Title>
         <Text c="dimmed">
-          {formatDateRange(campaign?.start_date as string, campaign?.end_date)}
+          {isClient &&
+            formatDateRange(campaign?.start_date as string, campaign?.end_date)}
         </Text>
       </Box>
 
