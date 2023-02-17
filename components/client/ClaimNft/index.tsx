@@ -33,20 +33,23 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
   const isClient = useIsClient();
   const drop = useNftControllerDropNft({ retry: false });
 
-  const { data: userNft, isLoading: isLoadingUserNft } =
-    useNftControllerFindOne(
-      {
-        pathParams: {
-          nftId: nft.id as string,
-          accountId: user?.profile?.wallet_address as string,
-        },
+  const {
+    data: userNft,
+    isLoading: isLoadingUserNft,
+    refetch,
+  } = useNftControllerFindOne(
+    {
+      pathParams: {
+        nftId: nft.id as string,
+        accountId: user?.profile?.wallet_address as string,
       },
-      {
-        enabled: Boolean(user?.profile?.wallet_address && nft.id),
-        retry: false,
-        refetchOnWindowFocus: false,
-      }
-    );
+    },
+    {
+      enabled: Boolean(user?.profile?.wallet_address && nft.id),
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const isOwnedByUser = useMemo(() => {
     if (!user) {
@@ -80,6 +83,8 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
           accountId: user.profile?.wallet_address as string,
         },
       });
+
+      refetch();
     } else {
       router.push(`/login?redirect=/claim/${nft.id}`);
     }
@@ -95,6 +100,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
         variant="filled"
         onClick={onClaimButtonClick}
         display={showClaimButton ? undefined : "none"}
+        disabled={drop.isLoading}
       >
         {user ? "Claim" : "Connect to Tekuno"}
       </Button>
