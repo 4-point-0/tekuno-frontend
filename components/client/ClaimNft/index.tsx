@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Image,
   MediaQuery,
@@ -21,6 +22,7 @@ import {
 } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
+import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 
 interface IClaimNftProps {
   nft: NftDto;
@@ -133,7 +135,9 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
         spacing={16}
       >
         <Stack align={"start"} spacing="md">
-          <Image radius={"md"} src={nft?.file.url} alt="Nft artwork" />
+          <Box w="100%">
+            <AssetPreview file={nft.file} />
+          </Box>
 
           <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
             {claimButton()}

@@ -1,3 +1,4 @@
+import { useIsClient } from "@/hooks/useIsClient";
 import { FileDto } from "@/services/api/admin/adminSchemas";
 import { AspectRatio, Skeleton } from "@mantine/core";
 import { useSetState } from "@mantine/hooks";
@@ -10,6 +11,7 @@ interface IVideoProps {
 }
 
 export const Video: React.FC<IVideoProps> = ({ file, autoPlay = true }) => {
+  const isClient = useIsClient();
   const [{ x, y, loading }, setDimensions] = useSetState({
     x: 0,
     y: 0,
@@ -26,6 +28,10 @@ export const Video: React.FC<IVideoProps> = ({ file, autoPlay = true }) => {
     });
   };
 
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <Skeleton visible={loading}>
       <AspectRatio ratio={x / y} w={x}>
@@ -33,6 +39,7 @@ export const Video: React.FC<IVideoProps> = ({ file, autoPlay = true }) => {
           autoPlay={autoPlay}
           loop
           playsInline
+          muted
           disablePictureInPicture
           onLoadedMetadata={handleVideoLoad}
         >
