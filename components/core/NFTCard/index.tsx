@@ -1,3 +1,4 @@
+import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import {
   ActionIcon,
@@ -28,11 +29,8 @@ export const NFTCard: React.FC<INFTCardProps> = ({
   return (
     <Group p="md" align="flex-start" noWrap>
       <Box w={88} sx={{ position: "relative", flexShrink: 0 }}>
-        <Image
-          src={nft.file.url}
-          radius="lg"
-          opacity={isCollected === false ? 0.5 : 1}
-        />
+        <AssetPreview isCollected={isCollected} file={nft.file} />
+
         {isReward && !isCollected && (
           <ThemeIcon
             size="xl"

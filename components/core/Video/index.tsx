@@ -5,10 +5,11 @@ import React, { useState } from "react";
 
 interface IVideoProps {
   file: FileDto;
+  autoPlay?: boolean;
   maxWidth?: number;
 }
 
-export const Video: React.FC<IVideoProps> = ({ file, maxWidth = 320 }) => {
+export const Video: React.FC<IVideoProps> = ({ file, autoPlay = true }) => {
   const [{ x, y, loading }, setDimensions] = useSetState({
     x: 0,
     y: 0,
@@ -27,9 +28,9 @@ export const Video: React.FC<IVideoProps> = ({ file, maxWidth = 320 }) => {
 
   return (
     <Skeleton visible={loading}>
-      <AspectRatio ratio={x / y} w={Math.min(maxWidth, x)}>
+      <AspectRatio ratio={x / y} w={x}>
         <video
-          autoPlay
+          autoPlay={autoPlay}
           loop
           playsInline
           disablePictureInPicture
