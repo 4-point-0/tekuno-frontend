@@ -37,21 +37,21 @@ const getStatusTexts = (
         description:
           status === "Created"
             ? "Once started, it can't be edited."
-            : "POD will be visible to the users again.",
+            : "User will be able to claims NFTs again.",
         confirm: status === "Created" ? "Start" : "Resume",
       },
     },
     Paused: {
       confirm: {
         title: "Pause the POD?",
-        description: "Once paused, it won't be visible to the users.",
+        description: "Once paused, users won't be able to claim NFTs.",
         confirm: "Pause",
       },
     },
     Ended: {
       confirm: {
         title: "End the POD?",
-        description: "Once ended, it won't visible and can't be resumed.",
+        description: "Once ended, users won't be able to claim NFTs.",
         confirm: "End",
       },
     },
