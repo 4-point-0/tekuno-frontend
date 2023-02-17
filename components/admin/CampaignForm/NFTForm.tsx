@@ -85,7 +85,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         {!fileValue && (
           <Dropzone
             title="Upload NFT Image, Video or GIF"
-            description="Darg’n’ drop the NFT here. File size: 200px x 200px .png up to xy MB"
+            description="Darg’n’ drop the NFT here. Max file size 20 MB. Supported formats are PNG, JPEG, GIF and MP4"
             label="Select Asset"
             error={fileError}
             dropzone={{
