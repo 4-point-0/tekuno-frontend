@@ -3,21 +3,35 @@ import { Box, Group, Input, Stack, Switch } from "@mantine/core";
 import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
+import { useIsMutating } from "@tanstack/react-query";
 
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { CAMPAIGN_IMAGE_TYPES, useFormContext } from "../FormContext";
-import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
+import {
+  useFileControllerRemove,
+  useFileControllerUploadFile,
+} from "@/services/api/admin/adminComponents";
 import { getImageUrl } from "@/utils/file";
 
 export const SetupStep = () => {
   const form = useFormContext();
+
+  const isMutating = useIsMutating();
+
   const uploadFile = useFileControllerUploadFile({});
+  const removeFile = useFileControllerRemove({});
 
   const handleDrop = async (files: Array<FileWithPath>) => {
     const file = files[0];
 
+    const { image } = form.values;
+
     try {
+      if (image?.response) {
+        await removeFile.mutateAsync({ pathParams: { id: image.response.id } });
+      }
+
       const response = await uploadFile.mutateAsync({
         body: {
           file,
@@ -30,6 +44,13 @@ export const SetupStep = () => {
         response,
       });
     } catch (error) {
+      form.setFieldValue("image", undefined);
+
+      form.setFieldError(
+        "image",
+        (error as any)?.stack?.message || "Failed to upload image"
+      );
+
       console.error(error);
     }
   };
@@ -92,7 +113,7 @@ export const SetupStep = () => {
       <Box my="xl">
         <Dropzone
           title="Upload Image"
-          description="Darg’n’ drop the campaign photo here. File size preferable between x and xy .png"
+          description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
           label="Select Image"
           previewUrl={getImageUrl(form.values.image?.response)}
           error={form.getInputProps("image").error}
@@ -100,7 +121,7 @@ export const SetupStep = () => {
             multiple: false,
             accept: CAMPAIGN_IMAGE_TYPES,
             onDrop: handleDrop,
-            disabled: uploadFile.isLoading,
+            disabled: isMutating > 0,
           }}
         />
       </Box>
