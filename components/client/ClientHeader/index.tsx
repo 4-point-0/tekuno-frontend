@@ -186,7 +186,7 @@ export function ClientHeader() {
         title={
           <Link href="/">
             <Box w={120}>
-              <Image src="/tekuno.svg" alt="Tekuno logo"></Image>
+              <img src="/tekuno.svg" alt="Tekuno logo" />
             </Box>
           </Link>
         }
