@@ -6,7 +6,10 @@ import { X } from "tabler-icons-react";
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import { IndigoBadge } from "@/components/core/IndigoBadge";
-import { useFileControllerUploadFile } from "@/services/api/admin/adminComponents";
+import {
+  useFileControllerRemove,
+  useFileControllerUploadFile,
+} from "@/services/api/admin/adminComponents";
 import {
   CAMPAIGN_DOCUMENT_TYPES,
   IUploadedFile,
@@ -19,6 +22,7 @@ export const DescriptionStep = () => {
   const { documents } = form.values;
 
   const uploadFile = useFileControllerUploadFile();
+  const removeFile = useFileControllerRemove();
 
   const handleDrop = async (files: Array<FileWithPath>) => {
     const previous = documents;
@@ -49,11 +53,19 @@ export const DescriptionStep = () => {
   };
 
   const handleRemove = (file: IUploadedFile) => {
-    return () => {
-      form.setFieldValue(
-        "documents",
-        documents.filter((document) => document !== file)
-      );
+    return async () => {
+      try {
+        await removeFile.mutateAsync({
+          pathParams: { id: file.response?.id as string },
+        });
+
+        form.setFieldValue(
+          "documents",
+          documents.filter((document) => document !== file)
+        );
+      } catch (error) {
+        console.error(error);
+      }
     };
   };
 
@@ -78,14 +90,11 @@ export const DescriptionStep = () => {
         />
       </Field>
 
-      <Field
-        sx={{ display: "none" }}
-        label="Upload files related to your campaign (optional)"
-      >
+      <Field label="Upload files related to your campaign (optional)">
         <Group mt="sm" grow align="flex-start" spacing="xl">
           <Dropzone
             title="Upload Documents"
-            description="Darg’n’ drop the campaign documents here. File size up to 5 MB? (Limit set by devs)"
+            description="Darg’n’ drop the campaign PDF documents here. Max file size is 20 MB."
             label="Select Document"
             dropzone={{
               onDrop: handleDrop,
