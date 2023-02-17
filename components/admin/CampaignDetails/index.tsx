@@ -15,7 +15,7 @@ import {
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import React from "react";
-import { Eye, Pencil } from "tabler-icons-react";
+import { ExternalLink, Eye, Pencil } from "tabler-icons-react";
 
 import { StatBox } from "./StatBox";
 import { IndigoButton } from "@/components/core/IndigoButton";
@@ -98,6 +98,17 @@ export const CampaignDetails = () => {
                 Edit
               </Button>
             </>
+          )}
+          {campaign?.status !== "Created" && (
+            <IndigoButton
+              component="a"
+              href={`${location.origin}/campaign/${router.query.id}`}
+              target="_blank"
+              referrerPolicy="no-referrer"
+              leftIcon={<ExternalLink size={14} />}
+            >
+              Open campaign
+            </IndigoButton>
           )}
 
           <StatusButtons status={campaign?.status} />
