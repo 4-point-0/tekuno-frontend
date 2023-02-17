@@ -7,7 +7,9 @@ export const ClientContainer: React.FC<PropsWithChildren> = ({ children }) => {
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>
         <Container fluid p={0} sx={{ margin: -16, maxWidth: "unset" }}>
           <Paper>
-            <Container pt={8}>{children}</Container>
+            <Container pt={8} pb={144}>
+              {children}
+            </Container>
           </Paper>
         </Container>
       </MediaQuery>
