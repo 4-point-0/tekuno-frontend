@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Image,
   MediaQuery,
   SimpleGrid,
   Stack,
@@ -9,7 +8,6 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
@@ -17,6 +15,7 @@ import { ChevronRight } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
 import {
+  useCampaignUserControllerFindAll,
   useNftControllerDropNft,
   useNftControllerFindOne,
 } from "@/services/api/client/clientComponents";
@@ -34,6 +33,10 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
   const { user } = useRamper();
   const isClient = useIsClient();
   const drop = useNftControllerDropNft({ retry: false });
+  const { refetch: refechUserCampaigns } = useCampaignUserControllerFindAll(
+    { queryParams: { account_id: user?.profile?.wallet_address as string } },
+    { enabled: false, refetchOnWindowFocus: false }
+  );
 
   const {
     data: userNft,
@@ -77,7 +80,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
     return true;
   }, [isClient, isLoadingUserNft, isOwnedByUser]);
 
-  const onClaimButtonClick = async () => {
+  const handleClaim = async () => {
     if (user) {
       await drop.mutateAsync({
         pathParams: {
@@ -87,6 +90,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
       });
 
       refetch();
+      refechUserCampaigns();
     } else {
       router.push(`/login?redirect=/claim/${nft.id}`);
     }
@@ -100,7 +104,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
         color={user ? undefined : "dark"}
         fullWidth
         variant="filled"
-        onClick={onClaimButtonClick}
+        onClick={handleClaim}
         display={showClaimButton ? undefined : "none"}
         disabled={drop.isLoading}
       >
