@@ -17,6 +17,7 @@ import { formatDateRange } from "@/utils/date";
 import { NFTCard } from "../NFTCard";
 import { UserNftDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
+import { DownloadBadge } from "../DownloadBadge";
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
@@ -27,7 +28,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
   campaign,
   collectedNfts = [],
 }) => {
-  const { image, reward, nfts } = getCampaignAssets(campaign);
+  const { image, reward, nfts, documents } = getCampaignAssets(campaign);
   const isClient = useIsClient();
 
   const isCollected = (nft: NftDto) => {
@@ -69,6 +70,18 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
           {nfts?.length === 1 ? "1 Item" : `${nfts?.length} Items`} to collect
         </Badge>
       </Group>
+
+      {documents?.length !== 0 && (
+        <>
+          <Title order={3}>Project documents</Title>
+
+          <Group>
+            {documents?.map((document) => (
+              <DownloadBadge size="xl" document={document} />
+            ))}
+          </Group>
+        </>
+      )}
 
       <Title order={3}>Digital collectibles</Title>
 
