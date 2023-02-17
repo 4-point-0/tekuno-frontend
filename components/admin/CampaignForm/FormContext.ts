@@ -28,7 +28,7 @@ export const NFT_INITIAL_VALUE = {
 };
 
 export interface IUploadedFile {
-  file: FileWithPath;
+  file?: FileWithPath;
   response?: FileDto;
 }
 
