@@ -5,6 +5,7 @@ import {
 import { UserDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
 import { useMantineTheme } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import {
   AUTH_PROVIDER,
   getUser as getUserRamper,
@@ -15,8 +16,9 @@ import {
   SUPPORTED_NEAR_NETWORKS,
   THEME,
   WALLET_PROVIDER,
+  RamperInstance,
 } from "@ramper/near";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 interface UseRamper {
   user: UserDto | null;
@@ -31,13 +33,25 @@ const RamperContext = React.createContext<UseRamper | null>(null);
 
 export const RamperProvider = ({ children }: any) => {
   const theme = useMantineTheme();
-  const [user, setUser] = useState<UserDto | null>(null);
+
+  const [user, setUser] = useLocalStorage<UserDto | null>({
+    key: "tkn_user",
+    deserialize: (value) => (value === undefined ? null : JSON.parse(value)),
+    serialize: (value) => JSON.stringify(value),
+    defaultValue: null,
+    getInitialValueInEffect: true,
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const { isLoading, data: chainData } = useChainControllerFindAll({});
 
+  const [ramper, setRamper] = useState<RamperInstance>();
+
   useEffect(() => {
+    const ramperTheme =
+      theme.colorScheme === "light" ? THEME.LIGHT : THEME.DARK;
+
     const initRamper = async () => {
-      await init({
+      const instance = await init({
         appName: "Tekuno",
         authProviders: [
           AUTH_PROVIDER.GOOGLE,
@@ -52,22 +66,14 @@ export const RamperProvider = ({ children }: any) => {
         logoURI: `https://i.imgur.com/BF6sZhU.png`, // TODO: Point this to production url later
         appId: "siycfmkhwu", // TODO: Change this to production app id later
       });
+
+      setRamper(instance);
     };
 
-    initRamper();
-
-    if (localStorage.getItem("tkn_user")) {
-      setUser(JSON.parse(localStorage.getItem("tkn_user") || "{}"));
+    if (!(ramper && ramper.config.theme === ramperTheme)) {
+      initRamper();
     }
-  }, [theme.colorScheme]);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("tkn_user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("tkn_user");
-    }
-  }, [user]);
+  }, [theme.colorScheme, ramper, setRamper]);
 
   const openWallet = () => {
     openWalletRamper();

@@ -1,4 +1,5 @@
 import { useRamper } from "@/context/RamperContext";
+import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import {
   Box,
   Burger,
@@ -12,12 +13,13 @@ import {
   Menu,
   NavLink,
   ScrollArea,
+  Skeleton,
   Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
@@ -47,22 +49,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-// TODO: Get campaigns from API
-const campaigns = [
-  {
-    id: 1,
-    name: "Campaign 1",
-  },
-  {
-    id: 2,
-    name: "Campaign 2",
-  },
-  {
-    id: 3,
-    name: "Campaign 3",
-  },
-];
-
 export function ClientHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -71,6 +57,23 @@ export function ClientHeader() {
   const router = useRouter();
 
   const { user } = useRamper();
+
+  const [isClient, setIsClient] = useState(false);
+
+  const { data: campaigns } = useCampaignUserControllerFindAll(
+    {
+      queryParams: {
+        account_id: user?.profile?.wallet_address as string,
+      },
+    },
+    {
+      enabled: Boolean(user?.profile?.wallet_address),
+    }
+  );
+
+  useEffect(() => {
+    setIsClient(true);
+  }, [setIsClient]);
 
   useEffect(() => {
     router.events.on("routeChangeStart", (url, { shallow }) => {
@@ -89,21 +92,23 @@ export function ClientHeader() {
         active={router.pathname === "/profile"}
       />
     ) : (
-      <NavLink
-        component={Link}
-        href="/login"
-        label="Log In"
-        icon={<User size={16} />}
-        variant="subtle"
-        active={router.pathname === "/login"}
-      />
+      <Skeleton visible={!isClient}>
+        <NavLink
+          component={Link}
+          href="/login"
+          label="Log In"
+          icon={<User size={16} />}
+          variant="subtle"
+          active={router.pathname === "/login"}
+        />
+      </Skeleton>
     );
   };
 
-  const campaignDropdownLinks = (campaigns: any[]) => {
-    if (!user) return null;
+  const campaignDropdownLinks = (campaigns?: any[]) => {
+    if (!(isClient && user)) return null;
 
-    const menuItems = campaigns.map((campaign) => (
+    const menuItems = campaigns?.map((campaign) => (
       <Menu.Item
         component={Link}
         href={`/campaign/${campaign.id}`}
@@ -134,10 +139,10 @@ export function ClientHeader() {
     return null;
   };
 
-  const campaignLinks = (campaigns: any[]) => {
+  const campaignLinks = (campaigns?: any[]) => {
     if (!user) return null;
 
-    return campaigns.map((campaign) => (
+    return campaigns?.map((campaign) => (
       <NavLink
         component={Link}
         href={`/campaign/${campaign.id}`}
@@ -160,7 +165,7 @@ export function ClientHeader() {
               </Box>
             </Link>
             <Group className={classes.hiddenMobile}>
-              {campaignDropdownLinks(campaigns)}
+              {campaignDropdownLinks(campaigns?.results)}
 
               <Box>{profileLink()}</Box>
             </Group>
@@ -180,9 +185,11 @@ export function ClientHeader() {
         padding="md"
         title={
           <Link href="/">
-            <Box w={120}>
-              <Image src="/tekuno.svg" alt="Tekuno logo"></Image>
-            </Box>
+            <img
+              style={{ widows: "120px" }}
+              src="/tekuno.svg"
+              alt="Tekuno logo"
+            />
           </Link>
         }
         className={classes.hiddenDesktop}
@@ -192,7 +199,7 @@ export function ClientHeader() {
           <Stack mt={"lg"} spacing={4}>
             {profileLink()}
 
-            {campaignLinks(campaigns)}
+            {campaignLinks(campaigns?.results)}
             <NavLink
               component={Link}
               href="/about"

@@ -1,54 +1,44 @@
-import { CopyActionButton } from "@/components/core/CopyActionButton";
-import { useRamper } from "@/context/RamperContext";
 import {
   Anchor,
   Button,
-  Card,
-  Container,
   Group,
   Image,
+  MediaQuery,
   SimpleGrid,
   Stack,
   Text,
   Title,
   Tooltip,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { ChevronRight, Logout, Wallet } from "tabler-icons-react";
 
-// TODO: Get campaigns from API
-const campaigns = [
-  {
-    id: 1,
-    name: "Campaign 1",
-  },
-  {
-    id: 2,
-    name: "Campaign 2",
-  },
-  {
-    id: 3,
-    name: "Campaign 3",
-  },
-];
+import { CopyActionButton } from "@/components/core/CopyActionButton";
+import { ClientContainer } from "@/components/layout/ClientContainer";
+import { useRamper } from "@/context/RamperContext";
+import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
+import { useIsClient } from "@/hooks/useIsClient";
+import { useEffect } from "react";
 
 export default function Profile() {
-  const isBigScreen = useMediaQuery("(min-width: 900px)");
-
   const { user, loading, openWallet, signOut } = useRamper();
 
+  const { data: campaigns } = useCampaignUserControllerFindAll(
+    { queryParams: { account_id: user?.profile?.wallet_address as string } },
+    { enabled: Boolean(user?.profile?.wallet_address) }
+  );
+
   const router = useRouter();
+  const isClient = useIsClient();
 
   useEffect(() => {
-    if (!user) {
+    if (isClient && !user) {
       router.push("/login");
     }
-  }, [router, user]);
+  }, [router, user, isClient]);
 
-  const onSignOut = () => {
+  const handleSignOut = () => {
     signOut();
     router.push("/");
   };
@@ -76,27 +66,13 @@ export default function Profile() {
     return `https://api.dicebear.com/5.x/thumbs/svg?seed=${getAvatarPublicKeySeed()}&shapeColor=0a5b83,1c799f,69d2e7&backgroundColor=b6e3f4,c0aede,d1d4f9&backgroundType=gradientLinear,solid`;
   };
 
-  const campaignLinks = (campaigns: any[]) => {
-    return campaigns.map((campaign) => (
-      <Button
-        key={campaign.id}
-        component={Link}
-        href={`/campaign/${campaign.id}`}
-        variant="light"
-        radius={"md"}
-        sx={(theme) => ({
-          color: theme.colors.dark,
-        })}
-        rightIcon={<ChevronRight size={20} />}
-      >
-        <Text fw={700}>{campaign.name}</Text>
-      </Button>
-    ));
-  };
+  if (!user) {
+    return null;
+  }
 
-  const getContent = () => {
-    return (
-      <SimpleGrid cols={isBigScreen ? 2 : 1}>
+  return (
+    <ClientContainer>
+      <SimpleGrid breakpoints={[{ minWidth: "sm", cols: 2 }]}>
         <Stack align={"center"} spacing="xs">
           <Image
             radius={"xl"}
@@ -129,7 +105,7 @@ export default function Profile() {
               sx={(theme) => ({
                 color: theme.colors.dark,
               })}
-              onClick={onSignOut}
+              onClick={handleSignOut}
             >
               Sign Out
             </Button>
@@ -137,26 +113,43 @@ export default function Profile() {
         </Stack>
         <Stack align={"start"} spacing={24}>
           <Group>
-            <Tooltip
-              disabled={!isWalletAdressTooLong()}
-              label={getWalletAdress()}
-            >
-              <Title
-                sx={{
-                  width: !isWalletAdressTooLong()
-                    ? "auto"
-                    : isBigScreen
-                    ? 300
-                    : 240,
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                }}
-                order={2}
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+              <Tooltip
+                disabled={!isWalletAdressTooLong()}
+                label={getWalletAdress()}
               >
-                {getWalletAdress()}
-              </Title>
-            </Tooltip>
+                <Title
+                  sx={{
+                    width: !isWalletAdressTooLong() ? "auto" : 240,
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}
+                  order={2}
+                >
+                  {getWalletAdress()}
+                </Title>
+              </Tooltip>
+            </MediaQuery>
+            <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+              <Tooltip
+                disabled={!isWalletAdressTooLong()}
+                label={getWalletAdress()}
+              >
+                <Title
+                  sx={{
+                    width: !isWalletAdressTooLong() ? "auto" : 300,
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}
+                  order={2}
+                >
+                  {getWalletAdress()}
+                </Title>
+              </Tooltip>
+            </MediaQuery>
+
             <CopyActionButton value={getWalletAdress()} />
           </Group>
           <Stack hidden={!user?.email} spacing={4}>
@@ -186,21 +179,25 @@ export default function Profile() {
           <Stack spacing={"lg"}>
             <Title order={3}>My Campaigns</Title>
             <Stack align={"start"} spacing={"sm"}>
-              {campaignLinks(campaigns)}
+              {campaigns?.results.map((campaign) => (
+                <Button
+                  key={campaign.id}
+                  component={Link}
+                  href={`/campaign/${campaign.id}`}
+                  variant="light"
+                  radius={"md"}
+                  sx={(theme) => ({
+                    color: theme.colors.dark,
+                  })}
+                  rightIcon={<ChevronRight size={20} />}
+                >
+                  <Text fw={700}>{campaign.name}</Text>
+                </Button>
+              ))}
             </Stack>
           </Stack>
         </Stack>
       </SimpleGrid>
-    );
-  };
-
-  if (!user) return <></>;
-
-  return isBigScreen ? (
-    <Container>
-      <Card>{getContent()}</Card>
-    </Container>
-  ) : (
-    <Card>{getContent()}</Card>
+    </ClientContainer>
   );
 }

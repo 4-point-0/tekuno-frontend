@@ -13,7 +13,6 @@ import {
   Title,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React from "react";
 import { Eye, Pencil } from "tabler-icons-react";
@@ -28,6 +27,8 @@ import { NftDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
 import { StatusButtons } from "./StatusButtons";
 import { DownloadBadge } from "@/components/core/DownloadBadge";
+import { getCampaignAssets } from "@/utils/campaign";
+import { formatDateRange } from "@/utils/date";
 
 const stats = [
   {
@@ -41,28 +42,6 @@ const stats = [
   },
 ];
 
-const documents = [
-  { name: "Money Motion dresscode.pdf" },
-  { name: "Money-Motion-Legal.pdf" },
-];
-
-function formatDateRange(startDate: string, endDate?: string | null) {
-  const dateTimeFormat = new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-
-  if (!endDate) {
-    return dateTimeFormat.format(dayjs(startDate).toDate());
-  }
-
-  return dateTimeFormat.formatRange(
-    dayjs(startDate).toDate(),
-    dayjs(endDate).toDate()
-  );
-}
-
 export const CampaignDetails = () => {
   const router = useRouter();
 
@@ -72,19 +51,7 @@ export const CampaignDetails = () => {
     },
   });
 
-  const image = campaign?.files?.find(({ tags }) => tags.includes("image"));
-
-  const documents = campaign?.files?.filter(
-    ({ tags }) => !tags.includes("image")
-  );
-
-  const reward = campaign?.nfts?.find(
-    ({ nft_type: { name } }) => name === "reward"
-  );
-
-  const nfts = campaign?.nfts?.filter(
-    ({ nft_type: { name } }) => name !== "reward"
-  );
+  const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
   return (
     <Container>
@@ -110,12 +77,13 @@ export const CampaignDetails = () => {
         </Box>
 
         <Group position="right">
-          {campaign?.status !== "Ended" && (
+          {campaign?.status === "Created" && (
             <>
               <IndigoButton
-                component={NextLink}
-                href={`${router.query.id}/preview`}
-                legacyBehavior
+                component="a"
+                href={`${location.origin}/admin/previous/${router.query.id}/preview`}
+                target="_blank"
+                referrerPolicy="no-referrer"
                 leftIcon={<Eye size={14} />}
               >
                 Preview
@@ -136,11 +104,11 @@ export const CampaignDetails = () => {
         </Group>
 
         {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
-        {campaign?.additonal_description && (
-          <Text fz="sm">{campaign.additonal_description}</Text>
+        {campaign?.additional_description && (
+          <Text fz="sm">{campaign.additional_description}</Text>
         )}
 
-        {/* <SimpleGrid cols={4}>
+        <SimpleGrid display="none" cols={4}>
           {stats.map((stat) => (
             <StatBox
               key={stat.label}
@@ -149,7 +117,7 @@ export const CampaignDetails = () => {
               subLabel={stat.subLabel}
             />
           ))}
-        </SimpleGrid> */}
+        </SimpleGrid>
         {documents?.length !== 0 && (
           <Group position="apart" align="flex-start" noWrap>
             <Group miw={200}>

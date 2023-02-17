@@ -1,7 +1,7 @@
 import { RamperProvider } from "@/context/RamperContext";
-import { AppShell } from "@mantine/core";
+import { AppShell, Burger, MediaQuery } from "@mantine/core";
 import { useRouter } from "next/router";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { AdminHeader } from "../admin/AdminHeader";
 
 import { AdminNavbar } from "../admin/AdminNavbar";
@@ -10,6 +10,7 @@ import { ClientHeader } from "../client/ClientHeader";
 
 export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
+  const [opened, setOpened] = useState(false);
 
   const isLogin = router.route.startsWith("/login");
   const isAdmin = router.route.startsWith("/admin");
@@ -17,9 +18,23 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const appShell = () => (
     <AppShell
       padding="md"
-      navbar={isAdmin ? <AdminNavbar /> : undefined}
+      navbar={isAdmin ? <AdminNavbar opened={opened} /> : undefined}
       header={
-        isAdmin ? <AdminHeader /> : isLogin ? undefined : <ClientHeader />
+        isAdmin ? (
+          <AdminHeader>
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+              <Burger
+                opened={opened}
+                onClick={() => setOpened((o) => !o)}
+                size="sm"
+                color="#000"
+                mr="xl"
+              />
+            </MediaQuery>
+          </AdminHeader>
+        ) : isLogin ? undefined : (
+          <ClientHeader />
+        )
       }
       footer={
         isAdmin ? undefined : (
@@ -51,6 +66,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
           />
         )
       }
+      navbarOffsetBreakpoint="sm"
       styles={(theme) => ({
         main: {
           backgroundColor:

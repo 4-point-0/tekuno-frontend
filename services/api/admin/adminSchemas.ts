@@ -91,6 +91,7 @@ export type NftTypeDto = {
 export type NftDto = {
   id: string;
   campaign_id?: string | null;
+  campaign?: Record<string, any> | null;
   nft_type: NftTypeDto;
   name: string;
   nft_initiated?: boolean;
@@ -114,7 +115,7 @@ export type CampaignDto = {
    */
   end_date?: string | null;
   description?: string | null;
-  additonal_description?: string | null;
+  additional_description?: string | null;
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
@@ -123,7 +124,7 @@ export type CampaignDto = {
 export type UpdateCampaignDto = {
   name?: string | null;
   description?: string | null;
-  additonal_description?: string | null;
+  additional_description?: string | null;
   campaign_type_id?: string | null;
   chain_id?: string | null;
   /**

@@ -8,6 +8,13 @@ export const tekunoTheme: MantineThemeOverride = {
   fontFamily: OpenSans.style.fontFamily,
   headings: { fontFamily: OpenSans.style.fontFamily },
   components: {
+    Badge: {
+      styles: {
+        root: {
+          textTransform: "none",
+        },
+      },
+    },
     Button: {
       defaultProps: {
         radius: "lg",

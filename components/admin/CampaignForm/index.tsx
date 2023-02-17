@@ -178,6 +178,11 @@ export const CampaignForm = () => {
       return;
     }
 
+    if (step < active) {
+      setActiveStep(step);
+      return;
+    }
+
     form.validate();
 
     if (form.isValid()) {
@@ -221,6 +226,7 @@ export const CampaignForm = () => {
       description,
       additionalDescription,
       documents,
+      limitDate,
     } = values;
 
     const fileIds = [
@@ -241,7 +247,7 @@ export const CampaignForm = () => {
           campaign_type_id: campaignTypeId,
           chain_id: chainId,
           start_date: startDate?.toISOString() as string,
-          end_date: endDate?.toISOString(),
+          end_date: limitDate ? endDate?.toISOString() : null,
           description,
           additional_description: additionalDescription,
           nfts,

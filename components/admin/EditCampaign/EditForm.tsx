@@ -34,6 +34,8 @@ import { Field } from "@/components/form/Field";
 import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { useIsMutating } from "@tanstack/react-query";
 import { getImageUrl } from "@/utils/file";
+import { notifications } from "@/utils/notifications";
+import { useRouter } from "next/router";
 
 interface IEditCampaign {
   campaign: CampaignDto;
@@ -47,7 +49,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     initialValues: {
       name: campaign.name,
       description: campaign.description || "",
-      additionalDescription: campaign.additonal_description || "",
+      additionalDescription: campaign.additional_description || "",
       startDate: dayjs(campaign.start_date).toDate(),
       endDate: campaign.end_date ? dayjs(campaign.end_date).toDate() : null,
       documents:
@@ -75,11 +77,23 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
   });
 
   const isMutating = useIsMutating();
+  const router = useRouter();
 
   const uploadFile = useFileControllerUploadFile({});
   const updateFile = useFileControllerUpdateFile({});
 
-  const updateCampaign = useCampaignControllerUpdate({});
+  const updateCampaign = useCampaignControllerUpdate({
+    onMutate: () => {
+      notifications.create({ title: "Updating POD" });
+    },
+    onSuccess: () => {
+      notifications.success({ title: "POD updated" });
+      router.push(`/admin/previous/${router.query.id}`);
+    },
+    onError: () => {
+      notifications.error({ title: "Errow whilw updating POD" });
+    },
+  });
 
   const { documents } = form.values;
 
@@ -176,6 +190,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
       additionalDescription,
       startDate,
       endDate,
+      limitDate,
     } = values;
 
     const fileIds = [
@@ -191,8 +206,8 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
         name,
         description,
         start_date: startDate?.toISOString(),
-        end_date: endDate?.toISOString(),
-        additonal_description: additionalDescription,
+        end_date: limitDate ? endDate?.toISOString() : null,
+        additional_description: additionalDescription,
         file_ids: fileIds,
       },
     });
@@ -291,7 +306,10 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
           />
         </Field>
 
-        <Field label="Upload files related to your campaign (optional)">
+        <Field
+          display="none"
+          label="Upload files related to your campaign (optional)"
+        >
           <Group mt="sm" grow align="flex-start" spacing="xl">
             <Dropzone
               title="Upload Documents"

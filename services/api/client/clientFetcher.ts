@@ -1,7 +1,9 @@
 import { ClientContext } from "./clientContext";
 import fetch from "isomorphic-fetch";
 
-const baseUrl = "";
+const isServer = typeof window === "undefined";
+
+const baseUrl = isServer ? "http://localhost:3000" : "";
 
 export type ErrorWrapper<TError> =
   | TError
