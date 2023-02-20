@@ -78,7 +78,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
     }
 
     return true;
-  }, [isClient, isLoadingUserNft, isOwnedByUser]);
+  }, [isClient, isLoadingUserNft, isOwnedByUser, user]);
 
   const handleClaim = async () => {
     if (user) {
@@ -107,6 +107,8 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
         onClick={handleClaim}
         display={showClaimButton ? undefined : "none"}
         disabled={drop.isLoading}
+        loading={drop.isLoading}
+        loaderPosition="right"
       >
         {user ? "Claim" : "Connect to Tekuno"}
       </Button>
