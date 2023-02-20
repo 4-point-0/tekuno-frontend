@@ -44,7 +44,9 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
   };
 
   const progress =
-    collectedNfts.length > 0 ? (nfts?.length || 0) / collectedNfts.length : 0;
+    collectedNfts.length > 0
+      ? (collectedNfts?.length || 0) / (nfts?.length || 1)
+      : 0;
 
   return (
     <Stack>
