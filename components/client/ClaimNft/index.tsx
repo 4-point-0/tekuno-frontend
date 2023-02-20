@@ -69,7 +69,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
       return false;
     }
 
-    if (isLoadingUserNft) {
+    if (user && isLoadingUserNft) {
       return false;
     }
 
