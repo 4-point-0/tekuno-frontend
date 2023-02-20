@@ -34,6 +34,8 @@ Pull environment variables to `.env.local` file.
 npm run env:pull
 ```
 
+Add `NEXTAUTH_URL="http://localhost:3000"` to the end of the `.env.local`.
+
 ## API Code Generation
 
 API hooks, functions and types are genereated from the API Swagger files. APIs are seperated to `./services/api/client` and `./services/api/admin` folders.
