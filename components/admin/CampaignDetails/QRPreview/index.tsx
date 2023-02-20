@@ -6,6 +6,7 @@ import { saveAs } from "file-saver";
 
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import { IndigoButton } from "@/components/core/IndigoButton";
+import { getClaimURL } from "@/utils/qrcode";
 
 interface IQRCodeProps {
   nft: NftDto;
@@ -35,7 +36,7 @@ export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
           ref={ref}
           style={{ display: "none" }}
           id={`download-${nft.id}`}
-          value={`http://localhost:3000/claim/${nft.id}`}
+          value={getClaimURL(nft.id)}
           size={768}
           quietZone={24}
           ecLevel="H"

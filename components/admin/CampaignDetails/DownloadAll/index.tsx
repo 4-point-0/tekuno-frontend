@@ -7,6 +7,7 @@ import { saveAs } from "file-saver";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
 import { Box, Portal } from "@mantine/core";
+import { getClaimURL } from "@/utils/qrcode";
 
 interface IDownloadAllProps {
   campaign: CampaignDto;
@@ -56,7 +57,7 @@ export const DownloadAll: React.FC<IDownloadAllProps> = ({
               ref={(el) => (ref.current[i] = el)}
               style={{ display: "none" }}
               id={`download-all-${nft.id}`}
-              value={`http://localhost:3000/claim/${nft.id}`}
+              value={getClaimURL(nft.id)}
               size={768}
               quietZone={24}
               ecLevel="H"
