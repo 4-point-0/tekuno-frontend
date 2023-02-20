@@ -83,7 +83,7 @@ export const CampaignDetails = () => {
                 component="a"
                 href={`${location.origin}/admin/previous/${router.query.id}/preview`}
                 target="_blank"
-                referrerPolicy="no-referrer"
+                rel="norefferer"
                 leftIcon={<Eye size={14} />}
               >
                 Preview
@@ -104,6 +104,7 @@ export const CampaignDetails = () => {
               component="a"
               href={`${location.origin}/campaign/${router.query.id}`}
               target="_blank"
+              rel="norefferer"
               referrerPolicy="no-referrer"
               leftIcon={<ExternalLink size={14} />}
             >

@@ -165,6 +165,7 @@ export default function Profile() {
               <Anchor
                 href={`https://explorer.testnet.near.org/accounts/${getWalletAdress()}`}
                 target="_blank"
+                rel="norefferer"
                 sx={{
                   width: 240,
                   overflow: "hidden",
