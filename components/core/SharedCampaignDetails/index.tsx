@@ -21,7 +21,7 @@ import { DownloadBadge } from "../DownloadBadge";
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
-  collectedNfts?: Array<NftDto | UserNftDto>;
+  collectedNfts?: Array<UserNftDto>;
 }
 
 export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
@@ -30,22 +30,19 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 }) => {
   const { image, reward, nfts, documents } = getCampaignAssets(campaign);
   const isClient = useIsClient();
+  const collectedWithoutReward = collectedNfts.filter(({ nft_id }) => {
+    return nft_id !== reward?.id;
+  });
 
   const isCollected = (nft: NftDto) => {
-    return collectedNfts.some((collected) => {
-      if ("id" in collected) {
-        return collected.id === nft.id;
-      }
-
-      if ("nft_id" in collected) {
-        return collected.nft_id === nft.id;
-      }
+    return collectedNfts.some(({ nft_id }) => {
+      return nft_id === nft.id;
     });
   };
 
   const progress =
-    collectedNfts.length > 0
-      ? (collectedNfts?.length || 0) / (nfts?.length || 1)
+    collectedWithoutReward.length > 0
+      ? collectedWithoutReward.length / (nfts?.length || 1)
       : 0;
 
   return (

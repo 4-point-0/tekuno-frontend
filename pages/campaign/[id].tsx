@@ -38,6 +38,7 @@ export const Campaign: NextPage<IClaimPageProps> = ({ campaign }) => {
       queryParams: {
         account_id: user?.profile?.wallet_address as string,
         campaign_id: campaign?.id,
+        limit: campaign?.nfts?.length,
       },
     },
     {
