@@ -76,7 +76,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
           <Group>
             {documents?.map((document) => (
-              <DownloadBadge key={document.id} size="xl" document={document} />
+              <DownloadBadge key={document.id} size="sm" document={document} />
             ))}
           </Group>
         </>
