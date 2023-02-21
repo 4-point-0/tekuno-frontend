@@ -70,7 +70,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
               ? theme.colors.red[6]
               : previewUrl
               ? theme.white
-              : theme.colors.dark,
+              : theme.colors.dark[9],
             backgroundColor:
               previewUrl && theme.fn.rgba(theme.colors.gray[8], 0.5),
             maxWidth: "40%",

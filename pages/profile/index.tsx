@@ -89,7 +89,7 @@ export default function Profile() {
               radius={"xl"}
               color="indigo.0"
               sx={(theme) => ({
-                color: theme.colors.dark,
+                color: theme.colors.dark[9],
               })}
               onClick={openWallet}
             >
@@ -103,7 +103,7 @@ export default function Profile() {
               radius={"xl"}
               color="indigo.0"
               sx={(theme) => ({
-                color: theme.colors.dark,
+                color: theme.colors.dark[9],
               })}
               onClick={handleSignOut}
             >
@@ -188,7 +188,7 @@ export default function Profile() {
                   variant="light"
                   radius={"md"}
                   sx={(theme) => ({
-                    color: theme.colors.dark,
+                    color: theme.colors.dark[9],
                   })}
                   rightIcon={<ChevronRight size={20} />}
                 >

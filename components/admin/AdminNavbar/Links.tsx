@@ -34,7 +34,7 @@ const useStlyes = createStyles((theme, { active, child }: IButtonProps) => ({
     backgroundColor: active ? theme.colors.blue[0] : undefined,
   },
   label: {
-    color: active ? undefined : theme.colors.dark,
+    color: active ? undefined : theme.colors.dark[9],
     fontWeight: "normal",
   },
   leftIcon: {
