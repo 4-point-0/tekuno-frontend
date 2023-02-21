@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   Group,
-  Input,
   Stack,
   Switch,
   Text,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
 import React from "react";
@@ -21,7 +21,7 @@ import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
 import {
   CAMPAIGN_DOCUMENT_TYPES,
   CAMPAIGN_IMAGE_TYPES,
-  IFormValues,
+  ISharedFormValues,
   IUploadedFile,
 } from "../CampaignForm/FormContext";
 import { Dropzone } from "@/components/form/Dropzone";
@@ -36,15 +36,14 @@ import { useIsMutating } from "@tanstack/react-query";
 import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
 import { useRouter } from "next/router";
+import { getEditFormValidateInput } from "@/utils/validation";
 
 interface IEditCampaign {
   campaign: CampaignDto;
 }
 
-type EditFormValues = Omit<IFormValues, "poap" | "collectibles" | "reward">;
-
 export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
-  const form = useForm<EditFormValues>({
+  const form = useForm<ISharedFormValues>({
     validateInputOnChange: true,
     initialValues: {
       name: campaign.name,
@@ -61,19 +60,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
       },
       limitDate: Boolean(campaign.end_date),
     },
-    validate: {
-      name: (value: string) =>
-        value.length < 2 ? "Name must have at least 2 letters" : null,
-      startDate: (value: Date | null) =>
-        !value ? "Start date is required" : null,
-      endDate: (value: Date | null, { limitDate }: EditFormValues) => {
-        return limitDate && !value
-          ? "Date range must be selected if the campaing date is limited"
-          : null;
-      },
-      image: (value?: IUploadedFile) =>
-        value?.response ? null : "Image is required",
-    },
+    validate: getEditFormValidateInput(),
   });
 
   const isMutating = useIsMutating();
@@ -182,7 +169,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     };
   };
 
-  const handleSubmit = async (values: EditFormValues) => {
+  const handleSubmit = async (values: ISharedFormValues) => {
     const {
       image,
       name,
@@ -244,12 +231,8 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
           </Button>
         </Group>
 
-        <Field
-          withAsterisk
-          label="Edit your POD name"
-          error={form.getInputProps("name").error}
-        >
-          <Input
+        <Field withAsterisk label="Edit your POD name">
+          <TextInput
             mt="xs"
             placeholder="Campaign name"
             {...form.getInputProps("name")}

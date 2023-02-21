@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, Input, NumberInput } from "@mantine/core";
+import { ActionIcon, Box, Group, NumberInput, TextInput } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useIsMutating } from "@tanstack/react-query";
 import React from "react";
@@ -10,7 +10,6 @@ import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
-
 import { AssetPreview } from "./AssetPreview";
 import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
@@ -67,12 +66,8 @@ export const NFTForm: React.FC<INFTFormProps> = ({
 
   return (
     <>
-      <Field
-        label={`${label} name`}
-        withAsterisk
-        error={form.getInputProps(`${formKey}.name`).error}
-      >
-        <Input
+      <Field label={`${label} name`} withAsterisk>
+        <TextInput
           placeholder={`Fun name for your ${label}`}
           {...form.getInputProps(`${formKey}.name`)}
         />
@@ -89,6 +84,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
             dropzone={{
               onDrop: handleDrop,
               accept: NFT_ASSET_TYPES,
+              disabled: isMutating > 0,
             }}
           />
         )}
@@ -109,7 +105,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         label={`Describe your ${label}`}
         description="The description will be visible to users while claiming"
       >
-        <Input
+        <TextInput
           placeholder={`Minted as part of the ${form.values.name} digital collectible campaign.`}
           {...form.getInputProps(`${formKey}.description`)}
         />

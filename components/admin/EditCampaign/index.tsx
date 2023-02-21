@@ -12,11 +12,8 @@ import {
 import { AlertCircle } from "tabler-icons-react";
 
 import { NFTCard } from "@/components/core/NFTCard";
-import { IFormValues } from "../CampaignForm/FormContext";
 import { EditForm } from "./EditForm";
 import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
-
-type EditFormValues = Omit<IFormValues, "poap" | "collectibles" | "reward">;
 
 export const EditCampaign: React.FC = () => {
   const router = useRouter();
