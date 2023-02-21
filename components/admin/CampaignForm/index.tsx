@@ -5,18 +5,12 @@ import { Check, ChevronRight } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
-import {
-  CampaignType,
-  campaignTypeData,
-  ICampaignFormConfig,
-} from "@/enums/CampaignType";
+import { CampaignType, campaignTypeData } from "@/enums/CampaignType";
 import { DescriptionStep } from "./steps/DescriptionStep";
 import {
   FormProvider,
-  IFormAttribute,
   IFormNFT,
-  IFormValues,
-  IUploadedFile,
+  ICreateFormValues,
   NFT_INITIAL_VALUE,
   useForm,
 } from "./FormContext";
@@ -32,66 +26,7 @@ import {
 } from "@/services/api/admin/adminComponents";
 import { CreateNftDto, NftTypeDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
-
-function getNftValidator(enabled: boolean) {
-  if (!enabled) {
-    return {};
-  }
-
-  return {
-    name: (value?: string) => (!value ? "Name is required" : null),
-    file: (value?: IUploadedFile) =>
-      value?.response ? null : "Asset is required",
-    supply: (value?: number) =>
-      !value || value <= 0 ? "Supply should be greater than 0" : null,
-    attributes: (value?: Array<IFormAttribute>) => {
-      if (!value) {
-        return null;
-      }
-
-      return value.some(
-        ({ trait_type: key, value }: IFormAttribute) => key && !value
-      )
-        ? "Attribute values are required"
-        : null;
-    },
-  };
-}
-
-function getValidateInput(
-  step: number,
-  { hasPoap, hasRewards }: ICampaignFormConfig
-) {
-  if (step === 0)
-    return {
-      name: (value: string) =>
-        value.length < 2 ? "Name must have at least 2 letters" : null,
-      startDate: (value: Date | null) =>
-        !value ? "Start date is required" : null,
-      endDate: (value: Date | null, { limitDate }: IFormValues) => {
-        return limitDate && !value
-          ? "Date range must be selected if the campaing date is limited"
-          : null;
-      },
-      image: (value?: IUploadedFile) =>
-        value?.response ? null : "Image is required",
-    };
-
-  if (step === 2) {
-    return {
-      poap: getNftValidator(hasPoap),
-      collectibles: getNftValidator(hasRewards),
-    };
-  }
-
-  if (step === 3) {
-    return {
-      reward: getNftValidator(hasRewards),
-    };
-  }
-
-  return {};
-}
+import { getFormValidateInput } from "@/utils/validation";
 
 function getCreateNftDto(formValue: IFormNFT, nftTypeId: string): CreateNftDto {
   return {
@@ -109,7 +44,7 @@ function getCreateNftDto(formValue: IFormNFT, nftTypeId: string): CreateNftDto {
 }
 
 function getNftsFromForm(
-  { poap, reward, collectibles }: IFormValues,
+  { poap, reward, collectibles }: ICreateFormValues,
   nftTypes: Array<NftTypeDto>
 ) {
   const nfts: Array<CreateNftDto> = [];
@@ -170,7 +105,7 @@ export const CampaignForm = () => {
       poap: hasPoap ? NFT_INITIAL_VALUE : undefined,
       reward: hasRewards ? NFT_INITIAL_VALUE : undefined,
     },
-    validate: getValidateInput(active, { hasPoap, hasRewards }),
+    validate: getFormValidateInput(active, { hasPoap, hasRewards }),
   });
 
   const handleStepClick = (step: number) => {
@@ -198,7 +133,7 @@ export const CampaignForm = () => {
     }
   };
 
-  const handleSubmit = async (values: IFormValues) => {
+  const handleSubmit = async (values: ICreateFormValues) => {
     form.validate();
 
     if (!form.isValid) {

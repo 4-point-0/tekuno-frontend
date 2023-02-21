@@ -1,20 +1,15 @@
+import { ActionIcon, Box, Group, NumberInput, TextInput } from "@mantine/core";
+import { FileWithPath } from "@mantine/dropzone";
+import { useIsMutating } from "@tanstack/react-query";
+import React from "react";
+import { Trash } from "tabler-icons-react";
+
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
-import {
-  ActionIcon,
-  Box,
-  Group,
-  Input,
-  NumberInput,
-  Select,
-} from "@mantine/core";
-import { FileWithPath } from "@mantine/dropzone";
-import React from "react";
-import { Trash } from "tabler-icons-react";
 import { AssetPreview } from "./AssetPreview";
 import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
@@ -33,6 +28,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
   const form = useFormContext();
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove();
+  const isMutating = useIsMutating();
 
   const label = isReward ? "Reward" : "POD";
 
@@ -70,12 +66,8 @@ export const NFTForm: React.FC<INFTFormProps> = ({
 
   return (
     <>
-      <Field
-        label={`${label} name`}
-        withAsterisk
-        error={form.getInputProps(`${formKey}.name`).error}
-      >
-        <Input
+      <Field label={`${label} name`} withAsterisk>
+        <TextInput
           placeholder={`Fun name for your ${label}`}
           {...form.getInputProps(`${formKey}.name`)}
         />
@@ -85,12 +77,14 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         {!fileValue && (
           <Dropzone
             title="Upload NFT Image, Video or GIF"
-            description="Darg’n’ drop the NFT here. Max file size 20 MB. Supported formats are PNG, JPEG, GIF and MP4"
+            description="Drag’n’ drop the NFT here. Max file size 20 MB. Supported formats are PNG, JPEG, GIF and MP4"
             label="Select Asset"
+            isLoading={uploadFile.isLoading}
             error={fileError}
             dropzone={{
               onDrop: handleDrop,
               accept: NFT_ASSET_TYPES,
+              disabled: isMutating > 0,
             }}
           />
         )}
@@ -111,7 +105,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         label={`Describe your ${label}`}
         description="The description will be visible to users while claiming"
       >
-        <Input
+        <TextInput
           placeholder={`Minted as part of the ${form.values.name} digital collectible campaign.`}
           {...form.getInputProps(`${formKey}.description`)}
         />

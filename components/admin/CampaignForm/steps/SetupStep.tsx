@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Group, Input, Stack, Switch } from "@mantine/core";
+import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
 import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
@@ -71,7 +71,10 @@ export const SetupStep = () => {
         description="This is the name of the POD campaign "
         error={form.getInputProps("name").error}
       >
-        <Input placeholder="Campaign name" {...form.getInputProps("name")} />
+        <TextInput
+          placeholder="Campaign name"
+          {...form.getInputProps("name")}
+        />
       </Field>
 
       <Field
@@ -117,6 +120,7 @@ export const SetupStep = () => {
           label="Select Image"
           previewUrl={getImageUrl(form.values.image?.response)}
           error={form.getInputProps("image").error}
+          isLoading={uploadFile.isLoading}
           dropzone={{
             multiple: false,
             accept: CAMPAIGN_IMAGE_TYPES,

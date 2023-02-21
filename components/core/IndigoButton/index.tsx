@@ -16,13 +16,14 @@ const useStyles = createStyles((theme) => ({
     },
   },
   label: {
-    color: theme.colors.dark,
+    color: theme.colors.dark[9],
   },
-  leftIcon: {
-    color: theme.colors.dark,
-  },
-  rightIcon: {
-    color: theme.colors.dark,
+  icon: {
+    color: theme.colors.dark[9],
+
+    svg: {
+      stroke: theme.colors.dark[9],
+    },
   },
 }));
 

@@ -125,7 +125,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
           variant="light"
           radius={"md"}
           sx={(theme) => ({
-            color: theme.colors.dark,
+            color: theme.colors.dark[9],
           })}
           rightIcon={<ChevronRight size={20} />}
         >

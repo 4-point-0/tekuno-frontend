@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   Group,
-  Input,
   Stack,
   Switch,
   Text,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
 import React from "react";
@@ -21,7 +21,7 @@ import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
 import {
   CAMPAIGN_DOCUMENT_TYPES,
   CAMPAIGN_IMAGE_TYPES,
-  IFormValues,
+  ISharedFormValues,
   IUploadedFile,
 } from "../CampaignForm/FormContext";
 import { Dropzone } from "@/components/form/Dropzone";
@@ -36,15 +36,14 @@ import { useIsMutating } from "@tanstack/react-query";
 import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
 import { useRouter } from "next/router";
+import { getEditFormValidateInput } from "@/utils/validation";
 
 interface IEditCampaign {
   campaign: CampaignDto;
 }
 
-type EditFormValues = Omit<IFormValues, "poap" | "collectibles" | "reward">;
-
 export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
-  const form = useForm<EditFormValues>({
+  const form = useForm<ISharedFormValues>({
     validateInputOnChange: true,
     initialValues: {
       name: campaign.name,
@@ -61,19 +60,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
       },
       limitDate: Boolean(campaign.end_date),
     },
-    validate: {
-      name: (value: string) =>
-        value.length < 2 ? "Name must have at least 2 letters" : null,
-      startDate: (value: Date | null) =>
-        !value ? "Start date is required" : null,
-      endDate: (value: Date | null, { limitDate }: EditFormValues) => {
-        return limitDate && !value
-          ? "Date range must be selected if the campaing date is limited"
-          : null;
-      },
-      image: (value?: IUploadedFile) =>
-        value?.response ? null : "Image is required",
-    },
+    validate: getEditFormValidateInput(),
   });
 
   const isMutating = useIsMutating();
@@ -182,7 +169,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     };
   };
 
-  const handleSubmit = async (values: EditFormValues) => {
+  const handleSubmit = async (values: ISharedFormValues) => {
     const {
       image,
       name,
@@ -219,10 +206,11 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
         <Box my="xl">
           <Dropzone
             title="Upload Image"
-            description="Darg’n’ drop the campaign photo here. File size preferable between x and xy .png"
+            description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
             label="Select Image"
             previewUrl={getImageUrl(form.values.image?.response)}
             error={form.getInputProps("image").error}
+            isLoading={isMutating > 0}
             dropzone={{
               multiple: false,
               accept: CAMPAIGN_IMAGE_TYPES,
@@ -243,12 +231,8 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
           </Button>
         </Group>
 
-        <Field
-          withAsterisk
-          label="Edit your POD name"
-          error={form.getInputProps("name").error}
-        >
-          <Input
+        <Field withAsterisk label="Edit your POD name">
+          <TextInput
             mt="xs"
             placeholder="Campaign name"
             {...form.getInputProps("name")}
@@ -306,15 +290,13 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
           />
         </Field>
 
-        <Field
-          display="none"
-          label="Upload files related to your campaign (optional)"
-        >
+        <Field label="Upload files related to your campaign (optional)">
           <Group mt="sm" grow align="flex-start" spacing="xl">
             <Dropzone
               title="Upload Documents"
-              description="Darg’n’ drop the campaign documents here. File size up to 5 MB? (Limit set by devs)"
+              description="Drag’n’ drop the campaign PDF documents here. Max file size is 20 MB."
               label="Select Document"
+              isLoading={isMutating > 0}
               dropzone={{
                 onDrop: handleDocumentsDrop,
                 multiple: true,

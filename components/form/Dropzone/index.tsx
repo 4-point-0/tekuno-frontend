@@ -22,6 +22,7 @@ interface IDropzoneProps extends Partial<DropzoneProps> {
   error?: string;
   previewUrl?: string;
   formValue?: Array<FileWithPath>;
+  isLoading: boolean;
   dropzone: Omit<DropzoneProps, "children">;
 }
 
@@ -32,6 +33,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
   error,
   previewUrl,
   dropzone,
+  isLoading,
 }) => {
   const openRef = useRef<() => void>(null);
   const theme = useMantineTheme();
@@ -68,7 +70,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
               ? theme.colors.red[6]
               : previewUrl
               ? theme.white
-              : theme.colors.dark,
+              : theme.colors.dark[9],
             backgroundColor:
               previewUrl && theme.fn.rgba(theme.colors.gray[8], 0.5),
             maxWidth: "40%",
@@ -111,7 +113,9 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
           }}
         >
           <Group position="center">
-            <Button onClick={() => openRef.current?.()}>{label}</Button>
+            <Button onClick={() => openRef.current?.()} loading={isLoading}>
+              {label}
+            </Button>
           </Group>
         </Box>
       </MantineDropzone>

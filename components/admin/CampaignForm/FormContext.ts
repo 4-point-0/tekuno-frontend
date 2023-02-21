@@ -45,7 +45,7 @@ export interface IFormNFT {
   supply: number;
 }
 
-export interface IFormValues {
+export interface ISharedFormValues {
   name: string;
   limitDate: boolean;
   startDate: Date | null;
@@ -54,10 +54,13 @@ export interface IFormValues {
   description?: string;
   additionalDescription?: string;
   documents: Array<IUploadedFile>;
+}
+
+export interface ICreateFormValues extends ISharedFormValues {
   reward?: Partial<IFormNFT>;
   poap?: Partial<IFormNFT>;
   collectibles: Array<Partial<IFormNFT>>;
 }
 
 export const [FormProvider, useFormContext, useForm] =
-  createFormContext<IFormValues>();
+  createFormContext<ICreateFormValues>();

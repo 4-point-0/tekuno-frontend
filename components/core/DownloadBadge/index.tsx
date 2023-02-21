@@ -1,11 +1,14 @@
-import { ActionIcon, MantineSize } from "@mantine/core";
+import { MantineSize } from "@mantine/core";
 import React from "react";
 import { Download } from "tabler-icons-react";
 import saveAs from "file-saver";
 
 import { FileDto } from "@/services/api/admin/adminSchemas";
-import { IndigoBadge } from "../IndigoBadge";
-import { fetchCampaignUserControllerGetNftMedia } from "@/services/api/client/clientComponents";
+import {
+  fetchCampaignUserControllerGetNftMedia,
+  useCampaignUserControllerGetNftMedia,
+} from "@/services/api/client/clientComponents";
+import { IndigoButton } from "../IndigoButton";
 
 interface IDownloadBadgeProps {
   document: FileDto;
@@ -14,29 +17,32 @@ interface IDownloadBadgeProps {
 
 export const DownloadBadge: React.FC<IDownloadBadgeProps> = ({
   document,
-  size = "lg",
+  size = "xs",
 }) => {
-  const handleDownload = async () => {
-    const media = await fetchCampaignUserControllerGetNftMedia({
+  const { refetch, isFetching } = useCampaignUserControllerGetNftMedia(
+    {
       pathParams: { fileId: document.id },
-    });
+    },
+    {
+      enabled: false,
+      onSuccess: (media) => {
+        saveAs(media as Blob, document.name);
+      },
+    }
+  );
 
-    saveAs(media as Blob, document.name);
+  const handleDownload = async () => {
+    refetch();
   };
 
   return (
-    <IndigoBadge
-      key={document.name}
-      onClick={handleDownload}
-      sx={{ cursor: "pointer" }}
+    <IndigoButton
+      leftIcon={<Download size={14} />}
       size={size}
-      leftSection={
-        <ActionIcon variant="transparent" color="dark">
-          <Download size={14} />
-        </ActionIcon>
-      }
+      onClick={handleDownload}
+      loading={isFetching}
     >
       {document.name}
-    </IndigoBadge>
+    </IndigoButton>
   );
 };

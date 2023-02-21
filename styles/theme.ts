@@ -47,6 +47,7 @@ export const tekunoTheme: MantineThemeOverride = {
     },
     Textarea: {
       defaultProps: {
+        autosize: true,
         variant: "filled",
       },
     },

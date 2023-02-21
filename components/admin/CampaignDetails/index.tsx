@@ -27,7 +27,7 @@ import { NftDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
 import { StatusButtons } from "./StatusButtons";
 import { DownloadBadge } from "@/components/core/DownloadBadge";
-import { getCampaignAssets } from "@/utils/campaign";
+import { getCampaignAssets, hasEnded } from "@/utils/campaign";
 import { formatDateRange } from "@/utils/date";
 
 const stats = [
@@ -53,6 +53,8 @@ export const CampaignDetails = () => {
 
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
+  const isEnded = campaign && hasEnded(campaign);
+
   return (
     <Container>
       <Stack>
@@ -77,7 +79,7 @@ export const CampaignDetails = () => {
         </Box>
 
         <Group position="right">
-          {campaign?.status === "Created" && (
+          {campaign?.status === "Created" && !isEnded && (
             <>
               <IndigoButton
                 component="a"
@@ -112,7 +114,7 @@ export const CampaignDetails = () => {
             </IndigoButton>
           )}
 
-          <StatusButtons status={campaign?.status} />
+          {campaign && <StatusButtons campaign={campaign} />}
         </Group>
 
         {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
