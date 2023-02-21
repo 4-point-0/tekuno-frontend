@@ -20,8 +20,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       pathParams: { nftId },
     });
 
+    if (initialData.nft_type.name === "reward") {
+      throw new Error("Rewards can't be claimed");
+    }
+
     return { props: { initialData } };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return {
       notFound: true,
     };
