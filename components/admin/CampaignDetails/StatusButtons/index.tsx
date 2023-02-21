@@ -12,9 +12,10 @@ import {
 } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
+import { hasEnded } from "@/utils/campaign";
 
 interface IStatusButtonsProps {
-  status?: CampaignDto["status"];
+  campaign: CampaignDto;
 }
 
 type MutableStatus = "Started" | "Paused" | "Ended";
@@ -58,10 +59,12 @@ const getStatusTexts = (
   };
 };
 
-export const StatusButtons: React.FC<IStatusButtonsProps> = ({ status }) => {
+export const StatusButtons: React.FC<IStatusButtonsProps> = ({ campaign }) => {
   const router = useRouter();
   const changeStatus = useCampaignControllerPause({});
   const isMutating = useIsMutating();
+
+  const { status } = campaign;
 
   const { refetch } = useCampaignControllerFindOne({
     pathParams: {
@@ -71,6 +74,7 @@ export const StatusButtons: React.FC<IStatusButtonsProps> = ({ status }) => {
   const { refetch: refetchAll } = useCampaignControllerFindAll({});
 
   const disabled = isMutating > 0;
+  const isEnded = hasEnded(campaign);
 
   const updateStatus = async (newStatus: MutableStatus) => {
     notifications.create({ title: "Changing campaign status" });
@@ -146,6 +150,14 @@ export const StatusButtons: React.FC<IStatusButtonsProps> = ({ status }) => {
     </Button>
   );
 
+  if (isEnded) {
+    return (
+      <Badge color="dark" size="xl">
+        Ended
+      </Badge>
+    );
+  }
+
   if (status === "Created") {
     return <>{StartButton}</>;
   }
@@ -165,14 +177,6 @@ export const StatusButtons: React.FC<IStatusButtonsProps> = ({ status }) => {
         {StartButton}
         {EndButton}
       </>
-    );
-  }
-
-  if (status === "Ended") {
-    return (
-      <Badge color="dark" size="xl">
-        {status}
-      </Badge>
     );
   }
 

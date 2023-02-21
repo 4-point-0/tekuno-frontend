@@ -1,4 +1,5 @@
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
+import dayjs from "dayjs";
 
 export const getCampaignAssets = (campaign?: CampaignDto) => {
   const image = campaign?.files?.find(({ tags }) => tags.includes("image"));
@@ -21,4 +22,13 @@ export const getCampaignAssets = (campaign?: CampaignDto) => {
     reward,
     nfts,
   };
+};
+
+export const hasEnded = ({ status, end_date }: CampaignDto) => {
+  return (
+    status === "Ended" ||
+    (end_date
+      ? dayjs(end_date).isBefore(dayjs(new Date()).endOf("day"))
+      : false)
+  );
 };
