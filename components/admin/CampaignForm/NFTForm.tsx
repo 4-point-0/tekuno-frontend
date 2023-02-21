@@ -1,20 +1,16 @@
+import { ActionIcon, Box, Group, Input, NumberInput } from "@mantine/core";
+import { FileWithPath } from "@mantine/dropzone";
+import { useIsMutating } from "@tanstack/react-query";
+import React from "react";
+import { Trash } from "tabler-icons-react";
+
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
-import {
-  ActionIcon,
-  Box,
-  Group,
-  Input,
-  NumberInput,
-  Select,
-} from "@mantine/core";
-import { FileWithPath } from "@mantine/dropzone";
-import React from "react";
-import { Trash } from "tabler-icons-react";
+
 import { AssetPreview } from "./AssetPreview";
 import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
@@ -33,6 +29,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
   const form = useFormContext();
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove();
+  const isMutating = useIsMutating();
 
   const label = isReward ? "Reward" : "POD";
 
@@ -85,8 +82,9 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         {!fileValue && (
           <Dropzone
             title="Upload NFT Image, Video or GIF"
-            description="Darg’n’ drop the NFT here. Max file size 20 MB. Supported formats are PNG, JPEG, GIF and MP4"
+            description="Drag’n’ drop the NFT here. Max file size 20 MB. Supported formats are PNG, JPEG, GIF and MP4"
             label="Select Asset"
+            isLoading={uploadFile.isLoading}
             error={fileError}
             dropzone={{
               onDrop: handleDrop,

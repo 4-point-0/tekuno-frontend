@@ -117,6 +117,7 @@ export const SetupStep = () => {
           label="Select Image"
           previewUrl={getImageUrl(form.values.image?.response)}
           error={form.getInputProps("image").error}
+          isLoading={uploadFile.isLoading}
           dropzone={{
             multiple: false,
             accept: CAMPAIGN_IMAGE_TYPES,

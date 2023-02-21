@@ -219,10 +219,11 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
         <Box my="xl">
           <Dropzone
             title="Upload Image"
-            description="Darg’n’ drop the campaign photo here. File size preferable between x and xy .png"
+            description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
             label="Select Image"
             previewUrl={getImageUrl(form.values.image?.response)}
             error={form.getInputProps("image").error}
+            isLoading={isMutating > 0}
             dropzone={{
               multiple: false,
               accept: CAMPAIGN_IMAGE_TYPES,
@@ -306,15 +307,13 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
           />
         </Field>
 
-        <Field
-          display="none"
-          label="Upload files related to your campaign (optional)"
-        >
+        <Field label="Upload files related to your campaign (optional)">
           <Group mt="sm" grow align="flex-start" spacing="xl">
             <Dropzone
               title="Upload Documents"
-              description="Darg’n’ drop the campaign documents here. File size up to 5 MB? (Limit set by devs)"
+              description="Drag’n’ drop the campaign PDF documents here. Max file size is 20 MB."
               label="Select Document"
+              isLoading={isMutating > 0}
               dropzone={{
                 onDrop: handleDocumentsDrop,
                 multiple: true,

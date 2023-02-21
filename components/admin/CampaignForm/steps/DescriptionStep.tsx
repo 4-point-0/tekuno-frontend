@@ -94,8 +94,9 @@ export const DescriptionStep = () => {
         <Group mt="sm" grow align="flex-start" spacing="xl">
           <Dropzone
             title="Upload Documents"
-            description="Darg’n’ drop the campaign PDF documents here. Max file size is 20 MB."
+            description="Drag’n’ drop the campaign PDF documents here. Max file size is 20 MB."
             label="Select Document"
+            isLoading={uploadFile.isLoading}
             dropzone={{
               onDrop: handleDrop,
               multiple: true,
