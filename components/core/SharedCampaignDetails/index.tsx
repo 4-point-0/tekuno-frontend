@@ -72,7 +72,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
       {documents?.length !== 0 && (
         <>
-          <Title order={3}>Project documents</Title>
+          <Title order={3}>Documents</Title>
 
           <Group>
             {documents?.map((document) => (
