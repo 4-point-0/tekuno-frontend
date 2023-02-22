@@ -1,9 +1,26 @@
-import { AppLayout } from "@/components/layout/AppLayout";
 import { MantineProvider } from "@mantine/core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 
-export default function App({ Component, pageProps }: AppProps) {
+const queryClient = new QueryClient();
+
+import { AppLayout } from "@/components/layout/AppLayout";
+import { AdminGuard } from "@/context/AdminGuard";
+import { ModalsProvider } from "@mantine/modals";
+import { tekunoTheme } from "@/styles/theme";
+import { NotificationsProvider } from "@mantine/notifications";
+import { useRouter } from "next/router";
+
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
+  const router = useRouter();
+
+  const isAdmin = router.route.startsWith("/admin");
+
   return (
     <>
       <Head>
@@ -14,17 +31,29 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          colorScheme: "light",
-        }}
-      >
-        <AppLayout>
-          <Component {...pageProps} />
-        </AppLayout>
-      </MantineProvider>
+      <SessionProvider session={session}>
+        <AdminGuard>
+          <QueryClientProvider client={queryClient}>
+            <MantineProvider
+              withGlobalStyles
+              withNormalizeCSS
+              theme={
+                isAdmin
+                  ? tekunoTheme
+                  : { ...tekunoTheme, primaryColor: "violet" }
+              }
+            >
+              <ModalsProvider>
+                <NotificationsProvider>
+                  <AppLayout>
+                    <Component {...pageProps} />
+                  </AppLayout>
+                </NotificationsProvider>
+              </ModalsProvider>
+            </MantineProvider>
+          </QueryClientProvider>
+        </AdminGuard>
+      </SessionProvider>
     </>
   );
 }

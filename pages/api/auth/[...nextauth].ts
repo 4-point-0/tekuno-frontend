@@ -1,0 +1,44 @@
+import NextAuth, { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import fetch from "isomorphic-fetch";
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+  ],
+  theme: {
+    colorScheme: "light",
+  },
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account?.access_token) {
+        const res = await fetch(
+          "http://tekunodevapi-env.eba-wdcsmcsf.eu-central-1.elasticbeanstalk.com/api/v1/google/auth",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+              token: account?.access_token,
+            }),
+          }
+        );
+
+        token.res = await res.json();
+      }
+
+      return token;
+    },
+    async session({ session, token, user }) {
+      session.token = (token.res as any).token;
+      return session;
+    },
+  },
+};
+
+export default NextAuth(authOptions);
