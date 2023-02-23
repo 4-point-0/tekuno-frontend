@@ -1,16 +1,6 @@
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 import { NftDto } from "@/services/api/admin/adminSchemas";
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Flex,
-  Group,
-  Image,
-  Text,
-  ThemeIcon,
-  Title,
-} from "@mantine/core";
+import { Badge, Box, Flex, Group, Text, ThemeIcon, Title } from "@mantine/core";
 import React, { PropsWithChildren } from "react";
 import { Check, Lock, Minus } from "tabler-icons-react";
 

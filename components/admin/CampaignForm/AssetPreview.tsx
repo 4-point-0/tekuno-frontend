@@ -22,8 +22,12 @@ export const AssetPreview: React.FC<IAssetPreview> = ({
 
   return (
     <Box
-      opacity={isCollected === false ? 0.5 : 1}
-      sx={{ borderRadius: 16, overflow: "hidden" }}
+      opacity={isCollected ? 1 : 0.5}
+      sx={{
+        borderRadius: 16,
+        overflow: "hidden",
+        filter: isCollected === undefined ? "blur(1px)" : "none",
+      }}
     >
       {imageTypes.includes(file.mime_type) && (
         <Image src={file.url} alt={file.name} />
