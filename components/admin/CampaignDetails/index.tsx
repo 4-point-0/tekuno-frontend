@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Alert,
   Box,
   Button,
   Container,
@@ -15,7 +16,7 @@ import {
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import React from "react";
-import { ExternalLink, Eye, Pencil } from "tabler-icons-react";
+import { AlertTriangle, ExternalLink, Eye, Pencil } from "tabler-icons-react";
 
 import { StatBox } from "./StatBox";
 import { IndigoButton } from "@/components/core/IndigoButton";
@@ -29,6 +30,7 @@ import { StatusButtons } from "./StatusButtons";
 import { DownloadBadge } from "@/components/core/DownloadBadge";
 import { getCampaignAssets, hasEnded } from "@/utils/campaign";
 import { formatDateRange } from "@/utils/date";
+import { CampaignStatus } from "../CampaignStatus";
 
 const stats = [
   {
@@ -66,7 +68,12 @@ export const CampaignDetails = () => {
 
         <Box>
           <Skeleton visible={isLoading}>
-            <Title order={2}>{campaign?.name}</Title>
+            <Group>
+              {campaign && (
+                <CampaignStatus status={campaign?.status} size="lg" />
+              )}
+              <Title order={2}>{campaign?.name}</Title>
+            </Group>
           </Skeleton>
           <Skeleton visible={isLoading}>
             <Text c="dimmed">
@@ -152,6 +159,17 @@ export const CampaignDetails = () => {
             <DownloadAll campaign={campaign} nfts={nfts as Array<NftDto>} />
           )}
         </Group>
+
+        {!isEnded && campaign?.status === "Created" && (
+          <Alert
+            icon={<AlertTriangle />}
+            title="Campaign not started!"
+            color="orange"
+            radius="md"
+          >
+            Start campaign so digital collectibles can be claimed.
+          </Alert>
+        )}
 
         <Grid align="center">
           {reward && (
