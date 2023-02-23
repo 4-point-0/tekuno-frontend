@@ -87,7 +87,6 @@ export const SetupStep = () => {
         withAsterisk
         label="Set up your POD"
         description="This is the name of the POD campaign "
-        error={form.getInputProps("name").error}
       >
         <TextInput
           placeholder="Campaign name"
@@ -126,6 +125,7 @@ export const SetupStep = () => {
                 placeholder="Select start date"
                 icon={<Calendar size={16} />}
                 dayStyle={dayStyle}
+                {...form.getInputProps("startDate")}
               />
             )}
           </Group>
