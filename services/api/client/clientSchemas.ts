@@ -126,6 +126,7 @@ export type NearNftAttributes = {
 export type UserNftDto = {
   nft_id: string;
   user_id: string;
+  is_burned: boolean;
   campaign?: CampaignDto;
   nft_type: NftTypeDto;
   name: string;

@@ -1,9 +1,10 @@
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
-import { Badge, MantineColor } from "@mantine/core";
+import { Badge, MantineColor, MantineSize } from "@mantine/core";
 import React from "react";
 
 interface ICampaignStatusProps {
   status: CampaignDto["status"];
+  size?: MantineSize;
 }
 
 const COLORS: Record<CampaignDto["status"], MantineColor> = {
@@ -13,6 +14,13 @@ const COLORS: Record<CampaignDto["status"], MantineColor> = {
   Paused: "pink",
 };
 
-export const CampaignStatus: React.FC<ICampaignStatusProps> = ({ status }) => {
-  return <Badge color={COLORS[status]}>{status}</Badge>;
+export const CampaignStatus: React.FC<ICampaignStatusProps> = ({
+  status,
+  size,
+}) => {
+  return (
+    <Badge variant="filled" color={COLORS[status]} size={size}>
+      {status}
+    </Badge>
+  );
 };

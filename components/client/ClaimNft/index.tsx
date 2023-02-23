@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   MediaQuery,
@@ -10,8 +11,9 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
-import { ChevronRight } from "tabler-icons-react";
+import React, { useMemo, useState } from "react";
+import ConfettiExplosion from "react-confetti-explosion";
+import { ChevronRight, Flame } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
 import {
@@ -33,6 +35,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
   const { user } = useRamper();
   const isClient = useIsClient();
   const drop = useNftControllerDropNft({ retry: false });
+  const [claimed, setClaimed] = useState(false);
   const { refetch: refechUserCampaigns } = useCampaignUserControllerFindAll(
     { queryParams: { account_id: user?.profile?.wallet_address as string } },
     { enabled: false, refetchOnWindowFocus: false }
@@ -89,6 +92,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
         },
       });
 
+      setClaimed(true);
       refetch();
       refechUserCampaigns();
     } else {
@@ -117,6 +121,8 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
 
   return (
     <>
+      {claimed && <ConfettiExplosion />}
+
       <Stack align="start">
         <Button
           key={nft?.campaign?.id}
@@ -157,9 +163,26 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
             <Title order={2}>{nft?.name}</Title>
           </Stack>
           <Stack spacing={4}>
-            <Title order={3}>Description</Title>{" "}
+            <Title order={3}>Description</Title>
             <Text fz={"md"}>{nft?.description}</Text>
           </Stack>
+
+          {userNft?.is_burned && (
+            <Box>
+              <Badge
+                size="xl"
+                variant="filled"
+                color="red"
+                leftSection={
+                  <Box sx={{ lineHeight: "14px" }}>
+                    <Flame size={14} />
+                  </Box>
+                }
+              >
+                Burned
+              </Badge>
+            </Box>
+          )}
 
           {Boolean(nft?.properties?.attributes.length) && (
             <Stack sx={{ width: "100%" }} align={"start"} spacing={"lg"}>

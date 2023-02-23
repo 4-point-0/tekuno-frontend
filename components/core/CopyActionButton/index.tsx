@@ -1,13 +1,24 @@
-import { ActionIcon, CopyButton, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  ActionIconStylesParams,
+  CopyButton,
+  MantineColor,
+  Styles,
+  Tooltip,
+} from "@mantine/core";
 import React from "react";
 import { Check, Copy } from "tabler-icons-react";
 
 interface ICopyActionButtonProps {
   value: string;
+  color?: MantineColor;
+  styles?: Styles<"root", ActionIconStylesParams>;
 }
 
 export const CopyActionButton: React.FC<ICopyActionButtonProps> = ({
   value,
+  color = "primary",
+  styles = {},
 }) => {
   return (
     <CopyButton value={value} timeout={2000}>
@@ -16,10 +27,15 @@ export const CopyActionButton: React.FC<ICopyActionButtonProps> = ({
           <ActionIcon
             radius="xl"
             variant="light"
-            color={copied ? "teal" : "primary"}
+            color={copied ? "teal" : color}
             onClick={copy}
+            styles={styles}
           >
-            {copied ? <Check size={16} /> : <Copy size={16} />}
+            {copied ? (
+              <Check size={16} />
+            ) : (
+              <Copy color={color === "indigo" ? "#000" : undefined} size={16} />
+            )}
           </ActionIcon>
         </Tooltip>
       )}
