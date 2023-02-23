@@ -16,10 +16,11 @@ import { getCampaignAssets } from "@/utils/campaign";
 import { getImageUrl } from "@/utils/file";
 import { formatDateRange } from "@/utils/date";
 import { NFTCard } from "../NFTCard";
-import { UserDto, UserNftDto } from "@/services/api/client/clientSchemas";
+import { UserDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { DownloadBadge } from "../DownloadBadge";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
+import Link from "next/link";
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
@@ -60,6 +61,16 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
     return collectedNfts?.results.some(({ nft_id }) => {
       return nft_id === nft.id;
     });
+  };
+
+  const isNFTBurned = (nft: NftDto) => {
+    if (isPreview) {
+      return false;
+    }
+
+    return collectedNfts?.results.find(({ nft_id }) => {
+      return nft_id === nft.id;
+    })?.is_burned;
   };
 
   const hasReward = useMemo(() => {
@@ -145,9 +156,9 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
         )}
         {nfts?.map((nft) => (
           <NFTCard
-            key={nft.file.id}
             nft={nft}
             isCollected={isNFTCollected(nft)}
+            isBurned={isNFTBurned(nft)}
           />
         ))}
       </Stack>

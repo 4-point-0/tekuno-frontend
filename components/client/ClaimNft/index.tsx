@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   MediaQuery,
@@ -11,7 +12,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
-import { ChevronRight } from "tabler-icons-react";
+import { ChevronRight, Flame } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
 import {
@@ -157,9 +158,26 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
             <Title order={2}>{nft?.name}</Title>
           </Stack>
           <Stack spacing={4}>
-            <Title order={3}>Description</Title>{" "}
+            <Title order={3}>Description</Title>
             <Text fz={"md"}>{nft?.description}</Text>
           </Stack>
+
+          {userNft?.is_burned && (
+            <Box>
+              <Badge
+                size="xl"
+                variant="filled"
+                color="red"
+                leftSection={
+                  <Box sx={{ lineHeight: "14px" }}>
+                    <Flame size={14} />
+                  </Box>
+                }
+              >
+                Burned
+              </Badge>
+            </Box>
+          )}
 
           {Boolean(nft?.properties?.attributes.length) && (
             <Stack sx={{ width: "100%" }} align={"start"} spacing={"lg"}>
