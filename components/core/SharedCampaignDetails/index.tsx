@@ -156,6 +156,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
         )}
         {nfts?.map((nft) => (
           <NFTCard
+            key={nft.id}
             nft={nft}
             isCollected={isNFTCollected(nft)}
             isBurned={isNFTBurned(nft)}

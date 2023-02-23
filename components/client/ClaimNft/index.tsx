@@ -11,7 +11,8 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import ConfettiExplosion from "react-confetti-explosion";
 import { ChevronRight, Flame } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
@@ -34,6 +35,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
   const { user } = useRamper();
   const isClient = useIsClient();
   const drop = useNftControllerDropNft({ retry: false });
+  const [claimed, setClaimed] = useState(false);
   const { refetch: refechUserCampaigns } = useCampaignUserControllerFindAll(
     { queryParams: { account_id: user?.profile?.wallet_address as string } },
     { enabled: false, refetchOnWindowFocus: false }
@@ -90,6 +92,7 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
         },
       });
 
+      setClaimed(true);
       refetch();
       refechUserCampaigns();
     } else {
@@ -118,6 +121,8 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
 
   return (
     <>
+      {claimed && <ConfettiExplosion />}
+
       <Stack align="start">
         <Button
           key={nft?.campaign?.id}
