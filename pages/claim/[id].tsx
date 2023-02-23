@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       throw new Error("Rewards can't be claimed");
     }
 
-    return { props: { initialData } };
+    return { props: { initialData, key: nftId } };
   } catch (error) {
     console.error(error);
     return {
@@ -40,7 +40,7 @@ const ClaimPage: NextPage<IClaimPageProps> = ({ initialData }) => {
   );
 
   return (
-    <ClientContainer>
+    <ClientContainer key={nft?.id}>
       {nft && <ClaimNft key={nft.id} nft={nft} />}
     </ClientContainer>
   );

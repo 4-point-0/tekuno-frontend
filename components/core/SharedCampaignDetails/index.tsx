@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import {
   Box,
   Stack,
@@ -8,6 +8,7 @@ import {
   Group,
   Badge,
   Progress,
+  Skeleton,
 } from "@mantine/core";
 
 import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
@@ -15,35 +16,107 @@ import { getCampaignAssets } from "@/utils/campaign";
 import { getImageUrl } from "@/utils/file";
 import { formatDateRange } from "@/utils/date";
 import { NFTCard } from "../NFTCard";
-import { UserNftDto } from "@/services/api/client/clientSchemas";
+import { UserDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { DownloadBadge } from "../DownloadBadge";
+import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
+import Link from "next/link";
+
+interface IConditionalLinkProps extends PropsWithChildren {
+  href: string;
+  enabled?: boolean;
+}
+
+const ConditionalLink: React.FC<IConditionalLinkProps> = ({
+  enabled,
+  href,
+  children,
+}) => {
+  if (!enabled) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Link href={href} style={{ textDecoration: "none" }}>
+      {children}
+    </Link>
+  );
+};
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
-  collectedNfts?: Array<UserNftDto>;
+  user?: UserDto | null;
+  isPreview?: boolean;
 }
 
 export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
   campaign,
-  collectedNfts = [],
+  user,
+  isPreview,
 }) => {
   const { image, reward, nfts, documents } = getCampaignAssets(campaign);
   const isClient = useIsClient();
-  const collectedWithoutReward = collectedNfts.filter(({ nft_id }) => {
+
+  const { data: collectedNfts, isLoading } = useNftControllerFindAll(
+    {
+      queryParams: {
+        account_id: user?.profile?.wallet_address as string,
+        campaign_id: campaign?.id,
+        limit: campaign?.nfts?.length,
+      },
+    },
+    {
+      enabled: Boolean(user?.profile?.wallet_address),
+    }
+  );
+
+  const collectedWithoutReward = collectedNfts?.results.filter(({ nft_id }) => {
     return nft_id !== reward?.id;
   });
 
-  const isCollected = (nft: NftDto) => {
-    return collectedNfts.some(({ nft_id }) => {
+  const isNFTCollected = (nft: NftDto) => {
+    if (isPreview) {
+      return false;
+    }
+
+    return collectedNfts?.results.some(({ nft_id }) => {
       return nft_id === nft.id;
     });
   };
 
-  const progress =
-    collectedWithoutReward.length > 0
+  const isNFTBurned = (nft: NftDto) => {
+    if (isPreview) {
+      return false;
+    }
+
+    return collectedNfts?.results.find(({ nft_id }) => {
+      return nft_id === nft.id;
+    })?.is_burned;
+  };
+
+  const hasReward = useMemo(() => {
+    if (isPreview) {
+      return false;
+    }
+
+    if (!reward) {
+      return false;
+    }
+
+    return collectedNfts?.results.some(({ nft_id }) => {
+      return nft_id === reward.id;
+    });
+  }, [collectedNfts, reward, isPreview]);
+
+  const progress = useMemo(() => {
+    if (!collectedWithoutReward) {
+      return 0;
+    }
+
+    return collectedWithoutReward.length > 0
       ? collectedWithoutReward.length / (nfts?.length || 1)
       : 0;
+  }, [collectedWithoutReward, nfts]);
 
   return (
     <Stack>
@@ -53,10 +126,16 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
       <Box>
         <Title order={2}>{campaign?.name}</Title>
-        <Text c="dimmed">
-          {isClient &&
-            formatDateRange(campaign?.start_date as string, campaign?.end_date)}
-        </Text>
+
+        <Skeleton visible={!isClient} mih={24.8}>
+          <Text c="dimmed">
+            {isClient &&
+              formatDateRange(
+                campaign?.start_date as string,
+                campaign?.end_date
+              )}
+          </Text>
+        </Skeleton>
       </Box>
 
       {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
@@ -72,7 +151,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
       {documents?.length !== 0 && (
         <>
-          <Title order={3}>Project documents</Title>
+          <Title order={3}>Documents</Title>
 
           <Group>
             {documents?.map((document) => (
@@ -86,7 +165,7 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
       <Stack>
         {reward && (
-          <NFTCard nft={reward} isCollected={progress === 1}>
+          <NFTCard nft={reward} isCollected={hasReward}>
             <Progress
               maw={228}
               color="violet"
@@ -97,7 +176,17 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
           </NFTCard>
         )}
         {nfts?.map((nft) => (
-          <NFTCard key={nft.file.id} nft={nft} isCollected={isCollected(nft)} />
+          <ConditionalLink
+            key={nft.id}
+            href={`/claim/${nft.id}`}
+            enabled={isNFTCollected(nft)}
+          >
+            <NFTCard
+              nft={nft}
+              isCollected={isNFTCollected(nft)}
+              isBurned={isNFTBurned(nft)}
+            />
+          </ConditionalLink>
         ))}
       </Stack>
     </Stack>

@@ -16,7 +16,7 @@ export const CampaignPreview = () => {
 
   return (
     <Container>
-      {campaign && <SharedCampaignDetails campaign={campaign} />}
+      {campaign && <SharedCampaignDetails campaign={campaign} isPreview />}
     </Container>
   );
 };

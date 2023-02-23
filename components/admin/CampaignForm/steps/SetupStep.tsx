@@ -1,6 +1,13 @@
 import React from "react";
-import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
-import { DatePicker, DateRangePicker } from "@mantine/dates";
+import {
+  Box,
+  Group,
+  Stack,
+  Switch,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
+import { DatePicker, DateRangePicker, DayModifiers } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";
@@ -13,9 +20,11 @@ import {
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
 import { getImageUrl } from "@/utils/file";
+import dayjs from "dayjs";
 
 export const SetupStep = () => {
   const form = useFormContext();
+  const theme = useMantineTheme();
 
   const isMutating = useIsMutating();
 
@@ -63,6 +72,15 @@ export const SetupStep = () => {
     form.setFieldValue("endDate", endDate);
   };
 
+  const dayStyle = (date: Date, modifier: DayModifiers) =>
+    dayjs(date).startOf("day").toISOString() ===
+    dayjs(new Date()).startOf("day").toISOString()
+      ? {
+          backgroundColor:
+            theme.colors.blue[modifier.inRange || modifier.selected ? 6 : 0],
+        }
+      : {};
+
   return (
     <Stack>
       <Field
@@ -100,13 +118,14 @@ export const SetupStep = () => {
                 value={[form.values.startDate, form.values.endDate]}
                 onChange={handleDateRangeChange}
                 error={form.getInputProps("endDate").error}
+                dayStyle={dayStyle}
               />
             ) : (
               <DatePicker
                 withAsterisk
                 placeholder="Select start date"
                 icon={<Calendar size={16} />}
-                {...form.getInputProps("startDate")}
+                dayStyle={dayStyle}
               />
             )}
           </Group>

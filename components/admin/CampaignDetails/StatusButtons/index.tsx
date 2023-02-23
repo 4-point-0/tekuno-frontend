@@ -1,4 +1,4 @@
-import { Badge, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useIsMutating } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React from "react";
@@ -151,11 +151,7 @@ export const StatusButtons: React.FC<IStatusButtonsProps> = ({ campaign }) => {
   );
 
   if (isEnded) {
-    return (
-      <Badge color="dark" size="xl">
-        Ended
-      </Badge>
-    );
+    return null;
   }
 
   if (status === "Created") {

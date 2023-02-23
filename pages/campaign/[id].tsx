@@ -2,10 +2,7 @@ import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 
 import { SharedCampaignDetails } from "@/components/core/SharedCampaignDetails";
-import {
-  fetchCampaignUserControllerFindOne,
-  useNftControllerFindAll,
-} from "@/services/api/client/clientComponents";
+import { fetchCampaignUserControllerFindOne } from "@/services/api/client/clientComponents";
 import { useRamper } from "@/context/RamperContext";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { ClientContainer } from "@/components/layout/ClientContainer";
@@ -33,27 +30,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 export const Campaign: NextPage<IClaimPageProps> = ({ campaign }) => {
   const { user } = useRamper();
 
-  const { data: nfts } = useNftControllerFindAll(
-    {
-      queryParams: {
-        account_id: user?.profile?.wallet_address as string,
-        campaign_id: campaign?.id,
-        limit: campaign?.nfts?.length,
-      },
-    },
-    {
-      enabled: Boolean(user?.profile?.wallet_address),
-    }
-  );
-
   return (
     <ClientContainer>
-      {campaign && (
-        <SharedCampaignDetails
-          campaign={campaign}
-          collectedNfts={nfts?.results || []}
-        />
-      )}
+      {campaign && <SharedCampaignDetails campaign={campaign} user={user} />}
     </ClientContainer>
   );
 };

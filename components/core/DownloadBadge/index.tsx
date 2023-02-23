@@ -41,6 +41,16 @@ export const DownloadBadge: React.FC<IDownloadBadgeProps> = ({
       size={size}
       onClick={handleDownload}
       loading={isFetching}
+      styles={{
+        label: {
+          display: "inline-block",
+          height: "unset",
+          maxWidth: "24ch",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+        },
+      }}
     >
       {document.name}
     </IndigoButton>
