@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import {
   Box,
   Stack,
@@ -21,6 +21,27 @@ import { useIsClient } from "@/hooks/useIsClient";
 import { DownloadBadge } from "../DownloadBadge";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
 import Link from "next/link";
+
+interface IConditionalLinkProps extends PropsWithChildren {
+  href: string;
+  enabled?: boolean;
+}
+
+const ConditionalLink: React.FC<IConditionalLinkProps> = ({
+  enabled,
+  href,
+  children,
+}) => {
+  if (!enabled) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Link href={href} style={{ textDecoration: "none" }}>
+      {children}
+    </Link>
+  );
+};
 
 interface ICampaignDetailsProps {
   campaign: CampaignDto;
@@ -155,12 +176,17 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
           </NFTCard>
         )}
         {nfts?.map((nft) => (
-          <NFTCard
+          <ConditionalLink
             key={nft.id}
-            nft={nft}
-            isCollected={isNFTCollected(nft)}
-            isBurned={isNFTBurned(nft)}
-          />
+            href={`/claim/${nft.id}`}
+            enabled={isNFTCollected(nft)}
+          >
+            <NFTCard
+              nft={nft}
+              isCollected={isNFTCollected(nft)}
+              isBurned={isNFTBurned(nft)}
+            />
+          </ConditionalLink>
         ))}
       </Stack>
     </Stack>
