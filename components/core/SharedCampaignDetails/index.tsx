@@ -165,20 +165,25 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
       <Stack>
         {reward && (
-          <NFTCard nft={reward} isCollected={hasReward}>
-            <Progress
-              maw={228}
-              color="violet"
-              size="lg"
-              radius="lg"
-              value={progress * 100}
-            />
-          </NFTCard>
+          <ConditionalLink
+            href={`/collectibles/${reward.id}`}
+            enabled={hasReward}
+          >
+            <NFTCard nft={reward} isCollected={hasReward}>
+              <Progress
+                maw={228}
+                color="violet"
+                size="lg"
+                radius="lg"
+                value={progress * 100}
+              />
+            </NFTCard>
+          </ConditionalLink>
         )}
         {nfts?.map((nft) => (
           <ConditionalLink
             key={nft.id}
-            href={`/claim/${nft.id}`}
+            href={`/collectibles/${nft.id}`}
             enabled={isNFTCollected(nft)}
           >
             <NFTCard

@@ -8,7 +8,7 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 import { ClientContainer } from "@/components/layout/ClientContainer";
 import { NftDetails } from "@/components/client/NftDetails";
 
-interface IClaimPageProps {
+interface ICollectibleProps {
   initialData?: NftDto;
 }
 
@@ -20,10 +20,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       pathParams: { nftId },
     });
 
-    if (initialData.nft_type.name === "reward") {
-      throw new Error("Rewards can't be claimed");
-    }
-
     return { props: { initialData, key: nftId } };
   } catch (error) {
     console.error(error);
@@ -33,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-const ClaimPage: NextPage<IClaimPageProps> = ({ initialData }) => {
+const CollectiblePage: NextPage<ICollectibleProps> = ({ initialData }) => {
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }
@@ -41,9 +37,9 @@ const ClaimPage: NextPage<IClaimPageProps> = ({ initialData }) => {
 
   return (
     <ClientContainer key={nft?.id}>
-      {nft && <NftDetails key={nft.id} nft={nft} />}
+      {nft && <NftDetails key={nft.id} nft={nft} disableClaim />}
     </ClientContainer>
   );
 };
 
-export default ClaimPage;
+export default CollectiblePage;

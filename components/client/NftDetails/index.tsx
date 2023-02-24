@@ -25,11 +25,15 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 
-interface IClaimNftProps {
+interface INftDetailsProps {
   nft: NftDto;
+  disableClaim?: boolean;
 }
 
-export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
+export const NftDetails: React.FC<INftDetailsProps> = ({
+  nft,
+  disableClaim,
+}) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { user } = useRamper();
@@ -68,6 +72,10 @@ export const ClaimNft: React.FC<IClaimNftProps> = ({ nft }) => {
   }, [userNft, user]);
 
   const showClaimButton = useMemo(() => {
+    if (disableClaim) {
+      return false;
+    }
+
     if (!isClient) {
       return false;
     }
