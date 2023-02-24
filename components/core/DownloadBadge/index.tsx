@@ -1,5 +1,5 @@
 import { MantineSize } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { Download } from "tabler-icons-react";
 import saveAs from "file-saver";
 
@@ -19,20 +19,22 @@ export const DownloadBadge: React.FC<IDownloadBadgeProps> = ({
   document,
   size = "xs",
 }) => {
-  const { refetch, isFetching } = useCampaignUserControllerGetNftMedia(
-    {
-      pathParams: { fileId: document.id },
-    },
-    {
-      enabled: false,
-      onSuccess: (media) => {
-        saveAs(media as Blob, document.name);
-      },
-    }
-  );
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleDownload = async () => {
-    refetch();
+    if (isFetching) {
+      return;
+    }
+
+    setIsFetching(true);
+
+    const media = await fetchCampaignUserControllerGetNftMedia({
+      pathParams: { fileId: document.id },
+    });
+
+    saveAs(media as Blob, document.name);
+
+    setIsFetching(false);
   };
 
   return (
