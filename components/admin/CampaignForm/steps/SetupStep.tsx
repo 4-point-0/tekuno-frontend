@@ -25,9 +25,7 @@ import dayjs from "dayjs";
 export const SetupStep = () => {
   const form = useFormContext();
   const theme = useMantineTheme();
-
   const isMutating = useIsMutating();
-
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove({});
 
@@ -83,6 +81,23 @@ export const SetupStep = () => {
 
   return (
     <Stack>
+      <Box my="xl">
+        <Dropzone
+          title="Upload Image"
+          description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
+          label="Select Image"
+          previewUrl={getImageUrl(form.values.image?.response)}
+          error={form.getInputProps("image").error}
+          isLoading={uploadFile.isLoading}
+          dropzone={{
+            multiple: false,
+            accept: CAMPAIGN_IMAGE_TYPES,
+            onDrop: handleDrop,
+            disabled: isMutating > 0,
+          }}
+        />
+      </Box>
+
       <Field
         withAsterisk
         label="Set up your POD"
@@ -131,23 +146,6 @@ export const SetupStep = () => {
           </Group>
         </Stack>
       </Field>
-
-      <Box my="xl">
-        <Dropzone
-          title="Upload Image"
-          description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
-          label="Select Image"
-          previewUrl={getImageUrl(form.values.image?.response)}
-          error={form.getInputProps("image").error}
-          isLoading={uploadFile.isLoading}
-          dropzone={{
-            multiple: false,
-            accept: CAMPAIGN_IMAGE_TYPES,
-            onDrop: handleDrop,
-            disabled: isMutating > 0,
-          }}
-        />
-      </Box>
     </Stack>
   );
 };
