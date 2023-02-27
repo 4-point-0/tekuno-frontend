@@ -10,7 +10,6 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import ConfettiExplosion from "react-confetti-explosion";
 import { ChevronRight, Flame } from "tabler-icons-react";
@@ -35,8 +34,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
   disableClaim,
 }) => {
   const theme = useMantineTheme();
-  const router = useRouter();
-  const { user } = useRamper();
+  const { user, signIn, loading: ramperLoading } = useRamper();
   const isClient = useIsClient();
   const drop = useNftControllerDropNft({ retry: false });
   const [claimed, setClaimed] = useState(false);
@@ -104,7 +102,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
       refetch();
       refechUserCampaigns();
     } else {
-      router.push(`/login?redirect=/claim/${nft.id}`);
+      await signIn();
     }
   };
 
@@ -119,7 +117,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
         onClick={handleClaim}
         display={showClaimButton ? undefined : "none"}
         disabled={drop.isLoading}
-        loading={drop.isLoading}
+        loading={drop.isLoading || ramperLoading}
         loaderPosition="right"
       >
         {user ? "Claim" : "Connect to Tekuno"}
