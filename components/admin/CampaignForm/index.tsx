@@ -143,8 +143,6 @@ export const CampaignForm = () => {
     }
   };
 
-  console.log(maxStep);
-
   const handleSubmit = async (values: ICreateFormValues) => {
     form.validate();
 
