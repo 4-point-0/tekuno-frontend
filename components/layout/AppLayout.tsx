@@ -14,6 +14,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
 
   const isLogin = router.route.startsWith("/login");
   const isAdmin = router.route.startsWith("/admin");
+  const isClaim = router.route.startsWith("/claim");
 
   const appShell = () => (
     <AppShell
@@ -37,7 +38,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
         )
       }
       footer={
-        isAdmin ? undefined : (
+        isAdmin || isClaim ? undefined : (
           <ClientFooter
             data={[
               {

@@ -15,7 +15,7 @@ import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import { Calendar, Check, X } from "tabler-icons-react";
 import { FileWithPath } from "@mantine/dropzone";
-import { DatePicker, DateRangePicker } from "@mantine/dates";
+import { DatePicker } from "@mantine/dates";
 
 import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
 import {
@@ -37,6 +37,7 @@ import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
 import { useRouter } from "next/router";
 import { getEditFormValidateInput } from "@/utils/validation";
+import { useDayStyle } from "@/utils/date";
 
 interface IEditCampaign {
   campaign: CampaignDto;
@@ -65,6 +66,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
 
   const isMutating = useIsMutating();
   const router = useRouter();
+  const dayStyle = useDayStyle();
 
   const uploadFile = useFileControllerUploadFile({});
   const updateFile = useFileControllerUpdateFile({});
@@ -247,26 +249,32 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
               onClick={form.getInputProps("limitDate").onChange}
             />
 
-            <Group miw="40%" maw={300}>
-              {form.values.limitDate ? (
-                <DateRangePicker
-                  w="100%"
-                  withAsterisk
-                  placeholder="Pick dates range"
-                  icon={<Calendar size={16} />}
-                  disabled={!form.values.limitDate}
-                  value={[form.values.startDate, form.values.endDate]}
-                  onChange={handleDateRangeChange}
-                  error={form.getInputProps("endDate").error}
-                />
-              ) : (
-                <DatePicker
-                  withAsterisk
-                  placeholder="Select start date"
-                  icon={<Calendar size={16} />}
-                  {...form.getInputProps("startDate")}
-                />
-              )}
+            <Group>
+              <DatePicker
+                withAsterisk
+                placeholder="Select start date"
+                icon={<Calendar size={16} />}
+                dayStyle={dayStyle}
+                maxDate={
+                  form.values.endDate
+                    ? dayjs(form.values.endDate).subtract(1, "day").toDate()
+                    : undefined
+                }
+                {...form.getInputProps("startDate")}
+              />
+              <DatePicker
+                withAsterisk
+                placeholder="Select end date"
+                icon={<Calendar size={16} />}
+                dayStyle={dayStyle}
+                disabled={!form.values.limitDate}
+                minDate={
+                  form.values.startDate
+                    ? dayjs(form.values.startDate).add(1, "day").toDate()
+                    : undefined
+                }
+                {...form.getInputProps("endDate")}
+              />
             </Group>
           </Stack>
         </Field>

@@ -68,6 +68,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
     <>
       <Field label={`${label} name`} withAsterisk>
         <TextInput
+          mt="xs"
           placeholder={`Fun name for your ${label}`}
           {...form.getInputProps(`${formKey}.name`)}
         />
@@ -106,6 +107,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
         description="The description will be visible to users while claiming"
       >
         <TextInput
+          mt="xs"
           placeholder={`Minted as part of the ${form.values.name} digital collectible campaign.`}
           {...form.getInputProps(`${formKey}.description`)}
         />

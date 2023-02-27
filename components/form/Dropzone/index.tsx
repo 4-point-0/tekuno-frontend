@@ -6,13 +6,14 @@ import {
   Stack,
   Button,
   Box,
+  Image,
 } from "@mantine/core";
 import {
   Dropzone as MantineDropzone,
   DropzoneProps,
   FileWithPath,
 } from "@mantine/dropzone";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Photo, Upload, X } from "tabler-icons-react";
 
 interface IDropzoneProps extends Partial<DropzoneProps> {
@@ -35,6 +36,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
   dropzone,
   isLoading,
 }) => {
+  const [aspectRatio, setAspectRatio] = useState<number>();
   const openRef = useRef<() => void>(null);
   const theme = useMantineTheme();
 
@@ -44,19 +46,40 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
     onDrop(files);
   };
 
+  const handlePreviewLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = event.target as HTMLImageElement;
+
+    setAspectRatio(img.naturalWidth / img.naturalHeight);
+  };
+
   return (
-    <>
+    <Box
+      sx={{
+        position: "relative",
+        aspectRatio: aspectRatio ? `${aspectRatio}` : undefined,
+      }}
+    >
+      {previewUrl && (
+        <Image
+          src={previewUrl}
+          sx={{ position: "absolute" }}
+          onLoad={handlePreviewLoad}
+          alt=""
+          radius="xl"
+        />
+      )}
       <MantineDropzone
         styles={{
           root: {
+            height: "100%",
             borderRadius: 32,
             paddingBottom: 32,
             borderColor: error ? theme.colors.red[6] : undefined,
             borderWidth: 1,
-            backgroundImage: `url(${previewUrl})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            background: "transparent !important",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           },
           inner: { pointerEvents: "all" },
         }}
@@ -108,6 +131,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
           sx={{
             position: "absolute",
             bottom: 0,
+            left: 0,
             width: "100%",
             transform: "translateY(50%)",
           }}
@@ -124,6 +148,6 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
           {error}
         </Text>
       )}
-    </>
+    </Box>
   );
 };

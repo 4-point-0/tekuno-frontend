@@ -72,6 +72,7 @@ export const DescriptionStep = () => {
   return (
     <Stack>
       <Field
+        withAsterisk
         label="Say a catchy phrase for your campaign"
         description="This text will be visible on each POD page"
       >
@@ -82,7 +83,7 @@ export const DescriptionStep = () => {
         />
       </Field>
 
-      <Field label="Tell us the details, why would someone be part of your campaign">
+      <Field label="Tell us the details, why would someone be part of your campaign (optional)">
         <Textarea
           mt="sm"
           placeholder="Placeholder text"
