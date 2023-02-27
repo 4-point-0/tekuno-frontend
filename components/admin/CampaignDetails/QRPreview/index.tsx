@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { QRCode } from "react-qrcode-logo";
-import { ActionIcon, Box, Group, Tooltip } from "@mantine/core";
-import { Download, ExternalLink, Qrcode } from "tabler-icons-react";
+import { Box, Group } from "@mantine/core";
+import { Download, ExternalLink } from "tabler-icons-react";
 import { saveAs } from "file-saver";
 import { NextLink } from "@mantine/next";
 
@@ -47,28 +47,20 @@ export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
         />
       </Box>
 
-      <IndigoButton
-        leftIcon={<Download size={14} />}
-        rightIcon={<Qrcode size={14} />}
-        onClick={handleDowload}
-      >
-        Download
+      <IndigoButton leftIcon={<Download size={14} />} onClick={handleDowload}>
+        Download QR
       </IndigoButton>
 
-      <Tooltip label="Open" withArrow position="bottom">
-        <ActionIcon
-          component={NextLink}
-          href={url}
-          target="_blank"
-          rel="norefferer"
-          legacyBehavior
-          radius="xl"
-          variant="light"
-          color="indigo"
-        >
-          <ExternalLink size={14} color="#000" />
-        </ActionIcon>
-      </Tooltip>
+      <IndigoButton
+        component={NextLink}
+        href={url}
+        target="_blank"
+        rel="norefferer"
+        legacyBehavior
+        leftIcon={<ExternalLink size={14} />}
+      >
+        Open
+      </IndigoButton>
 
       <CopyActionButton color="indigo" value={url} />
     </Group>

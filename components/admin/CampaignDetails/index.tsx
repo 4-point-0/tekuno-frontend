@@ -180,10 +180,10 @@ export const CampaignDetails = () => {
 
           {nfts?.map((nft) => (
             <React.Fragment key={nft.id}>
-              <Grid.Col span={8}>
+              <Grid.Col span={7}>
                 <NFTCard key={nft.id} nft={nft} />
               </Grid.Col>
-              <Grid.Col span={4}>
+              <Grid.Col span={5}>
                 <QRPreview nft={nft} />
               </Grid.Col>
             </React.Fragment>
