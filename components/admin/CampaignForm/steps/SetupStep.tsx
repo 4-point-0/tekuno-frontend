@@ -81,6 +81,7 @@ export const SetupStep = () => {
         description="This is the name of the POD campaign "
       >
         <TextInput
+          mt="xs"
           placeholder="Campaign name"
           {...form.getInputProps("name")}
         />
