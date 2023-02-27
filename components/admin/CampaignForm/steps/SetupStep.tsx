@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  Box,
-  Group,
-  Stack,
-  Switch,
-  TextInput,
-  useMantineTheme,
-} from "@mantine/core";
+import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
 import { DatePicker, DateRangePicker, DayModifiers } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
@@ -20,16 +14,14 @@ import {
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
 import { getImageUrl } from "@/utils/file";
-import dayjs from "dayjs";
+import { useDayStyle } from "@/utils/date";
 
 export const SetupStep = () => {
   const form = useFormContext();
-  const theme = useMantineTheme();
-
   const isMutating = useIsMutating();
-
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove({});
+  const dayStyle = useDayStyle();
 
   const handleDrop = async (files: Array<FileWithPath>) => {
     const file = files[0];
@@ -64,31 +56,32 @@ export const SetupStep = () => {
     }
   };
 
-  const handleDateRangeChange = ([startDate, endDate]: [
-    Date | null,
-    Date | null
-  ]) => {
-    form.setFieldValue("startDate", startDate);
-    form.setFieldValue("endDate", endDate);
-  };
-
-  const dayStyle = (date: Date, modifier: DayModifiers) =>
-    dayjs(date).startOf("day").toISOString() ===
-    dayjs(new Date()).startOf("day").toISOString()
-      ? {
-          backgroundColor:
-            theme.colors.blue[modifier.inRange || modifier.selected ? 6 : 0],
-        }
-      : {};
-
   return (
     <Stack>
+      <Box my="xl">
+        <Dropzone
+          title="Upload Image"
+          description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
+          label="Select Image"
+          previewUrl={getImageUrl(form.values.image?.response)}
+          error={form.getInputProps("image").error}
+          isLoading={uploadFile.isLoading}
+          dropzone={{
+            multiple: false,
+            accept: CAMPAIGN_IMAGE_TYPES,
+            onDrop: handleDrop,
+            disabled: isMutating > 0,
+          }}
+        />
+      </Box>
+
       <Field
         withAsterisk
         label="Set up your POD"
         description="This is the name of the POD campaign "
       >
         <TextInput
+          mt="xs"
           placeholder="Campaign name"
           {...form.getInputProps("name")}
         />
@@ -106,48 +99,35 @@ export const SetupStep = () => {
             onClick={form.getInputProps("limitDate").onChange}
           />
 
-          <Group miw="40%" maw={300}>
-            {form.values.limitDate ? (
-              <DateRangePicker
-                w="100%"
-                withAsterisk
-                placeholder="Pick dates range"
-                icon={<Calendar size={16} />}
-                disabled={!form.values.limitDate}
-                value={[form.values.startDate, form.values.endDate]}
-                onChange={handleDateRangeChange}
-                error={form.getInputProps("endDate").error}
-                dayStyle={dayStyle}
-              />
-            ) : (
-              <DatePicker
-                withAsterisk
-                placeholder="Select start date"
-                icon={<Calendar size={16} />}
-                dayStyle={dayStyle}
-                {...form.getInputProps("startDate")}
-              />
-            )}
+          <Group>
+            <DatePicker
+              withAsterisk
+              placeholder="Select start date"
+              icon={<Calendar size={16} />}
+              dayStyle={dayStyle}
+              maxDate={
+                form.values.endDate
+                  ? dayjs(form.values.endDate).subtract(1, "day").toDate()
+                  : undefined
+              }
+              {...form.getInputProps("startDate")}
+            />
+            <DatePicker
+              withAsterisk
+              placeholder="Select end date"
+              icon={<Calendar size={16} />}
+              dayStyle={dayStyle}
+              disabled={!form.values.limitDate}
+              minDate={
+                form.values.startDate
+                  ? dayjs(form.values.startDate).add(1, "day").toDate()
+                  : undefined
+              }
+              {...form.getInputProps("endDate")}
+            />
           </Group>
         </Stack>
       </Field>
-
-      <Box my="xl">
-        <Dropzone
-          title="Upload Image"
-          description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
-          label="Select Image"
-          previewUrl={getImageUrl(form.values.image?.response)}
-          error={form.getInputProps("image").error}
-          isLoading={uploadFile.isLoading}
-          dropzone={{
-            multiple: false,
-            accept: CAMPAIGN_IMAGE_TYPES,
-            onDrop: handleDrop,
-            disabled: isMutating > 0,
-          }}
-        />
-      </Box>
     </Stack>
   );
 };

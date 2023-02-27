@@ -76,6 +76,7 @@ function getNftsFromForm(
 export const CampaignForm = () => {
   const router = useRouter();
   const [active, setActiveStep] = useState(0);
+  const [maxStep, setMaxStep] = useState(0);
   const isMutating = useIsMutating();
   const createCampaign = useCampaignControllerCreate({
     onSuccess: (campaign) => {
@@ -108,13 +109,22 @@ export const CampaignForm = () => {
     validate: getFormValidateInput(active, { hasPoap, hasRewards }),
   });
 
+  const changeStep = (step: number) => {
+    setActiveStep(step);
+    setMaxStep((previous) => Math.max(step, previous));
+  };
+
   const handleStepClick = (step: number) => {
     if (isMutating > 0) {
       return;
     }
 
     if (step < active) {
-      setActiveStep(step);
+      changeStep(step);
+      return;
+    }
+
+    if (step > maxStep + 1) {
       return;
     }
 
@@ -129,7 +139,7 @@ export const CampaignForm = () => {
     form.validate();
 
     if (form.isValid()) {
-      setActiveStep((current) => current + 1);
+      changeStep(active + 1);
     }
   };
 
@@ -213,11 +223,11 @@ export const CampaignForm = () => {
               <Stepper.Step>
                 <DescriptionStep />
               </Stepper.Step>
-              <Stepper.Step>
+              <Stepper.Step allowStepSelect={maxStep >= 1}>
                 <PODStep />
               </Stepper.Step>
               {hasRewards && (
-                <Stepper.Step>
+                <Stepper.Step allowStepSelect={maxStep === 2}>
                   <RewardStep />
                 </Stepper.Step>
               )}

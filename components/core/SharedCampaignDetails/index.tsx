@@ -145,7 +145,8 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
 
       <Group>
         <Badge size="lg" variant="filled" color="grape">
-          {nfts?.length === 1 ? "1 Item" : `${nfts?.length} Items`} to collect
+          {nfts?.length === 1 ? "1 Item" : `${nfts?.length} Items`} in
+          collection
         </Badge>
       </Group>
 

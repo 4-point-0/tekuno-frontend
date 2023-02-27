@@ -96,10 +96,15 @@ const sharedValidations = {
   },
   image: (value?: IUploadedFile) =>
     value?.response ? null : "Image is required",
-  description: (value?: string) =>
-    value && value.length > RESTRICTIONS.description.max
+  description: (value?: string) => {
+    if (!value) {
+      return "Text is requred";
+    }
+
+    return value.length > RESTRICTIONS.description.max
       ? `Phrase should be shorter than ${RESTRICTIONS.description.max} characters`
-      : null,
+      : null;
+  },
 };
 
 export function getFormValidateInput(

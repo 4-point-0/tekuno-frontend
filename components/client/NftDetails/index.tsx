@@ -10,10 +10,10 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import ConfettiExplosion from "react-confetti-explosion";
-import { ChevronRight, Flame } from "tabler-icons-react";
+import { Check, ChevronRight, Flame } from "tabler-icons-react";
+import { showNotification } from "@mantine/notifications";
 
 import { useRamper } from "@/context/RamperContext";
 import {
@@ -35,8 +35,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
   disableClaim,
 }) => {
   const theme = useMantineTheme();
-  const router = useRouter();
-  const { user } = useRamper();
+  const { user, signIn, loading: ramperLoading } = useRamper();
   const isClient = useIsClient();
   const drop = useNftControllerDropNft({ retry: false });
   const [claimed, setClaimed] = useState(false);
@@ -100,11 +99,12 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
         },
       });
 
+      showNotification({ message: `${nft.name} claimed! 🎉`, autoClose: 3000 });
       setClaimed(true);
       refetch();
       refechUserCampaigns();
     } else {
-      router.push(`/login?redirect=/claim/${nft.id}`);
+      await signIn();
     }
   };
 
@@ -119,7 +119,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
         onClick={handleClaim}
         display={showClaimButton ? undefined : "none"}
         disabled={drop.isLoading}
-        loading={drop.isLoading}
+        loading={drop.isLoading || ramperLoading}
         loaderPosition="right"
       >
         {user ? "Claim" : "Connect to Tekuno"}
@@ -129,7 +129,11 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
 
   return (
     <>
-      {claimed && <ConfettiExplosion />}
+      {claimed && (
+        <Box pos="fixed" top={0} bottom={0} left={0} right={0}>
+          <ConfettiExplosion force={0.8} duration={3000} particleCount={300} />
+        </Box>
+      )}
 
       <Stack align="start">
         <Button
@@ -175,23 +179,6 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
             <Text fz={"md"}>{nft?.description}</Text>
           </Stack>
 
-          {userNft?.is_burned && (
-            <Box>
-              <Badge
-                size="xl"
-                variant="filled"
-                color="red"
-                leftSection={
-                  <Box sx={{ lineHeight: "14px" }}>
-                    <Flame size={14} />
-                  </Box>
-                }
-              >
-                Burned
-              </Badge>
-            </Box>
-          )}
-
           {Boolean(nft?.properties?.attributes.length) && (
             <Stack sx={{ width: "100%" }} align={"start"} spacing={"lg"}>
               <Title order={3}>Attributes</Title>
@@ -233,8 +220,42 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
             </Stack>
           )}
 
+          {userNft && (
+            <Box>
+              {userNft.is_burned ? (
+                <Badge
+                  size="xl"
+                  variant="filled"
+                  color="red"
+                  leftSection={
+                    <Box sx={{ lineHeight: "14px" }}>
+                      <Flame size={14} />
+                    </Box>
+                  }
+                >
+                  Burned
+                </Badge>
+              ) : (
+                <Badge
+                  variant="filled"
+                  color="grape"
+                  size="xl"
+                  leftSection={
+                    <Box sx={{ lineHeight: "14px" }}>
+                      <Check size={14} />
+                    </Box>
+                  }
+                >
+                  Collected
+                </Badge>
+              )}
+            </Box>
+          )}
+
           <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-            {claimButton()}
+            <Box w="100%" pos="fixed" left={0} bottom={0} p="md">
+              {claimButton()}
+            </Box>
           </MediaQuery>
         </Stack>
       </SimpleGrid>
