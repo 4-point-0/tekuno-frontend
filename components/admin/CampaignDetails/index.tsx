@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Alert,
   Box,
   Button,
@@ -15,13 +14,23 @@ import {
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
-import React from "react";
-import { AlertTriangle, ExternalLink, Eye, Pencil } from "tabler-icons-react";
+import React, { useState } from "react";
+import {
+  AlertTriangle,
+  ExternalLink,
+  Eye,
+  Pencil,
+  Report,
+} from "tabler-icons-react";
+import { saveAs } from "file-saver";
 
 import { StatBox } from "./StatBox";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { NFTCard } from "@/components/core/NFTCard";
-import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
+import {
+  fetchCampaignControllerExportReport,
+  useCampaignControllerFindOne,
+} from "@/services/api/admin/adminComponents";
 import { QRPreview } from "./QRPreview";
 import { DownloadAll } from "./DownloadAll";
 import { NftDto } from "@/services/api/admin/adminSchemas";
@@ -31,6 +40,7 @@ import { DownloadBadge } from "@/components/core/DownloadBadge";
 import { getCampaignAssets, hasEnded } from "@/utils/campaign";
 import { formatDateRange } from "@/utils/date";
 import { CampaignStatus } from "../CampaignStatus";
+import { notifications } from "@/utils/notifications";
 
 const stats = [
   {
@@ -46,6 +56,7 @@ const stats = [
 
 export const CampaignDetails = () => {
   const router = useRouter();
+  const [downloadingReport, setDownlaodingReport] = useState(false);
 
   const { data: campaign, isLoading } = useCampaignControllerFindOne({
     pathParams: {
@@ -56,6 +67,25 @@ export const CampaignDetails = () => {
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
   const isEnded = campaign && hasEnded(campaign);
+
+  const handleReportDownload = async () => {
+    setDownlaodingReport(true);
+
+    try {
+      notifications.create({ title: "Fetching report" });
+      const report = await fetchCampaignControllerExportReport({
+        pathParams: { id: router.query.id as string },
+      });
+
+      saveAs(report as unknown as Blob, `${campaign?.name}_report`);
+      notifications.success({ title: "Fetched report" });
+    } catch (error) {
+      console.error(error);
+      notifications.error({ title: "Failed to download report" });
+    } finally {
+      setDownlaodingReport(false);
+    }
+  };
 
   return (
     <Container>
@@ -109,16 +139,26 @@ export const CampaignDetails = () => {
             </>
           )}
           {campaign?.status !== "Created" && (
-            <IndigoButton
-              component="a"
-              href={`${location.origin}/campaign/${router.query.id}`}
-              target="_blank"
-              rel="norefferer"
-              referrerPolicy="no-referrer"
-              leftIcon={<ExternalLink size={14} />}
-            >
-              Open campaign
-            </IndigoButton>
+            <>
+              <IndigoButton
+                loaderPosition="right"
+                loading={downloadingReport}
+                rightIcon={<Report size={14} />}
+                onClick={handleReportDownload}
+              >
+                Download report
+              </IndigoButton>
+              <IndigoButton
+                component="a"
+                href={`${location.origin}/campaign/${router.query.id}`}
+                target="_blank"
+                rel="norefferer"
+                referrerPolicy="no-referrer"
+                leftIcon={<ExternalLink size={14} />}
+              >
+                Open campaign
+              </IndigoButton>
+            </>
           )}
 
           {campaign && <StatusButtons campaign={campaign} />}

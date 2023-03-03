@@ -136,7 +136,6 @@ export type UpdateCampaignDto = {
    */
   end_date?: string | null;
   file_ids: string[] | null;
-  nfts?: CreateNftDto[];
 };
 
 export type CampaignStatusDto = {

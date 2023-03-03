@@ -445,6 +445,69 @@ export const useCampaignControllerPause = (
   );
 };
 
+export type CampaignControllerExportReportPathParams = {
+  id: string;
+};
+
+export type CampaignControllerExportReportError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignControllerExportReportVariables = {
+  pathParams: CampaignControllerExportReportPathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchCampaignControllerExportReport = (
+  variables: CampaignControllerExportReportVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.CampaignDto,
+    CampaignControllerExportReportError,
+    undefined,
+    {},
+    {},
+    CampaignControllerExportReportPathParams
+  >({
+    url: "/api/v1/campaign/export-report/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useCampaignControllerExportReport = <TData = Schemas.CampaignDto>(
+  variables: CampaignControllerExportReportVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.CampaignDto,
+      CampaignControllerExportReportError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.CampaignDto,
+    CampaignControllerExportReportError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/campaign/export-report/{id}",
+      operationId: "campaignControllerExportReport",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchCampaignControllerExportReport(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type FileControllerUploadFileError = Fetcher.ErrorWrapper<undefined>;
 
 export type FileControllerUploadFileRequestBody = {
@@ -989,6 +1052,11 @@ export type QueryOperation =
       path: "/api/v1/campaign/{id}";
       operationId: "campaignControllerFindOne";
       variables: CampaignControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/campaign/export-report/{id}";
+      operationId: "campaignControllerExportReport";
+      variables: CampaignControllerExportReportVariables;
     }
   | {
       path: "/api/v1/chain";

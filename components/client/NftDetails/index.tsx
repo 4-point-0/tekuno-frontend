@@ -88,7 +88,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
     }
 
     return true;
-  }, [isClient, isLoadingUserNft, isOwnedByUser, user]);
+  }, [disableClaim, isClient, isLoadingUserNft, isOwnedByUser, user]);
 
   const handleClaim = async () => {
     if (user) {

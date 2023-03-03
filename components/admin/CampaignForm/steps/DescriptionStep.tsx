@@ -42,7 +42,7 @@ export const DescriptionStep = () => {
       })
     );
 
-    const newDocuments = uniqueFiles.map((file, i) => {
+    const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
       return {
         file,
         response: respones[i],
