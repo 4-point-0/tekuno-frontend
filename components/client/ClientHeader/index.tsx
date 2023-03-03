@@ -106,7 +106,7 @@ export function ClientHeader() {
   };
 
   const campaignDropdownLinks = (campaigns?: any[]) => {
-    if (!(isClient && user)) return null;
+    if (!(isClient && user && campaigns?.length)) return null;
 
     const menuItems = campaigns?.map((campaign) => (
       <Menu.Item

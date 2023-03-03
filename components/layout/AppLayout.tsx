@@ -12,6 +12,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const [opened, setOpened] = useState(false);
 
+  const isRoot = router.route === "/";
   const isLogin = router.route.startsWith("/login");
   const isAdmin = router.route.startsWith("/admin");
   const isClaim = router.route.startsWith("/claim");
@@ -33,7 +34,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
               />
             </MediaQuery>
           </AdminHeader>
-        ) : isLogin ? undefined : (
+        ) : isLogin || isRoot ? undefined : (
           <ClientHeader />
         )
       }
