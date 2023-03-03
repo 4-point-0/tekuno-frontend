@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { Download } from "tabler-icons-react";
 import { QRCode } from "react-qrcode-logo";
-import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
@@ -21,6 +20,8 @@ export const DownloadAll: React.FC<IDownloadAllProps> = ({
   const ref = useRef<Array<QRCode | null>>([]);
 
   const handleDownloadAll = async () => {
+    const JSZip = (await import("jszip")).default;
+
     const zip = new JSZip();
 
     const codes = zip.folder("codes");
