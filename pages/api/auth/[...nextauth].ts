@@ -15,19 +15,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account }) {
       if (account?.access_token) {
-        const res = await fetch(
-          "http://tekunodevapi-env.eba-wdcsmcsf.eu-central-1.elasticbeanstalk.com/api/v1/google/auth",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const res = await fetch(`${process.env.API_URL}/api/v1/google/auth`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify({
-              token: account?.access_token,
-            }),
-          }
-        );
+          body: JSON.stringify({
+            token: account?.access_token,
+          }),
+        });
 
         token.res = await res.json();
       }
