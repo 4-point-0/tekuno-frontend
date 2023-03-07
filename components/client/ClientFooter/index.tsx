@@ -8,10 +8,10 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import {
-  BrandFacebook,
   BrandInstagram,
   BrandLinkedin,
   BrandTwitter,
+  BrandDiscord,
 } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
@@ -169,16 +169,40 @@ export function ClientFooter({ data }: FooterLinksProps) {
         </Text>
 
         <Group spacing={0} className={classes.social} position="right" noWrap>
-          <ActionIcon size="lg">
-            <BrandFacebook size={18} />
+          <ActionIcon
+            component="a"
+            href="https://discord.gg/Excj7hkxTy"
+            target="_blank"
+            rel="noreferrer"
+            size="lg"
+          >
+            <BrandDiscord size={18} />
           </ActionIcon>
-          <ActionIcon size="lg">
+          <ActionIcon
+            component="a"
+            href="https://www.instagram.com/tekuno.app"
+            target="_blank"
+            rel="noreferrer"
+            size="lg"
+          >
             <BrandInstagram size={18} />
           </ActionIcon>
-          <ActionIcon size="lg">
+          <ActionIcon
+            component="a"
+            href="https://twitter.com/TekunoApp"
+            target="_blank"
+            rel="noreferrer"
+            size="lg"
+          >
             <BrandTwitter size={18} />
           </ActionIcon>
-          <ActionIcon size="lg">
+          <ActionIcon
+            component="a"
+            href="https://www.linkedin.com/company/tekunoapp"
+            target="_blank"
+            rel="noreferrer"
+            size="lg"
+          >
             <BrandLinkedin size={18} />
           </ActionIcon>
         </Group>
