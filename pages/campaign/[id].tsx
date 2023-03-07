@@ -6,6 +6,8 @@ import { fetchCampaignUserControllerFindOne } from "@/services/api/client/client
 import { useRamper } from "@/context/RamperContext";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { ClientContainer } from "@/components/layout/ClientContainer";
+import { NextSeo } from "next-seo";
+import { getCampaignAssets } from "@/utils/campaign";
 
 interface IClaimPageProps {
   campaign?: CampaignDto;
@@ -30,10 +32,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 export const Campaign: NextPage<IClaimPageProps> = ({ campaign }) => {
   const { user } = useRamper();
 
+  const { image } = getCampaignAssets(campaign);
+
   return (
-    <ClientContainer>
-      {campaign && <SharedCampaignDetails campaign={campaign} user={user} />}
-    </ClientContainer>
+    <>
+      <NextSeo
+        title={`Tekuno - ${campaign?.name}`}
+        description={campaign?.description || undefined}
+        openGraph={{
+          siteName: "Tekuno",
+          title: campaign?.name,
+          description: campaign?.description || undefined,
+          images: image?.url ? [{ url: image.url }] : [],
+        }}
+      />
+      <ClientContainer>
+        {campaign && <SharedCampaignDetails campaign={campaign} user={user} />}
+      </ClientContainer>
+    </>
   );
 };
 
