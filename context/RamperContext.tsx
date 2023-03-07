@@ -61,7 +61,7 @@ export const RamperProvider = ({ children }: any) => {
           AUTH_PROVIDER.EMAIL,
         ],
         walletProviders: [WALLET_PROVIDER.NEAR_WALLET],
-        network: SUPPORTED_NEAR_NETWORKS.TESTNET,
+        network: process.env.NEXT_PUBLIC_NETWORK,
         theme: theme.colorScheme === "dark" ? THEME.DARK : THEME.LIGHT,
         logoURI: `https://i.imgur.com/BF6sZhU.png`, // TODO: Point this to production url later
         appId: "siycfmkhwu", // TODO: Change this to production app id later

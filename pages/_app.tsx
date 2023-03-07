@@ -20,6 +20,7 @@ export default function App({
   const router = useRouter();
 
   const isAdmin = router.route.startsWith("/admin");
+  const isCampaing = router.route.startsWith("/campaign");
 
   return (
     <>
@@ -29,6 +30,7 @@ export default function App({
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
+        {!isCampaing && <meta name="robots" content="noindex" />}
       </Head>
 
       <SessionProvider session={session}>
