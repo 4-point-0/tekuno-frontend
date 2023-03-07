@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "api:codegen:admin": "npx openapi-codegen gen tekunoAdmin",
@@ -22,6 +23,7 @@
     "@mantine/modals": "^5.10.3",
     "@mantine/next": "^5.10.2",
     "@mantine/notifications": "^5.10.2",
+    "@next/bundle-analyzer": "^13.2.3",
     "@ramper/near": "^0.0.30",
     "@tanstack/react-query": "^4.24.4",
     "@types/node": "18.14.2",
