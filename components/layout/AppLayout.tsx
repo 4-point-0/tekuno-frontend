@@ -45,23 +45,26 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
               {
                 title: "Company",
                 links: [
-                  { label: "About", link: "#" },
-                  { label: "Blog", link: "#" },
+                  { label: "About", link: "https://www.tekuno.xyz" },
+                  { label: "Blog", link: "https://www.tekuno.xyz" },
                 ],
               },
               {
                 title: "Support",
                 links: [
-                  { label: "Help Center", link: "#" },
-                  { label: "Terms of Service", link: "#" },
-                  { label: "Privacy Policy", link: "#" },
+                  { label: "Help Center", link: "https://www.tekuno.xyz" },
+                  {
+                    label: "Terms of Service",
+                    link: "https://www.tekuno.xyz",
+                  },
+                  { label: "Privacy Policy", link: "https://www.tekuno.xyz" },
                 ],
               },
               {
                 title: "Connect",
                 links: [
-                  { label: "Contact", link: "#" },
-                  { label: "Newsletter", link: "#" },
+                  { label: "Contact", link: "https://www.tekuno.xyz" },
+                  { label: "Newsletter", link: "https://www.tekuno.xyz" },
                 ],
               },
             ]}

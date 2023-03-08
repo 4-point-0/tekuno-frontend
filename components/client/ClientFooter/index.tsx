@@ -6,7 +6,6 @@ import {
   Image,
   Text,
 } from "@mantine/core";
-import Link from "next/link";
 import {
   BrandInstagram,
   BrandLinkedin,
@@ -130,9 +129,10 @@ export function ClientFooter({ data }: FooterLinksProps) {
       <Text
         key={index}
         className={classes.link}
-        component={Link}
+        component="a"
         href={link.link}
-        onClick={(event) => event.preventDefault()}
+        target="_blank"
+        rel="noreferrer"
       >
         {link.label}
       </Text>
