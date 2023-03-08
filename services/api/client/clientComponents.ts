@@ -263,7 +263,7 @@ export const fetchNftControllerFindOne = (
     {},
     NftControllerFindOnePathParams
   >({
-    url: "/api/v1/nft/{nftId}/{accountId}",
+    url: "/api/v1/nft/user/{nftId}/{accountId}",
     method: "get",
     ...variables,
     signal,
@@ -288,7 +288,7 @@ export const useNftControllerFindOne = <TData = Schemas.UserNftDto>(
     TData
   >(
     queryKeyFn({
-      path: "/api/v1/nft/{nft_id}/{account_id}",
+      path: "/api/v1/nft/user/{nft_id}/{account_id}",
       operationId: "nftControllerFindOne",
       variables,
     }),
@@ -688,7 +688,7 @@ export type QueryOperation =
       variables: NftControllerFindAllVariables;
     }
   | {
-      path: "/api/v1/nft/{nft_id}/{account_id}";
+      path: "/api/v1/nft/user/{nft_id}/{account_id}";
       operationId: "nftControllerFindOne";
       variables: NftControllerFindOneVariables;
     }
