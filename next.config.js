@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/ar-filter',
+        destination: 'https://www.instagram.com/ar/884655905923421/',
+        permanent: false,
+        basePath: false
+      },
+    ]
+  },
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
