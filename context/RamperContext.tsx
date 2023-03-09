@@ -56,7 +56,7 @@ export const RamperProvider = ({ children }: any) => {
         authProviders: [
           AUTH_PROVIDER.GOOGLE,
           AUTH_PROVIDER.FACEBOOK,
-          AUTH_PROVIDER.TWITTER,
+          // AUTH_PROVIDER.TWITTER,
           AUTH_PROVIDER.APPLE,
           AUTH_PROVIDER.EMAIL,
         ],
