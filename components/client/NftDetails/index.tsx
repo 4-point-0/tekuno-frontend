@@ -12,7 +12,6 @@ import {
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { Check, ChevronRight, Flame } from "tabler-icons-react";
-import { showNotification } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 
 import { useRamper } from "@/context/RamperContext";
@@ -24,6 +23,7 @@ import {
 import { NftDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
+import { notifications } from "@/utils/notifications";
 
 interface INftDetailsProps {
   nft: NftDto;
@@ -94,17 +94,24 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
 
   const handleClaim = async () => {
     if (user) {
-      await drop.mutateAsync({
-        pathParams: {
-          nftId: nft.id as string,
-          accountId: user.profile?.wallet_address as string,
-        },
-      });
+      try {
+        notifications.create({ message: `Claiming ${nft.name}...` });
 
-      showNotification({ message: `${nft.name} claimed! 🎉`, autoClose: 3000 });
-      setClaimed(true);
-      refetch();
-      refechUserCampaigns();
+        await drop.mutateAsync({
+          pathParams: {
+            nftId: nft?.id as string,
+            accountId: user.profile?.wallet_address as string,
+          },
+        });
+
+        notifications.success({ message: `${nft.name} claimed! 🎉` });
+
+        setClaimed(true);
+        refetch();
+        refechUserCampaigns();
+      } catch {
+        notifications.error({});
+      }
     } else {
       await signIn();
     }
