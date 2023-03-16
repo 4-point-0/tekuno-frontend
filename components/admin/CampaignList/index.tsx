@@ -14,9 +14,10 @@ import {
   Center,
   Loader,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import Link from "next/link";
 import React from "react";
 import { Pencil } from "tabler-icons-react";
+
 import { CallToAction } from "../CallToAction";
 import { CampaignStatus } from "../CampaignStatus";
 
@@ -52,9 +53,8 @@ export const CampaignList = () => {
       {data?.results.map((campaign) => (
         <Grid.Col key={campaign.id} span="content">
           <Card
-            component={NextLink}
+            component={Link}
             href={`/admin/previous/${campaign.id}`}
-            legacyBehavior
             h="100%"
             w={332}
             shadow="sm"

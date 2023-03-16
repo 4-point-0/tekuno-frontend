@@ -3,12 +3,12 @@ import { QRCode } from "react-qrcode-logo";
 import { Box, Group } from "@mantine/core";
 import { Download, ExternalLink } from "tabler-icons-react";
 import { saveAs } from "file-saver";
-import { NextLink } from "@mantine/next";
 
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { getClaimURL } from "@/utils/qrcode";
 import { CopyActionButton } from "@/components/core/CopyActionButton";
+import Link from "next/link";
 
 interface IQRCodeProps {
   nft: NftDto;
@@ -52,11 +52,10 @@ export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
       </IndigoButton>
 
       <IndigoButton
-        component={NextLink}
+        component={Link}
         href={url}
         target="_blank"
         rel="norefferer"
-        legacyBehavior
         leftIcon={<ExternalLink size={14} />}
       >
         Open

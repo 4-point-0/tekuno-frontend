@@ -10,7 +10,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { AdminGuard } from "@/context/AdminGuard";
 import { ModalsProvider } from "@mantine/modals";
 import { tekunoTheme } from "@/styles/theme";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 
 export default function App({
@@ -46,11 +46,10 @@ export default function App({
               }
             >
               <ModalsProvider>
-                <NotificationsProvider>
-                  <AppLayout>
-                    <Component {...pageProps} />
-                  </AppLayout>
-                </NotificationsProvider>
+                <Notifications />
+                <AppLayout>
+                  <Component {...pageProps} />
+                </AppLayout>
               </ModalsProvider>
             </MantineProvider>
           </QueryClientProvider>

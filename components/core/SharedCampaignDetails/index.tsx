@@ -10,6 +10,7 @@ import {
   Progress,
   Skeleton,
 } from "@mantine/core";
+import Link from "next/link";
 
 import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
 import { getCampaignAssets } from "@/utils/campaign";
@@ -20,7 +21,6 @@ import { UserDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { DownloadBadge } from "../DownloadBadge";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
-import Link from "next/link";
 
 interface IConditionalLinkProps extends PropsWithChildren {
   href: string;

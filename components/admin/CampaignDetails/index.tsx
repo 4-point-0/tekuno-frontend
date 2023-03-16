@@ -12,7 +12,6 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
@@ -23,6 +22,7 @@ import {
   Report,
 } from "tabler-icons-react";
 import { saveAs } from "file-saver";
+import Link from "next/link";
 
 import { StatBox } from "./StatBox";
 import { IndigoButton } from "@/components/core/IndigoButton";
@@ -128,9 +128,8 @@ export const CampaignDetails = () => {
                 Preview
               </IndigoButton>
               <Button
-                component={NextLink}
+                component={Link}
                 href={`/admin/previous/${router.query.id}/edit`}
-                legacyBehavior
                 leftIcon={<Pencil size={14} />}
                 color="dark"
               >

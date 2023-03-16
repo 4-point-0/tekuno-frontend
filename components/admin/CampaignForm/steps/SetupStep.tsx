@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
-import { DatePicker, DateRangePicker, DayModifiers } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";
@@ -14,14 +14,12 @@ import {
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
 import { getImageUrl } from "@/utils/file";
-import { useDayStyle } from "@/utils/date";
 
 export const SetupStep = () => {
   const form = useFormContext();
   const isMutating = useIsMutating();
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove({});
-  const dayStyle = useDayStyle();
 
   const handleDrop = async (files: Array<FileWithPath>) => {
     const file = files[0];
@@ -100,11 +98,10 @@ export const SetupStep = () => {
           />
 
           <Group>
-            <DatePicker
+            <DatePickerInput
               withAsterisk
               placeholder="Select start date"
               icon={<Calendar size={16} />}
-              dayStyle={dayStyle}
               maxDate={
                 form.values.endDate
                   ? dayjs(form.values.endDate).subtract(1, "day").toDate()
@@ -112,11 +109,10 @@ export const SetupStep = () => {
               }
               {...form.getInputProps("startDate")}
             />
-            <DatePicker
+            <DatePickerInput
               withAsterisk
               placeholder="Select end date"
               icon={<Calendar size={16} />}
-              dayStyle={dayStyle}
               disabled={!form.values.limitDate}
               minDate={
                 form.values.startDate

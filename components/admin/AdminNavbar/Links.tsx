@@ -9,8 +9,9 @@ import {
   MantineColor,
 } from "@mantine/core";
 import { CircleDot, CirclePlus, Clock, Icon } from "tabler-icons-react";
-import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 
@@ -67,9 +68,8 @@ export const LinkButton: React.FC<ILinkButtonProps> = ({
   return (
     <>
       <Button
-        component={NextLink}
+        component={Link}
         href={href}
-        legacyBehavior
         key={label}
         variant="subtle"
         leftIcon={

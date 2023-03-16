@@ -15,7 +15,7 @@ import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import { Calendar, Check, X } from "tabler-icons-react";
 import { FileWithPath } from "@mantine/dropzone";
-import { DatePicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
 
 import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
 import {
@@ -37,7 +37,6 @@ import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
 import { useRouter } from "next/router";
 import { getEditFormValidateInput } from "@/utils/validation";
-import { useDayStyle } from "@/utils/date";
 
 interface IEditCampaign {
   campaign: CampaignDto;
@@ -66,7 +65,6 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
 
   const isMutating = useIsMutating();
   const router = useRouter();
-  const dayStyle = useDayStyle();
 
   const uploadFile = useFileControllerUploadFile({});
   const updateFile = useFileControllerUpdateFile({});
@@ -250,11 +248,10 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
             />
 
             <Group>
-              <DatePicker
+              <DatePickerInput
                 withAsterisk
                 placeholder="Select start date"
                 icon={<Calendar size={16} />}
-                dayStyle={dayStyle}
                 maxDate={
                   form.values.endDate
                     ? dayjs(form.values.endDate).subtract(1, "day").toDate()
@@ -262,11 +259,10 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
                 }
                 {...form.getInputProps("startDate")}
               />
-              <DatePicker
+              <DatePickerInput
                 withAsterisk
                 placeholder="Select end date"
                 icon={<Calendar size={16} />}
-                dayStyle={dayStyle}
                 disabled={!form.values.limitDate}
                 minDate={
                   form.values.startDate
