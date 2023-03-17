@@ -1,3 +1,4 @@
+import { FormattedHTML } from "@/components/core/FormattedHTML";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
@@ -75,7 +76,7 @@ export const CampaignList = () => {
               <Title order={4}>{campaign.name}</Title>
 
               {campaign.description && (
-                <Text fz="sm">{campaign.description}</Text>
+                <FormattedHTML fz="sm" content={campaign.description} />
               )}
 
               <Group position="right" noWrap>

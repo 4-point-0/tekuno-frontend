@@ -41,6 +41,7 @@ import { getCampaignAssets, hasEnded } from "@/utils/campaign";
 import { formatDateRange } from "@/utils/date";
 import { CampaignStatus } from "../CampaignStatus";
 import { notifications } from "@/utils/notifications";
+import { FormattedHTML } from "@/components/core/FormattedHTML";
 
 const stats = [
   {
@@ -163,9 +164,11 @@ export const CampaignDetails = () => {
           {campaign && <StatusButtons campaign={campaign} />}
         </Group>
 
-        {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
+        {campaign?.description && (
+          <FormattedHTML fz="lg" content={campaign.description} />
+        )}
         {campaign?.additional_description && (
-          <Text fz="sm">{campaign.additional_description}</Text>
+          <FormattedHTML fz="sm" content={campaign.additional_description} />
         )}
 
         <SimpleGrid display="none" cols={4}>

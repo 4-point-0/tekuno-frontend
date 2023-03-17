@@ -6,7 +6,6 @@ import {
   Stack,
   Switch,
   Text,
-  Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -37,6 +36,7 @@ import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
 import { useRouter } from "next/router";
 import { getEditFormValidateInput } from "@/utils/validation";
+import { TextEditor } from "@/components/form/TextEditor";
 
 interface IEditCampaign {
   campaign: CampaignDto;
@@ -278,20 +278,26 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
         <Field
           label="Edit the catchy phrase for your campaign"
           description="This text will be visible on each POD page"
+          error={form.getInputProps("description").error}
         >
-          <Textarea
-            mt="sm"
-            placeholder="Placeholder text"
-            {...form.getInputProps("description")}
-          />
+          <Box my="xs">
+            <TextEditor
+              value={form.getInputProps("description").value}
+              onChange={form.getInputProps("description").onChange}
+            />
+          </Box>
         </Field>
 
-        <Field label="Edit the details of your campaign">
-          <Textarea
-            mt="sm"
-            placeholder="Placeholder text"
-            {...form.getInputProps("additionalDescription")}
-          />
+        <Field
+          label="Edit the details of your campaign"
+          error={form.getInputProps("additionalDescription").error}
+        >
+          <Box my="xs">
+            <TextEditor
+              value={form.getInputProps("additionalDescription").value}
+              onChange={form.getInputProps("additionalDescription").onChange}
+            />
+          </Box>
         </Field>
 
         <Field label="Upload files related to your campaign (optional)">

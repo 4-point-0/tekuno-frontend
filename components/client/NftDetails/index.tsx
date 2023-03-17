@@ -24,6 +24,7 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 import { notifications } from "@/utils/notifications";
+import { FormattedHTML } from "@/components/core/FormattedHTML";
 
 interface INftDetailsProps {
   nft: NftDto;
@@ -158,7 +159,7 @@ export const NftDetails: React.FC<INftDetailsProps> = ({
         >
           <Text fw={700}>{nft?.campaign?.name}</Text>
         </Button>
-        <Text>{nft?.campaign?.description}</Text>
+        <FormattedHTML content={nft.campaign?.description} />
       </Stack>
 
       <SimpleGrid

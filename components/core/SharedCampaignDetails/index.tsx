@@ -21,6 +21,7 @@ import { UserDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { DownloadBadge } from "../DownloadBadge";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
+import { FormattedHTML } from "../FormattedHTML";
 
 interface IConditionalLinkProps extends PropsWithChildren {
   href: string;
@@ -137,10 +138,11 @@ export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
           </Text>
         </Skeleton>
       </Box>
-
-      {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
+      {campaign?.description && (
+        <FormattedHTML fz="lg" content={campaign.description} />
+      )}
       {campaign?.additional_description && (
-        <Text fz="sm">{campaign.additional_description}</Text>
+        <FormattedHTML fz="sm" content={campaign.additional_description} />
       )}
 
       <Group>
