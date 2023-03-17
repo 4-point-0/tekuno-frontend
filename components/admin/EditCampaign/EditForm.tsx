@@ -145,7 +145,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
       return {
         file,
-        response: respones[i],
+        response: respones[i] as unknown as FileDto,
       };
     });
 

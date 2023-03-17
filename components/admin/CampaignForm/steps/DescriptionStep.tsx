@@ -16,6 +16,7 @@ import {
   useFormContext,
 } from "../FormContext";
 import { TextEditor } from "@/components/form/TextEditor";
+import { FileDto } from "@/services/api/admin/adminSchemas";
 
 export const DescriptionStep = () => {
   const form = useFormContext();
@@ -46,7 +47,7 @@ export const DescriptionStep = () => {
     const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
       return {
         file,
-        response: respones[i],
+        response: respones[i] as unknown as FileDto,
       };
     });
 
