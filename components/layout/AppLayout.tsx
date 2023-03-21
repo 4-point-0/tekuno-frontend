@@ -1,9 +1,10 @@
-import { RamperProvider } from "@/context/RamperContext";
 import { AppShell, Burger, MediaQuery } from "@mantine/core";
 import { useRouter } from "next/router";
 import { PropsWithChildren, useState } from "react";
-import { AdminHeader } from "../admin/AdminHeader";
 
+import { RamperProvider } from "@/context/RamperContext";
+
+import { AdminHeader } from "../admin/AdminHeader";
 import { AdminNavbar } from "../admin/AdminNavbar";
 import { ClientFooter } from "../client/ClientFooter";
 import { ClientHeader } from "../client/ClientHeader";

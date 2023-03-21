@@ -1,6 +1,6 @@
+import fetch from "isomorphic-fetch";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import fetch from "isomorphic-fetch";
 
 export const authOptions: NextAuthOptions = {
   providers: [

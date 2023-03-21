@@ -1,8 +1,9 @@
-import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
-import { NftDto } from "@/services/api/admin/adminSchemas";
 import { Badge, Box, Flex, Group, Text, ThemeIcon, Title } from "@mantine/core";
 import { PropsWithChildren } from "react";
 import { Check, Flame, Lock, Minus } from "tabler-icons-react";
+
+import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
+import { NftDto } from "@/services/api/admin/adminSchemas";
 
 interface NFTCardProps extends PropsWithChildren {
   nft: NftDto;

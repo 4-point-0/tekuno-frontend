@@ -1,4 +1,3 @@
-import { IndigoButton } from "@/components/core/IndigoButton";
 import {
   Box,
   Container,
@@ -10,6 +9,8 @@ import {
 } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
 import { Logout } from "tabler-icons-react";
+
+import { IndigoButton } from "@/components/core/IndigoButton";
 
 export const UserDetails = () => {
   const { data: session } = useSession({ required: true });

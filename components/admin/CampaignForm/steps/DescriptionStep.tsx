@@ -1,14 +1,15 @@
-import { Group, Stack, Textarea, Text, ActionIcon, Title } from "@mantine/core";
+import { ActionIcon, Group, Stack, Text, Textarea, Title } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
 
+import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { IndigoBadge } from "@/components/core/IndigoBadge";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
+
 import {
   CAMPAIGN_DOCUMENT_TYPES,
   UploadedFileValue,

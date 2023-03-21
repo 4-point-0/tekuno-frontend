@@ -1,5 +1,6 @@
-import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { Badge, MantineColor, MantineSize } from "@mantine/core";
+
+import { CampaignDto } from "@/services/api/admin/adminSchemas";
 
 interface CampaignStatusProps {
   status: CampaignDto["status"];

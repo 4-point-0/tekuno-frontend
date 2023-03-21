@@ -1,8 +1,8 @@
 import { Button } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { useIsMutating } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { PlayerPause, PlayerPlay, PlayerStop } from "tabler-icons-react";
-import { openConfirmModal } from "@mantine/modals";
 
 import {
   useCampaignControllerFindAll,
@@ -10,8 +10,8 @@ import {
   useCampaignControllerPause,
 } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
-import { notifications } from "@/utils/notifications";
 import { hasEnded } from "@/utils/campaign";
+import { notifications } from "@/utils/notifications";
 
 interface StatusButtonsProps {
   campaign: CampaignDto;

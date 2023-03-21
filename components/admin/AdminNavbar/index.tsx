@@ -1,4 +1,4 @@
-import { Navbar, Divider } from "@mantine/core";
+import { Divider, Navbar } from "@mantine/core";
 import { useRouter } from "next/router";
 
 import { Links } from "./Links";

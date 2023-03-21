@@ -1,10 +1,11 @@
 import { MantineSize } from "@mantine/core";
+import saveAs from "file-saver";
 import { useState } from "react";
 import { Download } from "tabler-icons-react";
-import saveAs from "file-saver";
 
 import { FileDto } from "@/services/api/admin/adminSchemas";
 import { fetchCampaignUserControllerGetNftMedia } from "@/services/api/client/clientComponents";
+
 import { IndigoButton } from "../IndigoButton";
 
 interface DownloadBadgeProps {

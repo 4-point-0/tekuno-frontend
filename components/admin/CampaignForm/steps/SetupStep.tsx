@@ -1,19 +1,20 @@
 import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
-import { Calendar } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { Calendar } from "tabler-icons-react";
 
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { CAMPAIGN_IMAGE_TYPES, useFormContext } from "../FormContext";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
-import { getImageUrl } from "@/utils/file";
 import { useDayStyle } from "@/utils/date";
+import { getImageUrl } from "@/utils/file";
+
+import { CAMPAIGN_IMAGE_TYPES, useFormContext } from "../FormContext";
 
 export const SetupStep = () => {
   const form = useFormContext();

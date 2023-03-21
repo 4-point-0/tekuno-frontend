@@ -1,8 +1,9 @@
-import { IndigoButton } from "@/components/core/IndigoButton";
-import { Field } from "@/components/form/Field";
 import { ActionIcon, Group, Select, Stack, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { CirclePlus, Trash } from "tabler-icons-react";
+
+import { IndigoButton } from "@/components/core/IndigoButton";
+import { Field } from "@/components/form/Field";
 
 import {
   ATTRIBUTE_INITIAL_VALUE,

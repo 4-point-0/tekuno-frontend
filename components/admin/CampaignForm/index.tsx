@@ -1,23 +1,11 @@
 import { Button, Container, Group, Stack, Stepper } from "@mantine/core";
+import { useIsMutating } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Check, ChevronRight } from "tabler-icons-react";
-import { useIsMutating } from "@tanstack/react-query";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { CampaignType, campaignTypeData } from "@/enums/CampaignType";
-import { DescriptionStep } from "./steps/DescriptionStep";
-import {
-  FormProvider,
-  FormNFTValue,
-  CreateFormValues,
-  NFT_INITIAL_VALUE,
-  useForm,
-} from "./FormContext";
-import { PODStep } from "./steps/PODStep";
-import { RewardStep } from "./steps/RewardStep";
-import { SetupStep } from "./steps/SetupStep";
-import { StyledStepper } from "./StyledStepper";
 import {
   useCampaignControllerCreate,
   useCampaignTypeControllerFindAll,
@@ -27,6 +15,19 @@ import {
 import { CreateNftDto, NftTypeDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
 import { getFormValidateInput } from "@/utils/validation";
+
+import {
+  CreateFormValues,
+  FormNFTValue,
+  FormProvider,
+  NFT_INITIAL_VALUE,
+  useForm,
+} from "./FormContext";
+import { DescriptionStep } from "./steps/DescriptionStep";
+import { PODStep } from "./steps/PODStep";
+import { RewardStep } from "./steps/RewardStep";
+import { SetupStep } from "./steps/SetupStep";
+import { StyledStepper } from "./StyledStepper";
 
 function getCreateNftDto(
   formValue: FormNFTValue,

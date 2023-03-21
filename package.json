@@ -50,9 +50,11 @@
   "devDependencies": {
     "@openapi-codegen/cli": "^2.0.0",
     "@openapi-codegen/typescript": "^6.1.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/bn.js": "^5.1.1",
     "@types/file-saver": "^2.0.5",
     "@types/http-proxy": "^1.17.9",
-    "@types/isomorphic-fetch": "^0.0.36"
+    "@types/isomorphic-fetch": "^0.0.36",
+    "eslint-config-prettier": "^8.8.0"
   }
 }

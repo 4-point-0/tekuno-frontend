@@ -9,9 +9,10 @@ import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
+
+import { AssetPreview } from "./AssetPreview";
 import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
-import { AssetPreview } from "./AssetPreview";
 
 interface NFTFormProps {
   formKey: string;

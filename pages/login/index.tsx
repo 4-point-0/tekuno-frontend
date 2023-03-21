@@ -1,4 +1,3 @@
-import { useRamper } from "@/context/RamperContext";
 import {
   Box,
   Button,
@@ -9,6 +8,8 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+
+import { useRamper } from "@/context/RamperContext";
 
 export default function Login() {
   const { signIn, loading, user } = useRamper();

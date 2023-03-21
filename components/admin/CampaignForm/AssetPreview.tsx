@@ -1,7 +1,8 @@
-import { FileDto } from "@/services/api/admin/adminSchemas";
-import { MIME_TYPES } from "@mantine/dropzone";
 import { Box, Image } from "@mantine/core";
+import { MIME_TYPES } from "@mantine/dropzone";
+
 import { Video } from "@/components/core/Video";
+import { FileDto } from "@/services/api/admin/adminSchemas";
 
 interface AssetPreviewProps {
   file: FileDto;

@@ -1,11 +1,11 @@
 import { GetServerSideProps, NextPage } from "next";
+import { NextSeo } from "next-seo";
 
 import { SharedCampaignDetails } from "@/components/core/SharedCampaignDetails";
-import { fetchCampaignUserControllerFindOne } from "@/services/api/client/clientComponents";
+import { ClientContainer } from "@/components/layout/ClientContainer";
 import { useRamper } from "@/context/RamperContext";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
-import { ClientContainer } from "@/components/layout/ClientContainer";
-import { NextSeo } from "next-seo";
+import { fetchCampaignUserControllerFindOne } from "@/services/api/client/clientComponents";
 import { getCampaignAssets } from "@/utils/campaign";
 
 interface CampaignPageProps {

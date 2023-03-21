@@ -1,15 +1,16 @@
 import {
+  Box,
   Button,
+  Collapse,
+  createStyles,
+  MantineColor,
   Stack,
   ThemeIcon,
-  createStyles,
-  Box,
-  Collapse,
-  MantineColor,
 } from "@mantine/core";
-import { CircleDot, CirclePlus, Clock, Icon } from "tabler-icons-react";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
+import { CircleDot, CirclePlus, Clock, Icon } from "tabler-icons-react";
+
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 

@@ -1,12 +1,12 @@
 import { GetServerSideProps, NextPage } from "next";
 
+import { NftDetails } from "@/components/client/NftDetails";
+import { ClientContainer } from "@/components/layout/ClientContainer";
 import {
   fetchNftControllerFindOneNft,
   useNftControllerFindOneNft,
 } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
-import { ClientContainer } from "@/components/layout/ClientContainer";
-import { NftDetails } from "@/components/client/NftDetails";
 
 interface ClaimPageProps {
   initialData?: NftDto;

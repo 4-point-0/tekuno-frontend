@@ -1,10 +1,10 @@
 import {
+  Avatar,
+  createStyles,
+  Group,
+  Text,
   UnstyledButton,
   UnstyledButtonProps,
-  Group,
-  Avatar,
-  Text,
-  createStyles,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { useSession } from "next-auth/react";

@@ -1,5 +1,3 @@
-import { useRamper } from "@/context/RamperContext";
-import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import {
   Box,
   Burger,
@@ -21,6 +19,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
+
+import { useRamper } from "@/context/RamperContext";
+import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 
 const useStyles = createStyles((theme) => ({
   inner: {

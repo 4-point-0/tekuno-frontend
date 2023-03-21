@@ -1,7 +1,8 @@
-import { useIsClient } from "@/hooks/useIsClient";
-import { FileDto } from "@/services/api/admin/adminSchemas";
 import { AspectRatio, Skeleton } from "@mantine/core";
 import { useSetState } from "@mantine/hooks";
+
+import { useIsClient } from "@/hooks/useIsClient";
+import { FileDto } from "@/services/api/admin/adminSchemas";
 
 interface VideoProps {
   file: FileDto;

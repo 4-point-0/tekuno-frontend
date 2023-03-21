@@ -1,20 +1,21 @@
-import { MAX_FILE_SIZE } from "@/components/admin/CampaignForm/FormContext";
 import {
-  Group,
-  useMantineTheme,
-  Text,
-  Stack,
-  Button,
   Box,
+  Button,
+  Group,
   Image,
+  Stack,
+  Text,
+  useMantineTheme,
 } from "@mantine/core";
 import {
+  FileWithPath,
   Dropzone as MantineDropzone,
   DropzoneProps as MantineDropzoneProps,
-  FileWithPath,
 } from "@mantine/dropzone";
 import { useRef, useState } from "react";
 import { Photo, Upload, X } from "tabler-icons-react";
+
+import { MAX_FILE_SIZE } from "@/components/admin/CampaignForm/FormContext";
 
 interface DropzoneProps extends Partial<MantineDropzoneProps> {
   title: string;

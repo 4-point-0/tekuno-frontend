@@ -1,9 +1,3 @@
-import {
-  fetchUserControllerRegister,
-  useChainControllerFindAll,
-} from "@/services/api/client/clientComponents";
-import { UserDto } from "@/services/api/client/clientSchemas";
-import { notifications } from "@/utils/notifications";
 import { useMantineTheme } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import {
@@ -11,13 +5,20 @@ import {
   getUser as getUserRamper,
   init,
   openWallet as openWalletRamper,
+  RamperInstance,
   signIn as signInRamper,
   signOut as signOutRamper,
   THEME,
   WALLET_PROVIDER,
-  RamperInstance,
 } from "@ramper/near";
 import { createContext, useContext, useEffect, useState } from "react";
+
+import {
+  fetchUserControllerRegister,
+  useChainControllerFindAll,
+} from "@/services/api/client/clientComponents";
+import { UserDto } from "@/services/api/client/clientSchemas";
+import { notifications } from "@/utils/notifications";
 
 interface UseRamper {
   user: UserDto | null;

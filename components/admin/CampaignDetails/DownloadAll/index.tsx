@@ -1,11 +1,11 @@
-import { useRef } from "react";
-import { Download } from "tabler-icons-react";
-import { QRCode } from "react-qrcode-logo";
+import { Box, Portal } from "@mantine/core";
 import { saveAs } from "file-saver";
+import { useRef } from "react";
+import { QRCode } from "react-qrcode-logo";
+import { Download } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
-import { Box, Portal } from "@mantine/core";
 import { getClaimURL } from "@/utils/qrcode";
 
 interface DownloadAllProps {

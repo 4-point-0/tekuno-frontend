@@ -1,26 +1,27 @@
-import { PropsWithChildren, useMemo } from "react";
 import {
-  Box,
-  Stack,
-  Image,
-  Text,
-  Title,
-  Group,
   Badge,
+  Box,
+  Group,
+  Image,
   Progress,
   Skeleton,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
-
-import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
-import { getCampaignAssets } from "@/utils/campaign";
-import { getImageUrl } from "@/utils/file";
-import { formatDateRange } from "@/utils/date";
-import { NFTCard } from "../NFTCard";
-import { UserDto } from "@/services/api/client/clientSchemas";
-import { useIsClient } from "@/hooks/useIsClient";
-import { DownloadBadge } from "../DownloadBadge";
-import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
 import Link from "next/link";
+import { PropsWithChildren, useMemo } from "react";
+
+import { useIsClient } from "@/hooks/useIsClient";
+import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
+import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
+import { UserDto } from "@/services/api/client/clientSchemas";
+import { getCampaignAssets } from "@/utils/campaign";
+import { formatDateRange } from "@/utils/date";
+import { getImageUrl } from "@/utils/file";
+
+import { DownloadBadge } from "../DownloadBadge";
+import { NFTCard } from "../NFTCard";
 
 interface ConditionalLinkProps extends PropsWithChildren {
   href: string;
