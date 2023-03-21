@@ -10,11 +10,11 @@ import { getClaimURL } from "@/utils/qrcode";
 
 interface DownloadAllProps {
   campaign: CampaignDto;
-  nfts: Array<NftDto>;
+  nfts: NftDto[];
 }
 
 export const DownloadAll = ({ campaign, nfts }: DownloadAllProps) => {
-  const ref = useRef<Array<QRCode | null>>([]);
+  const ref = useRef<(QRCode | null)[]>([]);
 
   const handleDownloadAll = async () => {
     const JSZip = (await import("jszip")).default;

@@ -13,8 +13,8 @@ export const AssetPreview = ({ file, isCollected }: AssetPreviewProps) => {
     MIME_TYPES.png,
     MIME_TYPES.jpeg,
     MIME_TYPES.gif,
-  ] as Array<string>;
-  const videoTypes = [MIME_TYPES.mp4] as Array<string>;
+  ] as string[];
+  const videoTypes = [MIME_TYPES.mp4] as string[];
 
   return (
     <Box

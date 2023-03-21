@@ -85,7 +85,7 @@ export const EditForm = ({ campaign }: EditFormProps) => {
 
   const { documents } = form.values;
 
-  const handleImageDrop = async (files: Array<FileWithPath>) => {
+  const handleImageDrop = async (files: FileWithPath[]) => {
     const file = files[0];
     const previousResponse = form.values.image?.response;
 
@@ -125,7 +125,7 @@ export const EditForm = ({ campaign }: EditFormProps) => {
     }
   };
 
-  const handleDocumentsDrop = async (files: Array<FileWithPath>) => {
+  const handleDocumentsDrop = async (files: FileWithPath[]) => {
     const previous = documents;
 
     const uniqueFiles = files.filter(({ path }) => {
@@ -143,14 +143,12 @@ export const EditForm = ({ campaign }: EditFormProps) => {
       })
     );
 
-    const newDocuments: Array<UploadedFileValue> = uniqueFiles.map(
-      (file, i) => {
-        return {
-          file,
-          response: respones[i],
-        };
-      }
-    );
+    const newDocuments: UploadedFileValue[] = uniqueFiles.map((file, i) => {
+      return {
+        file,
+        response: respones[i],
+      };
+    });
 
     form.setFieldValue("documents", previous.concat(...newDocuments));
   };
@@ -186,7 +184,7 @@ export const EditForm = ({ campaign }: EditFormProps) => {
     const fileIds = [
       image?.response?.id,
       ...documents.map(({ response }) => response?.id),
-    ].filter(Boolean) as Array<string>;
+    ].filter(Boolean) as string[];
 
     await updateCampaign.mutateAsync({
       pathParams: {

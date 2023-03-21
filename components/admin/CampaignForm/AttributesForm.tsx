@@ -22,7 +22,7 @@ export const AttributesForm = ({ formKey }: AttributesFormProps) => {
   );
   const form = useFormContext();
   const attributes = form.getInputProps(formKey).value
-    .attributes as Array<FormAttributeValue>;
+    .attributes as FormAttributeValue[];
   const { error } = form.getInputProps(`${formKey}.attributes`);
 
   const traitTypeValues = attributes.map(

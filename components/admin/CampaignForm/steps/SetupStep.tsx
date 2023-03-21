@@ -22,7 +22,7 @@ export const SetupStep = () => {
   const removeFile = useFileControllerRemove({});
   const dayStyle = useDayStyle();
 
-  const handleDrop = async (files: Array<FileWithPath>) => {
+  const handleDrop = async (files: FileWithPath[]) => {
     const file = files[0];
 
     const { image } = form.values;

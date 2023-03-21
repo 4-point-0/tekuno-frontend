@@ -35,7 +35,7 @@ export const NFTForm = ({
     `${formKey}.file`
   );
 
-  const handleDrop = async (files: Array<FileWithPath>) => {
+  const handleDrop = async (files: FileWithPath[]) => {
     const file = files[0];
 
     try {

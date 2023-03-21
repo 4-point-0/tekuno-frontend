@@ -196,7 +196,7 @@ export const CampaignDetails = () => {
         <Group position="apart">
           <Title order={4}>Digital collectibles</Title>
           {campaign && (nfts?.length || 0) > 1 && (
-            <DownloadAll campaign={campaign} nfts={nfts as Array<NftDto>} />
+            <DownloadAll campaign={campaign} nfts={nfts as NftDto[]} />
           )}
         </Group>
 

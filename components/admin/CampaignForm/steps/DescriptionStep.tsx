@@ -23,7 +23,7 @@ export const DescriptionStep = () => {
   const uploadFile = useFileControllerUploadFile();
   const removeFile = useFileControllerRemove();
 
-  const handleDrop = async (files: Array<FileWithPath>) => {
+  const handleDrop = async (files: FileWithPath[]) => {
     const previous = documents;
 
     const uniqueFiles = files.filter(({ path }) => {
@@ -41,14 +41,12 @@ export const DescriptionStep = () => {
       })
     );
 
-    const newDocuments: Array<UploadedFileValue> = uniqueFiles.map(
-      (file, i) => {
-        return {
-          file,
-          response: respones[i],
-        };
-      }
-    );
+    const newDocuments: UploadedFileValue[] = uniqueFiles.map((file, i) => {
+      return {
+        file,
+        response: respones[i],
+      };
+    });
 
     form.setFieldValue("documents", previous.concat(...newDocuments));
   };

@@ -12,7 +12,7 @@ interface CampaignTypeDatum {
   card: {
     title: string;
     image: string;
-    perks: Array<string>;
+    perks: string[];
   };
   form: CampaignFormConfig;
 }

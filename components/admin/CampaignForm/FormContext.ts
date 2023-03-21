@@ -41,7 +41,7 @@ export interface FormNFTValue {
   name: string;
   file: UploadedFileValue;
   description: string;
-  attributes: Array<FormAttributeValue>;
+  attributes: FormAttributeValue[];
   supply: number;
 }
 
@@ -53,13 +53,13 @@ export interface SharedFormValues {
   image?: UploadedFileValue;
   description?: string;
   additionalDescription?: string;
-  documents: Array<UploadedFileValue>;
+  documents: UploadedFileValue[];
 }
 
 export interface CreateFormValues extends SharedFormValues {
   reward?: Partial<FormNFTValue>;
   poap?: Partial<FormNFTValue>;
-  collectibles: Array<Partial<FormNFTValue>>;
+  collectibles: Partial<FormNFTValue>[];
 }
 
 export const [FormProvider, useFormContext, useForm] =

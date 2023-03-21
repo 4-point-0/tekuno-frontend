@@ -47,7 +47,7 @@ interface LinkButtonProps {
   isChild?: boolean;
   Icon?: Icon;
   color?: string;
-  links?: Array<LinkButtonProps>;
+  links?: LinkButtonProps[];
 }
 
 export const LinkButton = ({

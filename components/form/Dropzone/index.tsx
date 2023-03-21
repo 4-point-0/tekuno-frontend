@@ -22,7 +22,7 @@ interface DropzoneProps extends Partial<MantineDropzoneProps> {
   label: string;
   error?: string;
   previewUrl?: string;
-  formValue?: Array<FileWithPath>;
+  formValue?: FileWithPath[];
   isLoading: boolean;
   dropzone: Omit<MantineDropzoneProps, "children">;
 }
@@ -42,7 +42,7 @@ export const Dropzone = ({
 
   const { onDrop, ...rest } = dropzone;
 
-  const handleDrop = (files: Array<FileWithPath>) => {
+  const handleDrop = (files: FileWithPath[]) => {
     onDrop(files);
   };
 

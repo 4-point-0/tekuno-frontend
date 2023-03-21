@@ -48,9 +48,9 @@ function getCreateNftDto(
 
 function getNftsFromForm(
   { poap, reward, collectibles }: CreateFormValues,
-  nftTypes: Array<NftTypeDto>
+  nftTypes: NftTypeDto[]
 ) {
-  const nfts: Array<CreateNftDto> = [];
+  const nfts: CreateNftDto[] = [];
   const poapTypeId = nftTypes.find((nftType) => nftType.name === "poap")?.id;
   const rewardTypeId = nftTypes.find(
     (nftType) => nftType.name === "reward"
@@ -182,7 +182,7 @@ export const CampaignForm = () => {
     const fileIds = [
       image?.response?.id,
       ...documents.map(({ response }) => response?.id),
-    ].filter(Boolean) as Array<string>;
+    ].filter(Boolean) as string[];
 
     const nfts = getNftsFromForm(values, nftTypes.results);
 
@@ -201,7 +201,7 @@ export const CampaignForm = () => {
           description,
           additional_description: additionalDescription,
           nfts,
-          file_ids: fileIds as Array<string>,
+          file_ids: fileIds as string[],
         },
       });
     } catch (error) {

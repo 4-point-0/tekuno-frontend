@@ -60,7 +60,7 @@ export function getNftValidator(enabled: boolean) {
         : value > RESTRICTIONS.nft.supply.max
         ? `Supply should less than ${RESTRICTIONS.nft.supply.max}`
         : null,
-    attributes: (value?: Array<FormAttributeValue>) => {
+    attributes: (value?: FormAttributeValue[]) => {
       if (!value) {
         return null;
       }
