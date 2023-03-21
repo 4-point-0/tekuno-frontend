@@ -1,4 +1,3 @@
-import React from "react";
 import { useRouter } from "next/router";
 import {
   Alert,
@@ -14,8 +13,9 @@ import { AlertCircle } from "tabler-icons-react";
 import { NFTCard } from "@/components/core/NFTCard";
 import { EditForm } from "./EditForm";
 import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
+import { Fragment } from "react";
 
-export const EditCampaign: React.FC = () => {
+export const EditCampaign = () => {
   const router = useRouter();
 
   const { data: campaign, isLoading } = useCampaignControllerFindOne({
@@ -61,12 +61,12 @@ export const EditCampaign: React.FC = () => {
             )}
 
             {nfts?.map((nft) => (
-              <React.Fragment key={nft.id}>
+              <Fragment key={nft.id}>
                 <Grid.Col span={8}>
                   <NFTCard key={nft.id} nft={nft} />
                 </Grid.Col>
                 <Grid.Col span={4}></Grid.Col>
-              </React.Fragment>
+              </Fragment>
             ))}
           </Grid>
         </Stack>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { QRCode } from "react-qrcode-logo";
 import { Box, Group } from "@mantine/core";
 import { Download, ExternalLink } from "tabler-icons-react";
@@ -10,11 +10,11 @@ import { IndigoButton } from "@/components/core/IndigoButton";
 import { getClaimURL } from "@/utils/qrcode";
 import { CopyActionButton } from "@/components/core/CopyActionButton";
 
-interface IQRCodeProps {
+interface QRCodeProps {
   nft: NftDto;
 }
 
-export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
+export const QRPreview = ({ nft }: QRCodeProps) => {
   const ref = useRef<QRCode>(null);
 
   const handleDowload = () => {

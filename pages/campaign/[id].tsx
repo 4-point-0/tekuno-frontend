@@ -1,4 +1,3 @@
-import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 
 import { SharedCampaignDetails } from "@/components/core/SharedCampaignDetails";
@@ -9,7 +8,7 @@ import { ClientContainer } from "@/components/layout/ClientContainer";
 import { NextSeo } from "next-seo";
 import { getCampaignAssets } from "@/utils/campaign";
 
-interface IClaimPageProps {
+interface CampaignPageProps {
   campaign?: CampaignDto;
 }
 
@@ -29,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-export const Campaign: NextPage<IClaimPageProps> = ({ campaign }) => {
+export const Campaign: NextPage<CampaignPageProps> = ({ campaign }) => {
   const { user } = useRamper();
 
   const { image } = getCampaignAssets(campaign);

@@ -1,7 +1,6 @@
 import { Button } from "@mantine/core";
 import { useIsMutating } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import React from "react";
 import { PlayerPause, PlayerPlay, PlayerStop } from "tabler-icons-react";
 import { openConfirmModal } from "@mantine/modals";
 
@@ -14,13 +13,13 @@ import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
 import { hasEnded } from "@/utils/campaign";
 
-interface IStatusButtonsProps {
+interface StatusButtonsProps {
   campaign: CampaignDto;
 }
 
 type MutableStatus = "Started" | "Paused" | "Ended";
 
-interface IStatusTexts {
+interface StatusTexts {
   confirm: {
     title: string;
     description: string;
@@ -30,7 +29,7 @@ interface IStatusTexts {
 
 const getStatusTexts = (
   status?: CampaignDto["status"]
-): Record<MutableStatus, IStatusTexts> => {
+): Record<MutableStatus, StatusTexts> => {
   return {
     Started: {
       confirm: {
@@ -59,7 +58,7 @@ const getStatusTexts = (
   };
 };
 
-export const StatusButtons: React.FC<IStatusButtonsProps> = ({ campaign }) => {
+export const StatusButtons = ({ campaign }: StatusButtonsProps) => {
   const router = useRouter();
   const changeStatus = useCampaignControllerPause({});
   const isMutating = useIsMutating();

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Stack,
@@ -14,7 +13,7 @@ import { useRouter } from "next/router";
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 
-interface IButtonProps {
+interface ButtonProps {
   active: boolean;
   child: boolean;
 }
@@ -26,7 +25,7 @@ const COLORS: Record<CampaignDto["status"], MantineColor> = {
   Paused: "pink",
 };
 
-const useStlyes = createStyles((theme, { active, child }: IButtonProps) => ({
+const useStlyes = createStyles((theme, { active, child }: ButtonProps) => ({
   root: {
     display: "flex",
     justifyContent: "flex-start",
@@ -42,23 +41,23 @@ const useStlyes = createStyles((theme, { active, child }: IButtonProps) => ({
   },
 }));
 
-interface ILinkButtonProps {
+interface LinkButtonProps {
   label: string;
   href: string;
   isChild?: boolean;
   Icon?: Icon;
   color?: string;
-  links?: Array<ILinkButtonProps>;
+  links?: Array<LinkButtonProps>;
 }
 
-export const LinkButton: React.FC<ILinkButtonProps> = ({
+export const LinkButton = ({
   href,
   label,
   Icon,
   links,
   color,
   isChild,
-}) => {
+}: LinkButtonProps) => {
   const router = useRouter();
   const isOpen = router.asPath.startsWith(href);
   const isActive = router.asPath === href;

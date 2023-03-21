@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   AlertTriangle,
   ExternalLink,
@@ -219,14 +219,14 @@ export const CampaignDetails = () => {
           )}
 
           {nfts?.map((nft) => (
-            <React.Fragment key={nft.id}>
+            <Fragment key={nft.id}>
               <Grid.Col span={7}>
                 <NFTCard key={nft.id} nft={nft} />
               </Grid.Col>
               <Grid.Col span={5}>
                 <QRPreview nft={nft} />
               </Grid.Col>
-            </React.Fragment>
+            </Fragment>
           ))}
         </Grid>
       </Stack>

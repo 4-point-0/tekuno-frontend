@@ -2,7 +2,7 @@ import { Box, Flex, Header, Image } from "@mantine/core";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 
-export const AdminHeader: React.FC<PropsWithChildren> = ({ children }) => {
+export const AdminHeader = ({ children }: PropsWithChildren) => {
   return (
     <Header height={60} p="xs">
       <Flex align="center" justify="space-between" h="100%">

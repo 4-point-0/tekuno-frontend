@@ -8,7 +8,7 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 import { ClientContainer } from "@/components/layout/ClientContainer";
 import { NftDetails } from "@/components/client/NftDetails";
 
-interface IClaimPageProps {
+interface ClaimPageProps {
   initialData?: NftDto;
 }
 
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-const ClaimPage: NextPage<IClaimPageProps> = ({ initialData }) => {
+const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }

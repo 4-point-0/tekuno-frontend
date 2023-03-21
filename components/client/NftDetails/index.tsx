@@ -10,7 +10,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Check, ChevronRight, Flame } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 import dynamic from "next/dynamic";
@@ -25,17 +25,14 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 
-interface INftDetailsProps {
+interface NftDetailsProps {
   nft: NftDto;
   disableClaim?: boolean;
 }
 
 const ConfettiExplosion = dynamic(() => import("react-confetti-explosion"));
 
-export const NftDetails: React.FC<INftDetailsProps> = ({
-  nft,
-  disableClaim,
-}) => {
+export const NftDetails = ({ nft, disableClaim }: NftDetailsProps) => {
   const theme = useMantineTheme();
   const { user, signIn, loading: ramperLoading } = useRamper();
   const isClient = useIsClient();

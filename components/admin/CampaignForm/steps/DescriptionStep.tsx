@@ -1,5 +1,4 @@
 import { Group, Stack, Textarea, Text, ActionIcon, Title } from "@mantine/core";
-import React from "react";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
 
@@ -12,7 +11,7 @@ import {
 } from "@/services/api/admin/adminComponents";
 import {
   CAMPAIGN_DOCUMENT_TYPES,
-  IUploadedFile,
+  UploadedFileValue,
   useFormContext,
 } from "../FormContext";
 
@@ -42,17 +41,19 @@ export const DescriptionStep = () => {
       })
     );
 
-    const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
-      return {
-        file,
-        response: respones[i],
-      };
-    });
+    const newDocuments: Array<UploadedFileValue> = uniqueFiles.map(
+      (file, i) => {
+        return {
+          file,
+          response: respones[i],
+        };
+      }
+    );
 
     form.setFieldValue("documents", previous.concat(...newDocuments));
   };
 
-  const handleRemove = (file: IUploadedFile) => {
+  const handleRemove = (file: UploadedFileValue) => {
     return async () => {
       try {
         await removeFile.mutateAsync({

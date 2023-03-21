@@ -3,21 +3,21 @@ export enum CampaignType {
   LOYALTY = "loyalty",
 }
 
-export interface ICampaignFormConfig {
+export interface CampaignFormConfig {
   hasPoap: boolean;
   hasRewards: boolean;
 }
 
-interface ICampaignTypeDatum {
+interface CampaignTypeDatum {
   card: {
     title: string;
     image: string;
     perks: Array<string>;
   };
-  form: ICampaignFormConfig;
+  form: CampaignFormConfig;
 }
 
-export const campaignTypeData: Record<CampaignType, ICampaignTypeDatum> = {
+export const campaignTypeData: Record<CampaignType, CampaignTypeDatum> = {
   [CampaignType.ATTENDANCE]: {
     card: {
       title: "Attendance",

@@ -1,15 +1,14 @@
 import { Navbar, Divider } from "@mantine/core";
 import { useRouter } from "next/router";
-import React from "react";
 
 import { Links } from "./Links";
 import { UserButton } from "./UserButton";
 
-interface IAdminNavbarProps {
+interface AdminNavbarProps {
   opened: boolean;
 }
 
-export const AdminNavbar: React.FC<IAdminNavbarProps> = ({ opened }) => {
+export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
   const router = useRouter();
 
   if (router.route.endsWith("preview")) {

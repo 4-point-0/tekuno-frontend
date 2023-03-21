@@ -8,7 +8,7 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 import { ClientContainer } from "@/components/layout/ClientContainer";
 import { NftDetails } from "@/components/client/NftDetails";
 
-interface ICollectibleProps {
+interface CollectiblePageProps {
   initialData?: NftDto;
 }
 
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-const CollectiblePage: NextPage<ICollectibleProps> = ({ initialData }) => {
+const CollectiblePage: NextPage<CollectiblePageProps> = ({ initialData }) => {
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }

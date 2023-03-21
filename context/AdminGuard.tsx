@@ -1,11 +1,11 @@
 import { Center, Container, Loader } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { PropsWithChildren } from "react";
+import { createContext, PropsWithChildren } from "react";
 
-const AdminGuardContext = React.createContext<null>(null);
+const AdminGuardContext = createContext<null>(null);
 
-export const AdminGuard: React.FC<PropsWithChildren> = ({ children }) => {
+export const AdminGuard = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const isAdminRoute = router.route.startsWith("/admin");
 

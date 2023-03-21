@@ -15,7 +15,6 @@ import {
   Loader,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import React from "react";
 import { Pencil } from "tabler-icons-react";
 import { CallToAction } from "../CallToAction";
 import { CampaignStatus } from "../CampaignStatus";

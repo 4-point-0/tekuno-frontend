@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import React from "react";
 
 import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
 import { SharedCampaignDetails } from "@/components/core/SharedCampaignDetails";

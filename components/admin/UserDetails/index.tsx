@@ -9,7 +9,6 @@ import {
   Title,
 } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
-import React from "react";
 import { Logout } from "tabler-icons-react";
 
 export const UserDetails = () => {

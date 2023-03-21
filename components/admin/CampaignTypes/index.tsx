@@ -10,7 +10,6 @@ import {
   Title,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import React from "react";
 import { CirclePlus } from "tabler-icons-react";
 
 export const CampaignTypes = () => {

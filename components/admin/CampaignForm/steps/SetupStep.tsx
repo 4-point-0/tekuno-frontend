@@ -1,6 +1,5 @@
-import React from "react";
 import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
-import { DatePicker, DateRangePicker, DayModifiers } from "@mantine/dates";
+import { DatePicker } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { Calendar } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";

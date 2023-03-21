@@ -10,13 +10,13 @@ import {
 } from "@mantine/core";
 import {
   Dropzone as MantineDropzone,
-  DropzoneProps,
+  DropzoneProps as MantineDropzoneProps,
   FileWithPath,
 } from "@mantine/dropzone";
-import React, { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Photo, Upload, X } from "tabler-icons-react";
 
-interface IDropzoneProps extends Partial<DropzoneProps> {
+interface DropzoneProps extends Partial<MantineDropzoneProps> {
   title: string;
   description: string;
   label: string;
@@ -24,10 +24,10 @@ interface IDropzoneProps extends Partial<DropzoneProps> {
   previewUrl?: string;
   formValue?: Array<FileWithPath>;
   isLoading: boolean;
-  dropzone: Omit<DropzoneProps, "children">;
+  dropzone: Omit<MantineDropzoneProps, "children">;
 }
 
-export const Dropzone: React.FC<IDropzoneProps> = ({
+export const Dropzone = ({
   title,
   description,
   label,
@@ -35,7 +35,7 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
   previewUrl,
   dropzone,
   isLoading,
-}) => {
+}: DropzoneProps) => {
   const [aspectRatio, setAspectRatio] = useState<number>();
   const openRef = useRef<() => void>(null);
   const theme = useMantineTheme();

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Download } from "tabler-icons-react";
 import { QRCode } from "react-qrcode-logo";
 import { saveAs } from "file-saver";
@@ -8,15 +8,12 @@ import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
 import { Box, Portal } from "@mantine/core";
 import { getClaimURL } from "@/utils/qrcode";
 
-interface IDownloadAllProps {
+interface DownloadAllProps {
   campaign: CampaignDto;
   nfts: Array<NftDto>;
 }
 
-export const DownloadAll: React.FC<IDownloadAllProps> = ({
-  campaign,
-  nfts,
-}) => {
+export const DownloadAll = ({ campaign, nfts }: DownloadAllProps) => {
   const ref = useRef<Array<QRCode | null>>([]);
 
   const handleDownloadAll = async () => {

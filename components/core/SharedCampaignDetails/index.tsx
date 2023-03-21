@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import {
   Box,
   Stack,
@@ -22,16 +22,12 @@ import { DownloadBadge } from "../DownloadBadge";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
 import Link from "next/link";
 
-interface IConditionalLinkProps extends PropsWithChildren {
+interface ConditionalLinkProps extends PropsWithChildren {
   href: string;
   enabled?: boolean;
 }
 
-const ConditionalLink: React.FC<IConditionalLinkProps> = ({
-  enabled,
-  href,
-  children,
-}) => {
+const ConditionalLink = ({ enabled, href, children }: ConditionalLinkProps) => {
   if (!enabled) {
     return <>{children}</>;
   }
@@ -43,17 +39,17 @@ const ConditionalLink: React.FC<IConditionalLinkProps> = ({
   );
 };
 
-interface ICampaignDetailsProps {
+interface SharedCampaignDetailsProps {
   campaign: CampaignDto;
   user?: UserDto | null;
   isPreview?: boolean;
 }
 
-export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
+export const SharedCampaignDetails = ({
   campaign,
   user,
   isPreview,
-}) => {
+}: SharedCampaignDetailsProps) => {
   const { image, reward, nfts, documents } = getCampaignAssets(campaign);
   const isClient = useIsClient();
 

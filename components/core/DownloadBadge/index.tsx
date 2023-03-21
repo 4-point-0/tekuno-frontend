@@ -1,24 +1,21 @@
 import { MantineSize } from "@mantine/core";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Download } from "tabler-icons-react";
 import saveAs from "file-saver";
 
 import { FileDto } from "@/services/api/admin/adminSchemas";
-import {
-  fetchCampaignUserControllerGetNftMedia,
-  useCampaignUserControllerGetNftMedia,
-} from "@/services/api/client/clientComponents";
+import { fetchCampaignUserControllerGetNftMedia } from "@/services/api/client/clientComponents";
 import { IndigoButton } from "../IndigoButton";
 
-interface IDownloadBadgeProps {
+interface DownloadBadgeProps {
   document: FileDto;
   size?: MantineSize;
 }
 
-export const DownloadBadge: React.FC<IDownloadBadgeProps> = ({
+export const DownloadBadge = ({
   document,
   size = "xs",
-}) => {
+}: DownloadBadgeProps) => {
   const [isFetching, setIsFetching] = useState(false);
 
   const handleDownload = async () => {
