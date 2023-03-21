@@ -1,22 +1,23 @@
+import {
+  Card,
+  Center,
+  Grid,
+  Group,
+  Image,
+  Loader,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { NextLink } from "@mantine/next";
+import { Pencil } from "tabler-icons-react";
+
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
-import {
-  Card,
-  Image,
-  Stack,
-  Title,
-  Group,
-  Text,
-  Grid,
-  Paper,
-  Center,
-  Loader,
-} from "@mantine/core";
-import { NextLink } from "@mantine/next";
-import React from "react";
-import { Pencil } from "tabler-icons-react";
+
 import { CallToAction } from "../CallToAction";
 import { CampaignStatus } from "../CampaignStatus";
 

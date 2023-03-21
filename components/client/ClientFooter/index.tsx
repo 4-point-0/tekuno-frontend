@@ -7,10 +7,10 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  BrandDiscord,
   BrandInstagram,
   BrandLinkedin,
   BrandTwitter,
-  BrandDiscord,
 } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({

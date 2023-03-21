@@ -1,23 +1,11 @@
 import { Button, Container, Group, Stack, Stepper } from "@mantine/core";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { Check, ChevronRight } from "tabler-icons-react";
 import { useIsMutating } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Check, ChevronRight } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { CampaignType, campaignTypeData } from "@/enums/CampaignType";
-import { DescriptionStep } from "./steps/DescriptionStep";
-import {
-  FormProvider,
-  IFormNFT,
-  ICreateFormValues,
-  NFT_INITIAL_VALUE,
-  useForm,
-} from "./FormContext";
-import { PODStep } from "./steps/PODStep";
-import { RewardStep } from "./steps/RewardStep";
-import { SetupStep } from "./steps/SetupStep";
-import { StyledStepper } from "./StyledStepper";
 import {
   useCampaignControllerCreate,
   useCampaignTypeControllerFindAll,
@@ -28,7 +16,23 @@ import { CreateNftDto, NftTypeDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
 import { getFormValidateInput } from "@/utils/validation";
 
-function getCreateNftDto(formValue: IFormNFT, nftTypeId: string): CreateNftDto {
+import {
+  CreateFormValues,
+  FormNFTValue,
+  FormProvider,
+  NFT_INITIAL_VALUE,
+  useForm,
+} from "./FormContext";
+import { DescriptionStep } from "./steps/DescriptionStep";
+import { PODStep } from "./steps/PODStep";
+import { RewardStep } from "./steps/RewardStep";
+import { SetupStep } from "./steps/SetupStep";
+import { StyledStepper } from "./StyledStepper";
+
+function getCreateNftDto(
+  formValue: FormNFTValue,
+  nftTypeId: string
+): CreateNftDto {
   return {
     properties: {
       attributes:
@@ -44,10 +48,10 @@ function getCreateNftDto(formValue: IFormNFT, nftTypeId: string): CreateNftDto {
 }
 
 function getNftsFromForm(
-  { poap, reward, collectibles }: ICreateFormValues,
-  nftTypes: Array<NftTypeDto>
+  { poap, reward, collectibles }: CreateFormValues,
+  nftTypes: NftTypeDto[]
 ) {
-  const nfts: Array<CreateNftDto> = [];
+  const nfts: CreateNftDto[] = [];
   const poapTypeId = nftTypes.find((nftType) => nftType.name === "poap")?.id;
   const rewardTypeId = nftTypes.find(
     (nftType) => nftType.name === "reward"
@@ -57,16 +61,18 @@ function getNftsFromForm(
   )?.id;
 
   if (poap && poapTypeId) {
-    nfts.push(getCreateNftDto(poap as IFormNFT, poapTypeId));
+    nfts.push(getCreateNftDto(poap as FormNFTValue, poapTypeId));
   }
 
   if (reward && rewardTypeId) {
-    nfts.push(getCreateNftDto(reward as IFormNFT, rewardTypeId));
+    nfts.push(getCreateNftDto(reward as FormNFTValue, rewardTypeId));
   }
 
   if (collectibleTypeId) {
     collectibles.forEach((collectible) => {
-      nfts.push(getCreateNftDto(collectible as IFormNFT, collectibleTypeId));
+      nfts.push(
+        getCreateNftDto(collectible as FormNFTValue, collectibleTypeId)
+      );
     });
   }
 
@@ -143,7 +149,7 @@ export const CampaignForm = () => {
     }
   };
 
-  const handleSubmit = async (values: ICreateFormValues) => {
+  const handleSubmit = async (values: CreateFormValues) => {
     form.validate();
 
     if (!form.isValid) {
@@ -177,7 +183,7 @@ export const CampaignForm = () => {
     const fileIds = [
       image?.response?.id,
       ...documents.map(({ response }) => response?.id),
-    ].filter(Boolean) as Array<string>;
+    ].filter(Boolean) as string[];
 
     const nfts = getNftsFromForm(values, nftTypes.results);
 
@@ -196,7 +202,7 @@ export const CampaignForm = () => {
           description,
           additional_description: additionalDescription,
           nfts,
-          file_ids: fileIds as Array<string>,
+          file_ids: fileIds as string[],
         },
       });
     } catch (error) {

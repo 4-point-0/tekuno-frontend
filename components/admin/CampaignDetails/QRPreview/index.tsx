@@ -1,25 +1,29 @@
-import React, { useRef } from "react";
-import { QRCode } from "react-qrcode-logo";
 import { Box, Group } from "@mantine/core";
-import { Download, ExternalLink } from "tabler-icons-react";
-import { saveAs } from "file-saver";
 import { NextLink } from "@mantine/next";
+import { saveAs } from "file-saver";
+import { RefObject, useRef } from "react";
+import { QRCode } from "react-qrcode-logo";
+import { Download, ExternalLink } from "tabler-icons-react";
 
-import { NftDto } from "@/services/api/admin/adminSchemas";
-import { IndigoButton } from "@/components/core/IndigoButton";
-import { getClaimURL } from "@/utils/qrcode";
 import { CopyActionButton } from "@/components/core/CopyActionButton";
+import { IndigoButton } from "@/components/core/IndigoButton";
+import { NftDto } from "@/services/api/admin/adminSchemas";
+import { getClaimURL } from "@/utils/qrcode";
 
-interface IQRCodeProps {
+interface QRCodeProps {
   nft: NftDto;
 }
 
-export const QRPreview: React.FC<IQRCodeProps> = ({ nft }) => {
+export const QRPreview = ({ nft }: QRCodeProps) => {
   const ref = useRef<QRCode>(null);
 
   const handleDowload = () => {
-    const canvas = (ref.current as any).canvas.current as HTMLCanvasElement;
-    saveAs(canvas.toDataURL(), `${nft.name}.png`);
+    const canvas = (
+      ref.current as unknown as { canvas: RefObject<HTMLCanvasElement> }
+    ).canvas.current;
+    if (canvas) {
+      saveAs(canvas.toDataURL(), `${nft.name}.png`);
+    }
   };
 
   const url = getClaimURL(nft.id);

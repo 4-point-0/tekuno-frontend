@@ -1,16 +1,16 @@
-import { useIsClient } from "@/hooks/useIsClient";
-import { FileDto } from "@/services/api/admin/adminSchemas";
 import { AspectRatio, Skeleton } from "@mantine/core";
 import { useSetState } from "@mantine/hooks";
-import React, { useState } from "react";
 
-interface IVideoProps {
+import { useIsClient } from "@/hooks/useIsClient";
+import { FileDto } from "@/services/api/admin/adminSchemas";
+
+interface VideoProps {
   file: FileDto;
   autoPlay?: boolean;
   maxWidth?: number;
 }
 
-export const Video: React.FC<IVideoProps> = ({ file, autoPlay = true }) => {
+export const Video = ({ file, autoPlay = true }: VideoProps) => {
   const isClient = useIsClient();
   const [{ x, y, loading }, setDimensions] = useSetState({
     x: 0,

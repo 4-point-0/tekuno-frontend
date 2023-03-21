@@ -1,18 +1,18 @@
-import { Group, Stack, Textarea, Text, ActionIcon, Title } from "@mantine/core";
-import React from "react";
+import { ActionIcon, Group, Stack, Text, Textarea, Title } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
 
+import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { IndigoBadge } from "@/components/core/IndigoBadge";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
+
 import {
   CAMPAIGN_DOCUMENT_TYPES,
-  IUploadedFile,
+  UploadedFileValue,
   useFormContext,
 } from "../FormContext";
 
@@ -24,7 +24,7 @@ export const DescriptionStep = () => {
   const uploadFile = useFileControllerUploadFile();
   const removeFile = useFileControllerRemove();
 
-  const handleDrop = async (files: Array<FileWithPath>) => {
+  const handleDrop = async (files: FileWithPath[]) => {
     const previous = documents;
 
     const uniqueFiles = files.filter(({ path }) => {
@@ -42,7 +42,7 @@ export const DescriptionStep = () => {
       })
     );
 
-    const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
+    const newDocuments: UploadedFileValue[] = uniqueFiles.map((file, i) => {
       return {
         file,
         response: respones[i],
@@ -52,7 +52,7 @@ export const DescriptionStep = () => {
     form.setFieldValue("documents", previous.concat(...newDocuments));
   };
 
-  const handleRemove = (file: IUploadedFile) => {
+  const handleRemove = (file: UploadedFileValue) => {
     return async () => {
       try {
         await removeFile.mutateAsync({

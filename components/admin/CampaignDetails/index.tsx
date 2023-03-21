@@ -13,8 +13,9 @@ import {
   Title,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
+import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   AlertTriangle,
   ExternalLink,
@@ -22,25 +23,25 @@ import {
   Pencil,
   Report,
 } from "tabler-icons-react";
-import { saveAs } from "file-saver";
 
-import { StatBox } from "./StatBox";
+import { DownloadBadge } from "@/components/core/DownloadBadge";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { NFTCard } from "@/components/core/NFTCard";
 import {
   fetchCampaignControllerExportReport,
   useCampaignControllerFindOne,
 } from "@/services/api/admin/adminComponents";
-import { QRPreview } from "./QRPreview";
-import { DownloadAll } from "./DownloadAll";
 import { NftDto } from "@/services/api/admin/adminSchemas";
-import { getImageUrl } from "@/utils/file";
-import { StatusButtons } from "./StatusButtons";
-import { DownloadBadge } from "@/components/core/DownloadBadge";
 import { getCampaignAssets, hasEnded } from "@/utils/campaign";
 import { formatDateRange } from "@/utils/date";
-import { CampaignStatus } from "../CampaignStatus";
+import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
+
+import { CampaignStatus } from "../CampaignStatus";
+import { DownloadAll } from "./DownloadAll";
+import { QRPreview } from "./QRPreview";
+import { StatBox } from "./StatBox";
+import { StatusButtons } from "./StatusButtons";
 
 const stats = [
   {
@@ -196,7 +197,7 @@ export const CampaignDetails = () => {
         <Group position="apart">
           <Title order={4}>Digital collectibles</Title>
           {campaign && (nfts?.length || 0) > 1 && (
-            <DownloadAll campaign={campaign} nfts={nfts as Array<NftDto>} />
+            <DownloadAll campaign={campaign} nfts={nfts as NftDto[]} />
           )}
         </Group>
 
@@ -219,14 +220,14 @@ export const CampaignDetails = () => {
           )}
 
           {nfts?.map((nft) => (
-            <React.Fragment key={nft.id}>
+            <Fragment key={nft.id}>
               <Grid.Col span={7}>
                 <NFTCard key={nft.id} nft={nft} />
               </Grid.Col>
               <Grid.Col span={5}>
                 <QRPreview nft={nft} />
               </Grid.Col>
-            </React.Fragment>
+            </Fragment>
           ))}
         </Grid>
       </Stack>

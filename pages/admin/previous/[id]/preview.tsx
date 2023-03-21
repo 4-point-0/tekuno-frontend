@@ -1,5 +1,6 @@
-import { CampaignPreview } from "@/components/admin/CampaignPreview";
 import { Container, Paper } from "@mantine/core";
+
+import { CampaignPreview } from "@/components/admin/CampaignPreview";
 
 export default function PreviewCampaign() {
   return (

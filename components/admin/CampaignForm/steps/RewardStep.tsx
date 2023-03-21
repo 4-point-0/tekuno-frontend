@@ -1,5 +1,4 @@
 import { Stack } from "@mantine/core";
-import React from "react";
 
 import { NFTForm } from "../NFTForm";
 

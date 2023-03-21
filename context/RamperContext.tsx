@@ -1,9 +1,3 @@
-import {
-  fetchUserControllerRegister,
-  useChainControllerFindAll,
-} from "@/services/api/client/clientComponents";
-import { UserDto } from "@/services/api/client/clientSchemas";
-import { notifications } from "@/utils/notifications";
 import { useMantineTheme } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import {
@@ -11,14 +5,26 @@ import {
   getUser as getUserRamper,
   init,
   openWallet as openWalletRamper,
+  RamperInstance,
   signIn as signInRamper,
   signOut as signOutRamper,
-  SUPPORTED_NEAR_NETWORKS,
   THEME,
   WALLET_PROVIDER,
-  RamperInstance,
 } from "@ramper/near";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  fetchUserControllerRegister,
+  useChainControllerFindAll,
+} from "@/services/api/client/clientComponents";
+import { UserDto } from "@/services/api/client/clientSchemas";
+import { notifications } from "@/utils/notifications";
 
 interface UseRamper {
   user: UserDto | null;
@@ -29,9 +35,9 @@ interface UseRamper {
   refreshUserData: () => Promise<void>;
 }
 
-const RamperContext = React.createContext<UseRamper | null>(null);
+const RamperContext = createContext<UseRamper | null>(null);
 
-export const RamperProvider = ({ children }: any) => {
+export const RamperProvider = ({ children }: PropsWithChildren) => {
   const theme = useMantineTheme();
 
   const [user, setUser] = useLocalStorage<UserDto | null>({
@@ -42,7 +48,7 @@ export const RamperProvider = ({ children }: any) => {
     getInitialValueInEffect: true,
   });
   const [loading, setLoading] = useState<boolean>(false);
-  const { isLoading, data: chainData } = useChainControllerFindAll({});
+  const { data: chainData } = useChainControllerFindAll({});
 
   const [ramper, setRamper] = useState<RamperInstance>();
 

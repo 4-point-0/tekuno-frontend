@@ -1,5 +1,6 @@
-import { ClientContext } from "./clientContext";
 import fetch from "isomorphic-fetch";
+
+import { ClientContext } from "./clientContext";
 
 const isServer = typeof window === "undefined";
 

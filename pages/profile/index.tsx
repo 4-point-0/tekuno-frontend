@@ -12,14 +12,14 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { ChevronRight, Logout, Wallet } from "tabler-icons-react";
 
 import { CopyActionButton } from "@/components/core/CopyActionButton";
 import { ClientContainer } from "@/components/layout/ClientContainer";
 import { useRamper } from "@/context/RamperContext";
-import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import { useIsClient } from "@/hooks/useIsClient";
-import { useEffect } from "react";
+import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 
 export default function Profile() {
   const { user, loading, openWallet, signOut } = useRamper();

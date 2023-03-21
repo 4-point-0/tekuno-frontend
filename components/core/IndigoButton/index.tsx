@@ -5,7 +5,6 @@ import {
   createStyles,
 } from "@mantine/core";
 import { PolymorphicComponentProps } from "@mantine/utils";
-import React from "react";
 
 const useStyles = createStyles((theme) => ({
   root: {

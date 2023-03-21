@@ -1,5 +1,6 @@
-import { UserDetails } from "@/components/admin/UserDetails";
 import { Container, Paper } from "@mantine/core";
+
+import { UserDetails } from "@/components/admin/UserDetails";
 
 export default function AdminUser() {
   return (

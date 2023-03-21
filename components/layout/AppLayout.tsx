@@ -1,14 +1,15 @@
-import { RamperProvider } from "@/context/RamperContext";
 import { AppShell, Burger, MediaQuery } from "@mantine/core";
 import { useRouter } from "next/router";
-import React, { PropsWithChildren, useState } from "react";
-import { AdminHeader } from "../admin/AdminHeader";
+import { PropsWithChildren, useState } from "react";
 
+import { RamperProvider } from "@/context/RamperContext";
+
+import { AdminHeader } from "../admin/AdminHeader";
 import { AdminNavbar } from "../admin/AdminNavbar";
 import { ClientFooter } from "../client/ClientFooter";
 import { ClientHeader } from "../client/ClientHeader";
 
-export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
+export const AppLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const [opened, setOpened] = useState(false);
 

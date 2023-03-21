@@ -12,7 +12,7 @@ export const config = {
 
 const handler = (
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<unknown>
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     proxy.web(

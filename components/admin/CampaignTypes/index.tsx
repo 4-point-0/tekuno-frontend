@@ -1,5 +1,3 @@
-import { IndigoButton } from "@/components/core/IndigoButton";
-import { campaignTypeData, TYPES } from "@/enums/CampaignType";
 import {
   Card,
   Group,
@@ -10,8 +8,10 @@ import {
   Title,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
-import React from "react";
 import { CirclePlus } from "tabler-icons-react";
+
+import { IndigoButton } from "@/components/core/IndigoButton";
+import { campaignTypeData, TYPES } from "@/enums/CampaignType";
 
 export const CampaignTypes = () => {
   return (
