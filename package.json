@@ -9,8 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "api:codegen:admin": "npx openapi-codegen gen tekunoAdmin",
-    "api:codegen:client": "npx openapi-codegen gen tekunoClient",
-    "env:pull": "vercel env pull .env.local && echo 'NEXTAUTH_URL=\"http://localhost:3000\"' >> .env.local"
+    "api:codegen:client": "npx openapi-codegen gen tekunoClient"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
