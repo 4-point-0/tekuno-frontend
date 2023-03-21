@@ -11,7 +11,13 @@ import {
   THEME,
   WALLET_PROVIDER,
 } from "@ramper/near";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   fetchUserControllerRegister,
@@ -31,7 +37,7 @@ interface UseRamper {
 
 const RamperContext = createContext<UseRamper | null>(null);
 
-export const RamperProvider = ({ children }: any) => {
+export const RamperProvider = ({ children }: PropsWithChildren) => {
   const theme = useMantineTheme();
 
   const [user, setUser] = useLocalStorage<UserDto | null>({

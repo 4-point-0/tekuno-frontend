@@ -54,7 +54,8 @@ export const NFTForm = ({
       form.setFieldValue(`${formKey}.file`, undefined);
       form.setFieldError(
         `${formKey}.file`,
-        (error as any)?.stack?.message || "Failed to upload asset"
+        (error as unknown as { stack?: { message?: string } })?.stack
+          ?.message || "Failed to upload asset"
       );
     }
   };

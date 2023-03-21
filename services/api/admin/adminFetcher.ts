@@ -54,7 +54,7 @@ export async function adminFetch<
         requestHeaders.hasOwnProperty("Authorization")
       )
     ) {
-      (requestHeaders as any)["authorization"] = session?.token
+      requestHeaders["authorization"] = session?.token
         ? `Bearer ${session.token}`
         : "";
     }

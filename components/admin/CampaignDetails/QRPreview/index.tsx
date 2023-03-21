@@ -1,7 +1,7 @@
 import { Box, Group } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { saveAs } from "file-saver";
-import { useRef } from "react";
+import { RefObject, useRef } from "react";
 import { QRCode } from "react-qrcode-logo";
 import { Download, ExternalLink } from "tabler-icons-react";
 
@@ -18,8 +18,12 @@ export const QRPreview = ({ nft }: QRCodeProps) => {
   const ref = useRef<QRCode>(null);
 
   const handleDowload = () => {
-    const canvas = (ref.current as any).canvas.current as HTMLCanvasElement;
-    saveAs(canvas.toDataURL(), `${nft.name}.png`);
+    const canvas = (
+      ref.current as unknown as { canvas: RefObject<HTMLCanvasElement> }
+    ).canvas.current;
+    if (canvas) {
+      saveAs(canvas.toDataURL(), `${nft.name}.png`);
+    }
   };
 
   const url = getClaimURL(nft.id);

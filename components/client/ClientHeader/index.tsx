@@ -22,6 +22,7 @@ import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
 import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
+import { CampaignDto } from "@/services/api/client/clientSchemas";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -106,7 +107,7 @@ export function ClientHeader() {
     );
   };
 
-  const campaignDropdownLinks = (campaigns?: any[]) => {
+  const campaignDropdownLinks = (campaigns?: CampaignDto[]) => {
     if (!(isClient && user && campaigns?.length)) return null;
 
     const menuItems = campaigns?.map((campaign) => (
@@ -140,7 +141,7 @@ export function ClientHeader() {
     return null;
   };
 
-  const campaignLinks = (campaigns?: any[]) => {
+  const campaignLinks = (campaigns?: CampaignDto[]) => {
     if (!user) return null;
 
     return campaigns?.map((campaign) => (

@@ -2,6 +2,8 @@ import fetch from "isomorphic-fetch";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+import { GoogleVerificationDto } from "@/services/api/admin/adminSchemas";
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -26,13 +28,13 @@ export const authOptions: NextAuthOptions = {
           }),
         });
 
-        token.res = await res.json();
+        token.res = (await res.json()) as GoogleVerificationDto;
       }
 
       return token;
     },
-    async session({ session, token, user }) {
-      session.token = (token.res as any).token;
+    async session({ session, token }) {
+      session.token = (token.res as GoogleVerificationDto).token;
       return session;
     },
   },

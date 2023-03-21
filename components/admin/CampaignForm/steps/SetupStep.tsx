@@ -49,7 +49,8 @@ export const SetupStep = () => {
 
       form.setFieldError(
         "image",
-        (error as any)?.stack?.message || "Failed to upload image"
+        (error as unknown as { stack?: { message?: string } })?.stack
+          ?.message || "Failed to upload image"
       );
 
       console.error(error);

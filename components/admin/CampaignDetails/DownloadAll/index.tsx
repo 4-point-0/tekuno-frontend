@@ -1,6 +1,6 @@
 import { Box, Portal } from "@mantine/core";
 import { saveAs } from "file-saver";
-import { useRef } from "react";
+import { RefObject, useRef } from "react";
 import { QRCode } from "react-qrcode-logo";
 import { Download } from "tabler-icons-react";
 
@@ -25,7 +25,13 @@ export const DownloadAll = ({ campaign, nfts }: DownloadAllProps) => {
 
     ref.current.forEach((component, i) => {
       if (component) {
-        const canvas: HTMLCanvasElement = (component as any).canvas.current;
+        const canvas = (
+          component as unknown as { canvas: RefObject<HTMLCanvasElement> }
+        ).canvas.current;
+        if (!canvas) {
+          return;
+        }
+
         const nft = nfts[i];
         const data = canvas.toDataURL().replace("data:image/png;base64", "");
 
