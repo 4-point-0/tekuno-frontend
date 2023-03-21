@@ -1,6 +1,7 @@
-import { AdminContext } from "./adminContext";
 import fetch from "isomorphic-fetch";
 import { getSession } from "next-auth/react";
+
+import { AdminContext } from "./adminContext";
 
 const baseUrl = "";
 
@@ -53,7 +54,7 @@ export async function adminFetch<
         requestHeaders.hasOwnProperty("Authorization")
       )
     ) {
-      (requestHeaders as any)["authorization"] = session?.token
+      requestHeaders["authorization"] = session?.token
         ? `Bearer ${session.token}`
         : "";
     }

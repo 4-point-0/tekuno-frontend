@@ -1,7 +1,6 @@
 import { Stepper, StepperProps } from "@mantine/core";
-import React from "react";
 
-export const StyledStepper: React.FC<StepperProps> = (props) => {
+export const StyledStepper = (props: StepperProps) => {
   return (
     <Stepper
       styles={{

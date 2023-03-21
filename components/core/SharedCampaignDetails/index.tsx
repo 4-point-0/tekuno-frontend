@@ -1,38 +1,35 @@
-import React, { PropsWithChildren, useMemo } from "react";
 import {
-  Box,
-  Stack,
-  Image,
-  Text,
-  Title,
-  Group,
   Badge,
+  Box,
+  Group,
+  Image,
   Progress,
   Skeleton,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
 import Link from "next/link";
+import { PropsWithChildren, useMemo } from "react";
 
-import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
-import { getCampaignAssets } from "@/utils/campaign";
-import { getImageUrl } from "@/utils/file";
-import { formatDateRange } from "@/utils/date";
-import { NFTCard } from "../NFTCard";
-import { UserDto } from "@/services/api/client/clientSchemas";
 import { useIsClient } from "@/hooks/useIsClient";
-import { DownloadBadge } from "../DownloadBadge";
+import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
-import { FormattedHTML } from "../FormattedHTML";
+import { UserDto } from "@/services/api/client/clientSchemas";
+import { getCampaignAssets } from "@/utils/campaign";
+import { formatDateRange } from "@/utils/date";
+import { getImageUrl } from "@/utils/file";
 
-interface IConditionalLinkProps extends PropsWithChildren {
+import { DownloadBadge } from "../DownloadBadge";
+import { FormattedHTML } from "../FormattedHTML";
+import { NFTCard } from "../NFTCard";
+
+interface ConditionalLinkProps extends PropsWithChildren {
   href: string;
   enabled?: boolean;
 }
 
-const ConditionalLink: React.FC<IConditionalLinkProps> = ({
-  enabled,
-  href,
-  children,
-}) => {
+const ConditionalLink = ({ enabled, href, children }: ConditionalLinkProps) => {
   if (!enabled) {
     return <>{children}</>;
   }
@@ -44,17 +41,17 @@ const ConditionalLink: React.FC<IConditionalLinkProps> = ({
   );
 };
 
-interface ICampaignDetailsProps {
+interface SharedCampaignDetailsProps {
   campaign: CampaignDto;
   user?: UserDto | null;
   isPreview?: boolean;
 }
 
-export const SharedCampaignDetails: React.FC<ICampaignDetailsProps> = ({
+export const SharedCampaignDetails = ({
   campaign,
   user,
   isPreview,
-}) => {
+}: SharedCampaignDetailsProps) => {
   const { image, reward, nfts, documents } = getCampaignAssets(campaign);
   const isClient = useIsClient();
 

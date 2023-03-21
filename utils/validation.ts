@@ -1,9 +1,9 @@
 import {
-  IFormAttribute,
-  IUploadedFile,
-  ISharedFormValues,
+  FormAttributeValue,
+  SharedFormValues,
+  UploadedFileValue,
 } from "@/components/admin/CampaignForm/FormContext";
-import { ICampaignFormConfig } from "@/enums/CampaignType";
+import { CampaignFormConfig } from "@/enums/CampaignType";
 
 export const RESTRICTIONS = {
   name: {
@@ -50,7 +50,7 @@ export function getNftValidator(enabled: boolean) {
         ? `Name should be shorter than ${RESTRICTIONS.nft.name.max} characters`
         : null;
     },
-    file: (value?: IUploadedFile) =>
+    file: (value?: UploadedFileValue) =>
       value?.response ? null : "Asset is required",
     description: (value?: string) =>
       value && value.length > RESTRICTIONS.nft.description.max
@@ -62,13 +62,13 @@ export function getNftValidator(enabled: boolean) {
         : value > RESTRICTIONS.nft.supply.max
         ? `Supply should less than ${RESTRICTIONS.nft.supply.max}`
         : null,
-    attributes: (value?: Array<IFormAttribute>) => {
+    attributes: (value?: FormAttributeValue[]) => {
       if (!value) {
         return null;
       }
 
       return value.some(
-        ({ trait_type: key, value }: IFormAttribute) => key && !value
+        ({ trait_type: key, value }: FormAttributeValue) => key && !value
       )
         ? "Attribute values are required"
         : value.length > RESTRICTIONS.nft.attribute.max
@@ -91,12 +91,12 @@ const sharedValidations = {
       : null;
   },
   startDate: (value: Date | null) => (!value ? "Start date is required" : null),
-  endDate: (value: Date | null, { limitDate }: ISharedFormValues) => {
+  endDate: (value: Date | null, { limitDate }: SharedFormValues) => {
     return limitDate && !value
       ? "Date range must be selected if the campaing date is limited"
       : null;
   },
-  image: (value?: IUploadedFile) =>
+  image: (value?: UploadedFileValue) =>
     value?.response ? null : "Image is required",
   description: (value?: string) => {
     if (!value) {
@@ -120,7 +120,7 @@ const sharedValidations = {
 
 export function getFormValidateInput(
   step: number,
-  { hasPoap, hasRewards }: ICampaignFormConfig
+  { hasPoap, hasRewards }: CampaignFormConfig
 ) {
   const { name, startDate, endDate, image, description } = sharedValidations;
 

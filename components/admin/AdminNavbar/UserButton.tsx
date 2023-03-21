@@ -1,22 +1,21 @@
-import { useAdminControllerFindMe } from "@/services/api/admin/adminComponents";
 import {
+  Avatar,
+  createStyles,
+  Group,
+  Text,
   UnstyledButton,
   UnstyledButtonProps,
-  Group,
-  Avatar,
-  Text,
-  createStyles,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ChevronRight } from "tabler-icons-react";
 
-interface IButtonProps {
+interface ButtonProps {
   active: boolean;
 }
 
-const useStyles = createStyles((theme, { active }: IButtonProps) => ({
+const useStyles = createStyles((theme, { active }: ButtonProps) => ({
   user: {
     display: "block",
     width: "100%",
@@ -31,7 +30,7 @@ const useStyles = createStyles((theme, { active }: IButtonProps) => ({
   },
 }));
 
-export const UserButton: React.FC<UnstyledButtonProps> = ({ ...rest }) => {
+export const UserButton = ({ ...rest }: UnstyledButtonProps) => {
   const router = useRouter();
   const { classes } = useStyles({ active: router.route === "/admin/user" });
 

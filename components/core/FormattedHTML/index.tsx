@@ -1,15 +1,12 @@
-import { useIsClient } from "@/hooks/useIsClient";
 import { Text, TextProps, useMantineTheme } from "@mantine/core";
-import React from "react";
 
-interface IFormattedHTMLProps extends TextProps {
+import { useIsClient } from "@/hooks/useIsClient";
+
+interface FormattedHTMLProps extends TextProps {
   content?: string;
 }
 
-export const FormattedHTML: React.FC<IFormattedHTMLProps> = ({
-  content,
-  ...props
-}) => {
+export const FormattedHTML = ({ content, ...props }: FormattedHTMLProps) => {
   const isClient = useIsClient();
   const theme = useMantineTheme();
 

@@ -9,14 +9,13 @@ import {
   Title,
 } from "@mantine/core";
 import Link from "next/link";
-import React from "react";
 import { CirclePlus } from "tabler-icons-react";
 
-interface ICallToActionProps {
+interface CallToActionProps {
   emptyState?: boolean;
 }
 
-export const CallToAction: React.FC<ICallToActionProps> = ({ emptyState }) => {
+export const CallToAction = ({ emptyState }: CallToActionProps) => {
   return (
     <Paper sx={{ backgroundColor: "#ffe6e6" }} p={40} maw={810}>
       <Group spacing={48}>

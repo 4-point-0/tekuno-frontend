@@ -4,13 +4,14 @@ import Link from "@tiptap/extension-link";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-interface ITextEditorProps {
+interface TextEditorProps {
   value: string;
   onChange: (value: string) => void;
 }
 
-export const TextEditor: React.FC<ITextEditorProps> = ({ value, onChange }) => {
+export const TextEditor = ({ value, onChange }: TextEditorProps) => {
   const theme = useMantineTheme();
+
   const editor = useEditor({
     extensions: [StarterKit, Link],
     content: value,

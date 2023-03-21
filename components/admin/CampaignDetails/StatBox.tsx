@@ -1,17 +1,12 @@
-import { Box, Flex, Stack, Text, useMantineTheme } from "@mantine/core";
-import React from "react";
+import { Box, Flex, Text, useMantineTheme } from "@mantine/core";
 
-interface IStatBoxProps {
+interface StatBoxProps {
   label: string;
   subLabel?: string;
   value: number;
 }
 
-export const StatBox: React.FC<IStatBoxProps> = ({
-  value,
-  label,
-  subLabel,
-}) => {
+export const StatBox = ({ value, label, subLabel }: StatBoxProps) => {
   const theme = useMantineTheme();
 
   return (

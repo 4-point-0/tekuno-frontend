@@ -1,7 +1,7 @@
 import { Container, MediaQuery, Paper } from "@mantine/core";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
-export const ClientContainer: React.FC<PropsWithChildren> = ({ children }) => {
+export const ClientContainer = ({ children }: PropsWithChildren) => {
   return (
     <>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>

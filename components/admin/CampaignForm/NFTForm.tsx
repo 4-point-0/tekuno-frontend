@@ -1,7 +1,6 @@
 import { ActionIcon, Box, Group, NumberInput, TextInput } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useIsMutating } from "@tanstack/react-query";
-import React from "react";
 import { Trash } from "tabler-icons-react";
 
 import { Dropzone } from "@/components/form/Dropzone";
@@ -10,21 +9,22 @@ import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
+
 import { AssetPreview } from "./AssetPreview";
 import { AttributesForm } from "./AttributesForm";
 import { NFT_ASSET_TYPES, useFormContext } from "./FormContext";
 
-interface INFTFormProps {
+interface NFTFormProps {
   formKey: string;
   isReward?: boolean;
   withAttributes?: boolean;
 }
 
-export const NFTForm: React.FC<INFTFormProps> = ({
+export const NFTForm = ({
   formKey,
   withAttributes,
   isReward,
-}) => {
+}: NFTFormProps) => {
   const form = useFormContext();
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove();
@@ -36,7 +36,7 @@ export const NFTForm: React.FC<INFTFormProps> = ({
     `${formKey}.file`
   );
 
-  const handleDrop = async (files: Array<FileWithPath>) => {
+  const handleDrop = async (files: FileWithPath[]) => {
     const file = files[0];
 
     try {
@@ -54,7 +54,8 @@ export const NFTForm: React.FC<INFTFormProps> = ({
       form.setFieldValue(`${formKey}.file`, undefined);
       form.setFieldError(
         `${formKey}.file`,
-        (error as any)?.stack?.message || "Failed to upload asset"
+        (error as unknown as { stack?: { message?: string } })?.stack
+          ?.message || "Failed to upload asset"
       );
     }
   };

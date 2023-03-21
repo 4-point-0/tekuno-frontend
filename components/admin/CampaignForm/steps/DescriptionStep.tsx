@@ -1,22 +1,22 @@
-import { Box, Group, Stack, Text, ActionIcon, Title } from "@mantine/core";
-import React from "react";
+import { ActionIcon, Box, Group, Stack, Text, Title } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
 
+import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
-import { IndigoBadge } from "@/components/core/IndigoBadge";
+import { TextEditor } from "@/components/form/TextEditor";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
+import { FileDto } from "@/services/api/admin/adminSchemas";
+
 import {
   CAMPAIGN_DOCUMENT_TYPES,
-  IUploadedFile,
+  UploadedFileValue,
   useFormContext,
 } from "../FormContext";
-import { TextEditor } from "@/components/form/TextEditor";
-import { FileDto } from "@/services/api/admin/adminSchemas";
 
 export const DescriptionStep = () => {
   const form = useFormContext();
@@ -26,7 +26,7 @@ export const DescriptionStep = () => {
   const uploadFile = useFileControllerUploadFile();
   const removeFile = useFileControllerRemove();
 
-  const handleDrop = async (files: Array<FileWithPath>) => {
+  const handleDrop = async (files: FileWithPath[]) => {
     const previous = documents;
 
     const uniqueFiles = files.filter(({ path }) => {
@@ -44,7 +44,7 @@ export const DescriptionStep = () => {
       })
     );
 
-    const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
+    const newDocuments: UploadedFileValue[] = uniqueFiles.map((file, i) => {
       return {
         file,
         response: respones[i] as unknown as FileDto,
@@ -54,7 +54,7 @@ export const DescriptionStep = () => {
     form.setFieldValue("documents", previous.concat(...newDocuments));
   };
 
-  const handleRemove = (file: IUploadedFile) => {
+  const handleRemove = (file: UploadedFileValue) => {
     return async () => {
       try {
         await removeFile.mutateAsync({

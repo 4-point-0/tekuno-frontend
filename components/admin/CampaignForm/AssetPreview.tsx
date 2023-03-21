@@ -1,24 +1,21 @@
-import React from "react";
-import { FileDto } from "@/services/api/admin/adminSchemas";
-import { MIME_TYPES } from "@mantine/dropzone";
 import { Box, Image } from "@mantine/core";
-import { Video } from "@/components/core/Video";
+import { MIME_TYPES } from "@mantine/dropzone";
 
-interface IAssetPreview {
+import { Video } from "@/components/core/Video";
+import { FileDto } from "@/services/api/admin/adminSchemas";
+
+interface AssetPreviewProps {
   file: FileDto;
   isCollected?: boolean;
 }
 
-export const AssetPreview: React.FC<IAssetPreview> = ({
-  file,
-  isCollected,
-}) => {
+export const AssetPreview = ({ file, isCollected }: AssetPreviewProps) => {
   const imageTypes = [
     MIME_TYPES.png,
     MIME_TYPES.jpeg,
     MIME_TYPES.gif,
-  ] as Array<string>;
-  const videoTypes = [MIME_TYPES.mp4] as Array<string>;
+  ] as string[];
+  const videoTypes = [MIME_TYPES.mp4] as string[];
 
   return (
     <Box

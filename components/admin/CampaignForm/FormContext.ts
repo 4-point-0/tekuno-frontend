@@ -27,40 +27,40 @@ export const NFT_INITIAL_VALUE = {
   attributes: [ATTRIBUTE_INITIAL_VALUE],
 };
 
-export interface IUploadedFile {
+export interface UploadedFileValue {
   file?: FileWithPath;
   response?: FileDto;
 }
 
-export interface IFormAttribute {
+export interface FormAttributeValue {
   trait_type: string;
   value: string;
 }
 
-export interface IFormNFT {
+export interface FormNFTValue {
   name: string;
-  file: IUploadedFile;
+  file: UploadedFileValue;
   description: string;
-  attributes: Array<IFormAttribute>;
+  attributes: FormAttributeValue[];
   supply: number;
 }
 
-export interface ISharedFormValues {
+export interface SharedFormValues {
   name: string;
   limitDate: boolean;
   startDate: Date | null;
   endDate: Date | null;
-  image?: IUploadedFile;
+  image?: UploadedFileValue;
   description?: string;
   additionalDescription?: string;
-  documents: Array<IUploadedFile>;
+  documents: UploadedFileValue[];
 }
 
-export interface ICreateFormValues extends ISharedFormValues {
-  reward?: Partial<IFormNFT>;
-  poap?: Partial<IFormNFT>;
-  collectibles: Array<Partial<IFormNFT>>;
+export interface CreateFormValues extends SharedFormValues {
+  reward?: Partial<FormNFTValue>;
+  poap?: Partial<FormNFTValue>;
+  collectibles: Partial<FormNFTValue>[];
 }
 
 export const [FormProvider, useFormContext, useForm] =
-  createFormContext<ICreateFormValues>();
+  createFormContext<CreateFormValues>();
