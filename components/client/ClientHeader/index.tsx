@@ -187,11 +187,7 @@ export function ClientHeader() {
         padding="md"
         title={
           <Link href="/">
-            <img
-              style={{ widows: "120px" }}
-              src="/tekuno.svg"
-              alt="Tekuno logo"
-            />
+            <Image src="/tekuno.svg" alt="Tekuno logo" />
           </Link>
         }
         className={classes.hiddenDesktop}
