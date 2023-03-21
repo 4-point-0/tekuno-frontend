@@ -21,6 +21,7 @@ import { formatDateRange } from "@/utils/date";
 import { getImageUrl } from "@/utils/file";
 
 import { DownloadBadge } from "../DownloadBadge";
+import { FormattedHTML } from "../FormattedHTML";
 import { NFTCard } from "../NFTCard";
 
 interface ConditionalLinkProps extends PropsWithChildren {
@@ -134,10 +135,11 @@ export const SharedCampaignDetails = ({
           </Text>
         </Skeleton>
       </Box>
-
-      {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
+      {campaign?.description && (
+        <FormattedHTML fz="lg" content={campaign.description} />
+      )}
       {campaign?.additional_description && (
-        <Text fz="sm">{campaign.additional_description}</Text>
+        <FormattedHTML fz="sm" content={campaign.additional_description} />
       )}
 
       <Group>

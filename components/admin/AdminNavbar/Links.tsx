@@ -7,7 +7,7 @@ import {
   Stack,
   ThemeIcon,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { CircleDot, CirclePlus, Clock, Icon } from "tabler-icons-react";
 
@@ -67,9 +67,8 @@ export const LinkButton = ({
   return (
     <>
       <Button
-        component={NextLink}
+        component={Link}
         href={href}
-        legacyBehavior
         key={label}
         variant="subtle"
         leftIcon={

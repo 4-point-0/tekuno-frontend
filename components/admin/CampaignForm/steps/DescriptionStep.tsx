@@ -1,14 +1,16 @@
-import { ActionIcon, Group, Stack, Text, Textarea, Title } from "@mantine/core";
+import { ActionIcon, Box, Group, Stack, Text, Title } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { X } from "tabler-icons-react";
 
 import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { Dropzone } from "@/components/form/Dropzone";
 import { Field } from "@/components/form/Field";
+import { TextEditor } from "@/components/form/TextEditor";
 import {
   useFileControllerRemove,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
+import { FileDto } from "@/services/api/admin/adminSchemas";
 
 import {
   CAMPAIGN_DOCUMENT_TYPES,
@@ -45,7 +47,7 @@ export const DescriptionStep = () => {
     const newDocuments: UploadedFileValue[] = uniqueFiles.map((file, i) => {
       return {
         file,
-        response: respones[i],
+        response: respones[i] as unknown as FileDto,
       };
     });
 
@@ -75,20 +77,26 @@ export const DescriptionStep = () => {
         withAsterisk
         label="Say a catchy phrase for your campaign"
         description="This text will be visible on each POD page"
+        error={form.getInputProps("description").error}
       >
-        <Textarea
-          mt="sm"
-          placeholder="Placeholder text"
-          {...form.getInputProps("description")}
-        />
+        <Box my="xs">
+          <TextEditor
+            value={form.getInputProps("description").value}
+            onChange={form.getInputProps("description").onChange}
+          />
+        </Box>{" "}
       </Field>
 
-      <Field label="Tell us the details, why would someone be part of your campaign (optional)">
-        <Textarea
-          mt="sm"
-          placeholder="Placeholder text"
-          {...form.getInputProps("additionalDescription")}
-        />
+      <Field
+        label="Tell us the details, why would someone be part of your campaign (optional)"
+        error={form.getInputProps("additionalDescription").error}
+      >
+        <Box my="xs">
+          <TextEditor
+            value={form.getInputProps("additionalDescription").value}
+            onChange={form.getInputProps("additionalDescription").onChange}
+          />
+        </Box>
       </Field>
 
       <Field label="Upload files related to your campaign (optional)">

@@ -123,7 +123,11 @@ export function ClientHeader() {
 
     if (menuItems) {
       return (
-        <Menu key={"Campaigns"} trigger="hover" exitTransitionDuration={0}>
+        <Menu
+          key={"Campaigns"}
+          trigger="hover"
+          transitionProps={{ exitDuration: 0 }}
+        >
           <Menu.Target>
             <Center>
               <NavLink

@@ -8,7 +8,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import Link from "next/link";
 import { CirclePlus } from "tabler-icons-react";
 
 interface CallToActionProps {
@@ -30,9 +30,8 @@ export const CallToAction = ({ emptyState }: CallToActionProps) => {
           </Text>
           <Group position="left">
             <Button
-              component={NextLink}
+              component={Link}
               href="/admin/create"
-              legacyBehavior
               color="dark"
               leftIcon={<CirclePlus size={20} />}
             >

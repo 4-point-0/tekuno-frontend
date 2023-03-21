@@ -1,6 +1,6 @@
 import { Box, Group } from "@mantine/core";
-import { NextLink } from "@mantine/next";
 import { saveAs } from "file-saver";
+import Link from "next/link";
 import { RefObject, useRef } from "react";
 import { QRCode } from "react-qrcode-logo";
 import { Download, ExternalLink } from "tabler-icons-react";
@@ -56,11 +56,10 @@ export const QRPreview = ({ nft }: QRCodeProps) => {
       </IndigoButton>
 
       <IndigoButton
-        component={NextLink}
+        component={Link}
         href={url}
         target="_blank"
         rel="norefferer"
-        legacyBehavior
         leftIcon={<ExternalLink size={14} />}
       >
         Open

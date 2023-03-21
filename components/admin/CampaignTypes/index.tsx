@@ -7,7 +7,7 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
+import Link from "next/link";
 import { CirclePlus } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
@@ -24,9 +24,8 @@ export const CampaignTypes = () => {
         return (
           <Card
             key={template}
-            component={NextLink}
+            component={Link}
             href={href}
-            legacyBehavior
             h="100%"
             shadow="sm"
             radius="xl"

@@ -12,8 +12,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
 import { saveAs } from "file-saver";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import {
@@ -25,6 +25,7 @@ import {
 } from "tabler-icons-react";
 
 import { DownloadBadge } from "@/components/core/DownloadBadge";
+import { FormattedHTML } from "@/components/core/FormattedHTML";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { NFTCard } from "@/components/core/NFTCard";
 import {
@@ -129,9 +130,8 @@ export const CampaignDetails = () => {
                 Preview
               </IndigoButton>
               <Button
-                component={NextLink}
+                component={Link}
                 href={`/admin/previous/${router.query.id}/edit`}
-                legacyBehavior
                 leftIcon={<Pencil size={14} />}
                 color="dark"
               >
@@ -165,9 +165,11 @@ export const CampaignDetails = () => {
           {campaign && <StatusButtons campaign={campaign} />}
         </Group>
 
-        {campaign?.description && <Text fz="lg">{campaign.description}</Text>}
+        {campaign?.description && (
+          <FormattedHTML fz="lg" content={campaign.description} />
+        )}
         {campaign?.additional_description && (
-          <Text fz="sm">{campaign.additional_description}</Text>
+          <FormattedHTML fz="sm" content={campaign.additional_description} />
         )}
 
         <SimpleGrid display="none" cols={4}>

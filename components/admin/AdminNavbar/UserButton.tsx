@@ -6,8 +6,8 @@ import {
   UnstyledButton,
   UnstyledButtonProps,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { ChevronRight } from "tabler-icons-react";
 
@@ -38,9 +38,8 @@ export const UserButton = ({ ...rest }: UnstyledButtonProps) => {
 
   return (
     <UnstyledButton
-      component={NextLink}
+      component={Link}
       href="/admin/user"
-      legacyBehavior
       className={classes.user}
       {...rest}
     >

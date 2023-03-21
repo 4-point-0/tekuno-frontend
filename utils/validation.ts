@@ -13,7 +13,9 @@ export const RESTRICTIONS = {
   description: {
     max: 1024,
   },
-
+  additionalDescription: {
+    max: 1024,
+  },
   nft: {
     name: {
       min: 2,
@@ -102,7 +104,16 @@ const sharedValidations = {
     }
 
     return value.length > RESTRICTIONS.description.max
-      ? `Phrase should be shorter than ${RESTRICTIONS.description.max} characters`
+      ? `Phrase is too long`
+      : null;
+  },
+  additionalDescription: (value?: string) => {
+    if (!value) {
+      return;
+    }
+
+    return value.length > RESTRICTIONS.description.max
+      ? `Details are too long`
       : null;
   },
 };

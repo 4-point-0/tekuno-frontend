@@ -9,13 +9,13 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Check, ChevronRight, Flame } from "tabler-icons-react";
 
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
+import { FormattedHTML } from "@/components/core/FormattedHTML";
 import { useRamper } from "@/context/RamperContext";
 import { useIsClient } from "@/hooks/useIsClient";
 import {
@@ -24,6 +24,7 @@ import {
   useNftControllerFindOne,
 } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
+import { notifications } from "@/utils/notifications";
 
 interface NftDetailsProps {
   nft: NftDto;
@@ -91,17 +92,24 @@ export const NftDetails = ({ nft, disableClaim }: NftDetailsProps) => {
 
   const handleClaim = async () => {
     if (user) {
-      await drop.mutateAsync({
-        pathParams: {
-          nftId: nft.id as string,
-          accountId: user.profile?.wallet_address as string,
-        },
-      });
+      try {
+        notifications.create({ message: `Claiming ${nft.name}...` });
 
-      showNotification({ message: `${nft.name} claimed! 🎉`, autoClose: 3000 });
-      setClaimed(true);
-      refetch();
-      refechUserCampaigns();
+        await drop.mutateAsync({
+          pathParams: {
+            nftId: nft?.id as string,
+            accountId: user.profile?.wallet_address as string,
+          },
+        });
+
+        notifications.success({ message: `${nft.name} claimed! 🎉` });
+
+        setClaimed(true);
+        refetch();
+        refechUserCampaigns();
+      } catch {
+        notifications.error({});
+      }
     } else {
       await signIn();
     }
@@ -148,7 +156,7 @@ export const NftDetails = ({ nft, disableClaim }: NftDetailsProps) => {
         >
           <Text fw={700}>{nft?.campaign?.name}</Text>
         </Button>
-        <Text>{nft?.campaign?.description}</Text>
+        <FormattedHTML content={nft.campaign?.description} />
       </Stack>
 
       <SimpleGrid

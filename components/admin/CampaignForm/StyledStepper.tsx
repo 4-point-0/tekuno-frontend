@@ -1,5 +1,4 @@
 import { Stepper, StepperProps } from "@mantine/core";
-import React from "react";
 
 export const StyledStepper = (props: StepperProps) => {
   return (
