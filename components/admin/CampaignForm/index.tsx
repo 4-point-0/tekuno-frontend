@@ -1,5 +1,6 @@
 import { Button, Container, Group, Stack, Stepper } from "@mantine/core";
 import { useIsMutating } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Check, ChevronRight } from "tabler-icons-react";
@@ -23,11 +24,16 @@ import {
   NFT_INITIAL_VALUE,
   useForm,
 } from "./FormContext";
-import { DescriptionStep } from "./steps/DescriptionStep";
-import { PODStep } from "./steps/PODStep";
-import { RewardStep } from "./steps/RewardStep";
 import { SetupStep } from "./steps/SetupStep";
 import { StyledStepper } from "./StyledStepper";
+
+const DescriptionStep = dynamic(
+  import("./steps/DescriptionStep").then((m) => m.DescriptionStep)
+);
+const PODStep = dynamic(import("./steps/PODStep").then((m) => m.PODStep));
+const RewardStep = dynamic(
+  import("./steps/RewardStep").then((m) => m.RewardStep)
+);
 
 function getCreateNftDto(
   formValue: FormNFTValue,
