@@ -59,7 +59,6 @@ export const CampaignList = () => {
             w={332}
             shadow="sm"
             radius="xl"
-            p="xl"
             pb={72}
           >
             <Card.Section mb="xl">

@@ -29,7 +29,6 @@ export const CampaignTypes = () => {
             h="100%"
             shadow="sm"
             radius="xl"
-            p="xl"
             pb={72}
           >
             <Card.Section mb="xl">
