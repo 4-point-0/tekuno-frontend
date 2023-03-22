@@ -30,7 +30,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export const Campaign: NextPage<CampaignPageProps> = ({ campaign }) => {
   const { user } = useRamper();
-
   const { image } = getCampaignAssets(campaign);
 
   return (
@@ -45,9 +44,7 @@ export const Campaign: NextPage<CampaignPageProps> = ({ campaign }) => {
           images: image?.url ? [{ url: image.url }] : [],
         }}
       />
-      <ClientContainer>
-        {campaign && <SharedCampaignDetails campaign={campaign} user={user} />}
-      </ClientContainer>
+      {campaign && <SharedCampaignDetails campaign={campaign} user={user} />}
     </>
   );
 };
