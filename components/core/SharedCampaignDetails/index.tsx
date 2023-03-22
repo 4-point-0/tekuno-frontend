@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { PropsWithChildren, useMemo } from "react";
 
+import { ClientOnly } from "@/components/layout/ClientOnly";
 import { useIsClient } from "@/hooks/useIsClient";
 import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
 import { useNftControllerFindAll } from "@/services/api/client/clientComponents";
@@ -55,7 +56,7 @@ export const SharedCampaignDetails = ({
   const { image, reward, nfts, documents } = getCampaignAssets(campaign);
   const isClient = useIsClient();
 
-  const { data: collectedNfts, isLoading } = useNftControllerFindAll(
+  const { data: collectedNfts } = useNftControllerFindAll(
     {
       queryParams: {
         account_id: user?.profile?.wallet_address as string,
@@ -126,13 +127,14 @@ export const SharedCampaignDetails = ({
         <Title order={2}>{campaign?.name}</Title>
 
         <Skeleton visible={!isClient} mih={24.8}>
-          <Text c="dimmed">
-            {isClient &&
-              formatDateRange(
+          <ClientOnly>
+            <Text c="dimmed">
+              {formatDateRange(
                 campaign?.start_date as string,
                 campaign?.end_date
               )}
-          </Text>
+            </Text>
+          </ClientOnly>
         </Skeleton>
       </Box>
       {campaign?.description && (
