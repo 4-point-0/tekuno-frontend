@@ -15,6 +15,7 @@ export const AssetPreview = ({ file, isCollected }: AssetPreviewProps) => {
     MIME_TYPES.jpeg,
     MIME_TYPES.gif,
   ] as string[];
+
   const videoTypes = [MIME_TYPES.mp4] as string[];
 
   return (
@@ -26,7 +27,7 @@ export const AssetPreview = ({ file, isCollected }: AssetPreviewProps) => {
       }}
     >
       {imageTypes.includes(file.mime_type) && (
-        <Image src={file.url} alt={file.name} />
+        <Image src={file.url} alt={file.name} withPlaceholder />
       )}
       {videoTypes.includes(file.mime_type) && (
         <Video file={file} autoPlay={isCollected} />

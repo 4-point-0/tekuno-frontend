@@ -1,7 +1,7 @@
 import { AspectRatio, Skeleton } from "@mantine/core";
 import { useSetState } from "@mantine/hooks";
 
-import { useIsClient } from "@/hooks/useIsClient";
+import { ClientOnly } from "@/components/layout/ClientOnly";
 import { FileDto } from "@/services/api/admin/adminSchemas";
 
 interface VideoProps {
@@ -11,7 +11,6 @@ interface VideoProps {
 }
 
 export const Video = ({ file, autoPlay = true }: VideoProps) => {
-  const isClient = useIsClient();
   const [{ x, y, loading }, setDimensions] = useSetState({
     x: 0,
     y: 0,
@@ -28,24 +27,22 @@ export const Video = ({ file, autoPlay = true }: VideoProps) => {
     });
   };
 
-  if (!isClient) {
-    return null;
-  }
-
   return (
-    <Skeleton visible={loading}>
-      <AspectRatio ratio={x / y} w={x}>
-        <video
-          autoPlay={autoPlay}
-          loop
-          playsInline
-          muted
-          disablePictureInPicture
-          onLoadedMetadata={handleVideoLoad}
-        >
-          <source src={file.url} type={file.mime_type}></source>
-        </video>
-      </AspectRatio>
-    </Skeleton>
+    <ClientOnly>
+      <Skeleton visible={loading}>
+        <AspectRatio ratio={x / y} w={x}>
+          <video
+            autoPlay={autoPlay}
+            loop
+            playsInline
+            muted
+            disablePictureInPicture
+            onLoadedMetadata={handleVideoLoad}
+          >
+            <source src={file.url} type={file.mime_type}></source>
+          </video>
+        </AspectRatio>
+      </Skeleton>
+    </ClientOnly>
   );
 };

@@ -1,7 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 
 import { NftDetails } from "@/components/client/NftDetails";
-import { ClientContainer } from "@/components/layout/ClientContainer";
 import {
   fetchNftControllerFindOneNft,
   useNftControllerFindOneNft,
@@ -35,11 +34,7 @@ const CollectiblePage: NextPage<CollectiblePageProps> = ({ initialData }) => {
     { enabled: Boolean(initialData?.id), initialData }
   );
 
-  return (
-    <ClientContainer key={nft?.id}>
-      {nft && <NftDetails key={nft.id} nft={nft} disableClaim />}
-    </ClientContainer>
-  );
+  return <>{nft && <NftDetails key={nft.id} nft={nft} disableClaim />}</>;
 };
 
 export default CollectiblePage;
