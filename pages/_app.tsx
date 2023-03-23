@@ -8,7 +8,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { AppLayout } from "@/components/layout/AppLayout";
-import { AdminGuard } from "@/context/AdminGuard";
 import { tekunoTheme } from "@/styles/theme";
 
 const queryClient = new QueryClient();
@@ -33,26 +32,24 @@ export default function App({
       </Head>
 
       <SessionProvider session={session}>
-        <AdminGuard>
-          <QueryClientProvider client={queryClient}>
-            <MantineProvider
-              withGlobalStyles
-              withNormalizeCSS
-              theme={
-                isAdminPages
-                  ? tekunoTheme
-                  : { ...tekunoTheme, primaryColor: "violet" }
-              }
-            >
-              <ModalsProvider>
-                <Notifications />
-                <AppLayout>
-                  <Component {...pageProps} />
-                </AppLayout>
-              </ModalsProvider>
-            </MantineProvider>
-          </QueryClientProvider>
-        </AdminGuard>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={
+              isAdminPages
+                ? tekunoTheme
+                : { ...tekunoTheme, primaryColor: "violet" }
+            }
+          >
+            <ModalsProvider>
+              <Notifications />
+              <AppLayout>
+                <Component {...pageProps} />
+              </AppLayout>
+            </ModalsProvider>
+          </MantineProvider>
+        </QueryClientProvider>
       </SessionProvider>
     </>
   );
