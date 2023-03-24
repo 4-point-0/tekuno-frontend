@@ -4,11 +4,143 @@
  * @version 1.0
  */
 import * as reactQuery from "@tanstack/react-query";
-
-import { AdminContext, useAdminContext } from "./adminContext";
+import { useAdminContext, AdminContext } from "./adminContext";
 import type * as Fetcher from "./adminFetcher";
 import { adminFetch } from "./adminFetcher";
 import type * as Schemas from "./adminSchemas";
+
+export type AuthControllerRegisterError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerRegisterVariables = {
+  body: Schemas.RegisterDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerRegister = (
+  variables: AuthControllerRegisterVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.UserDto,
+    AuthControllerRegisterError,
+    Schemas.RegisterDto,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/auth/register", method: "post", ...variables, signal });
+
+export const useAuthControllerRegister = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UserDto,
+      AuthControllerRegisterError,
+      AuthControllerRegisterVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.UserDto,
+    AuthControllerRegisterError,
+    AuthControllerRegisterVariables
+  >(
+    (variables: AuthControllerRegisterVariables) =>
+      fetchAuthControllerRegister({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type AuthControllerLoginError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerLoginVariables = {
+  body: Schemas.LoginDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerLogin = (
+  variables: AuthControllerLoginVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.JwtTokenDto,
+    AuthControllerLoginError,
+    Schemas.LoginDto,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/auth/login", method: "post", ...variables, signal });
+
+export const useAuthControllerLogin = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.JwtTokenDto,
+      AuthControllerLoginError,
+      AuthControllerLoginVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.JwtTokenDto,
+    AuthControllerLoginError,
+    AuthControllerLoginVariables
+  >(
+    (variables: AuthControllerLoginVariables) =>
+      fetchAuthControllerLogin({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type AuthControllerConfirmInvitePathParams = {
+  code: string;
+};
+
+export type AuthControllerConfirmInviteError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerConfirmInviteVariables = {
+  body: Schemas.RegisterDto;
+  pathParams: AuthControllerConfirmInvitePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerConfirmInvite = (
+  variables: AuthControllerConfirmInviteVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.UserDto,
+    AuthControllerConfirmInviteError,
+    Schemas.RegisterDto,
+    {},
+    {},
+    AuthControllerConfirmInvitePathParams
+  >({
+    url: "/api/v1/auth/confirm-invite/{code}",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useAuthControllerConfirmInvite = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UserDto,
+      AuthControllerConfirmInviteError,
+      AuthControllerConfirmInviteVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.UserDto,
+    AuthControllerConfirmInviteError,
+    AuthControllerConfirmInviteVariables
+  >(
+    (variables: AuthControllerConfirmInviteVariables) =>
+      fetchAuthControllerConfirmInvite({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
 
 export type GoogleControllerGoogleAuthError = Fetcher.ErrorWrapper<undefined>;
 
@@ -1033,6 +1165,399 @@ export const useCampaignTypeControllerFindOne = <
   );
 };
 
+export type OrganizationControllerCreateError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerCreateVariables = {
+  body: Schemas.CreateOrganizationDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerCreate = (
+  variables: OrganizationControllerCreateVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.OrganizationDto,
+    OrganizationControllerCreateError,
+    Schemas.CreateOrganizationDto,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/organization", method: "post", ...variables, signal });
+
+export const useOrganizationControllerCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.OrganizationDto,
+      OrganizationControllerCreateError,
+      OrganizationControllerCreateVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.OrganizationDto,
+    OrganizationControllerCreateError,
+    OrganizationControllerCreateVariables
+  >(
+    (variables: OrganizationControllerCreateVariables) =>
+      fetchOrganizationControllerCreate({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type OrganizationControllerFindOnePathParams = {
+  id: string;
+};
+
+export type OrganizationControllerFindOneError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerFindOneVariables = {
+  pathParams: OrganizationControllerFindOnePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerFindOne = (
+  variables: OrganizationControllerFindOneVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.OrganizationDto,
+    OrganizationControllerFindOneError,
+    undefined,
+    {},
+    {},
+    OrganizationControllerFindOnePathParams
+  >({
+    url: "/api/v1/organization/entity/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerFindOne = <
+  TData = Schemas.OrganizationDto
+>(
+  variables: OrganizationControllerFindOneVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.OrganizationDto,
+      OrganizationControllerFindOneError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.OrganizationDto,
+    OrganizationControllerFindOneError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/organization/entity/{id}",
+      operationId: "organizationControllerFindOne",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrganizationControllerFindOne(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type OrganizationControllerUpdatePathParams = {
+  id: string;
+};
+
+export type OrganizationControllerUpdateError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerUpdateVariables = {
+  body: Schemas.UpdateOrganizationDto;
+  pathParams: OrganizationControllerUpdatePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerUpdate = (
+  variables: OrganizationControllerUpdateVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    string,
+    OrganizationControllerUpdateError,
+    Schemas.UpdateOrganizationDto,
+    {},
+    {},
+    OrganizationControllerUpdatePathParams
+  >({
+    url: "/api/v1/organization/entity/{id}",
+    method: "patch",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerUpdate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      string,
+      OrganizationControllerUpdateError,
+      OrganizationControllerUpdateVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    string,
+    OrganizationControllerUpdateError,
+    OrganizationControllerUpdateVariables
+  >(
+    (variables: OrganizationControllerUpdateVariables) =>
+      fetchOrganizationControllerUpdate({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type OrganizationControllerFindOneUserPathParams = {
+  id: string;
+};
+
+export type OrganizationControllerFindOneUserError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerFindOneUserVariables = {
+  pathParams: OrganizationControllerFindOneUserPathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerFindOneUser = (
+  variables: OrganizationControllerFindOneUserVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.OrganizationDto,
+    OrganizationControllerFindOneUserError,
+    undefined,
+    {},
+    {},
+    OrganizationControllerFindOneUserPathParams
+  >({
+    url: "/api/v1/organization/users/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerFindOneUser = <
+  TData = Schemas.OrganizationDto
+>(
+  variables: OrganizationControllerFindOneUserVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.OrganizationDto,
+      OrganizationControllerFindOneUserError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.OrganizationDto,
+    OrganizationControllerFindOneUserError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/organization/users/{id}",
+      operationId: "organizationControllerFindOneUser",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrganizationControllerFindOneUser(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type OrganizationControllerFindAllQueryParams = {
+  email?: string;
+  offset?: number;
+  limit?: number;
+};
+
+export type OrganizationControllerFindAllError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerFindAllResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.OrganizationDto[];
+};
+
+export type OrganizationControllerFindAllVariables = {
+  queryParams?: OrganizationControllerFindAllQueryParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerFindAll = (
+  variables: OrganizationControllerFindAllVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    OrganizationControllerFindAllResponse,
+    OrganizationControllerFindAllError,
+    undefined,
+    {},
+    OrganizationControllerFindAllQueryParams,
+    {}
+  >({ url: "/api/v1/organization/users", method: "get", ...variables, signal });
+
+export const useOrganizationControllerFindAll = <
+  TData = OrganizationControllerFindAllResponse
+>(
+  variables: OrganizationControllerFindAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      OrganizationControllerFindAllResponse,
+      OrganizationControllerFindAllError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    OrganizationControllerFindAllResponse,
+    OrganizationControllerFindAllError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/organization/users",
+      operationId: "organizationControllerFindAll",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrganizationControllerFindAll(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type OrganizationControllerInvitePathParams = {
+  email: string;
+};
+
+export type OrganizationControllerInviteError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerInviteVariables = {
+  body: Schemas.InviteUserDto;
+  pathParams: OrganizationControllerInvitePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerInvite = (
+  variables: OrganizationControllerInviteVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    boolean,
+    OrganizationControllerInviteError,
+    Schemas.InviteUserDto,
+    {},
+    {},
+    OrganizationControllerInvitePathParams
+  >({
+    url: "/api/v1/organization/invite/{email}",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerInvite = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      boolean,
+      OrganizationControllerInviteError,
+      OrganizationControllerInviteVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    boolean,
+    OrganizationControllerInviteError,
+    OrganizationControllerInviteVariables
+  >(
+    (variables: OrganizationControllerInviteVariables) =>
+      fetchOrganizationControllerInvite({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type OrganizationControllerRemovePathParams = {
+  userId: string;
+};
+
+export type OrganizationControllerRemoveError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerRemoveVariables = {
+  pathParams: OrganizationControllerRemovePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerRemove = (
+  variables: OrganizationControllerRemoveVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    string,
+    OrganizationControllerRemoveError,
+    undefined,
+    {},
+    {},
+    OrganizationControllerRemovePathParams
+  >({
+    url: "/api/v1/organization/remove-user/{userId}",
+    method: "delete",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerRemove = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      string,
+      OrganizationControllerRemoveError,
+      OrganizationControllerRemoveVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    string,
+    OrganizationControllerRemoveError,
+    OrganizationControllerRemoveVariables
+  >(
+    (variables: OrganizationControllerRemoveVariables) =>
+      fetchOrganizationControllerRemove({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type QueryOperation =
   | {
       path: "/api/v1/google/sign-in-backend";
@@ -1088,4 +1613,19 @@ export type QueryOperation =
       path: "/api/v1/campaign-type/{id}";
       operationId: "campaignTypeControllerFindOne";
       variables: CampaignTypeControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/organization/entity/{id}";
+      operationId: "organizationControllerFindOne";
+      variables: OrganizationControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/organization/users/{id}";
+      operationId: "organizationControllerFindOneUser";
+      variables: OrganizationControllerFindOneUserVariables;
+    }
+  | {
+      path: "/api/v1/organization/users";
+      operationId: "organizationControllerFindAll";
+      variables: OrganizationControllerFindAllVariables;
     };
