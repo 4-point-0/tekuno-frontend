@@ -1,4 +1,5 @@
 import { Divider, Navbar } from "@mantine/core";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import { Links } from "./Links";
@@ -10,8 +11,9 @@ interface AdminNavbarProps {
 
 export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  if (router.route.endsWith("preview")) {
+  if (router.route.endsWith("preview") || !session?.user) {
     return null;
   }
 
