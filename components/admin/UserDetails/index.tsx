@@ -11,9 +11,11 @@ import { signOut, useSession } from "next-auth/react";
 import { Logout } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
+import { useAdminUser } from "@/hooks/useAdminUser";
+import { getAvatarUrl } from "@/utils/avatar";
 
 export const UserDetails = () => {
-  const { data: session } = useSession({ required: true });
+  const { data } = useAdminUser();
 
   const handleLogOut = () => {
     signOut();
@@ -26,14 +28,14 @@ export const UserDetails = () => {
           height={160}
           width={160}
           radius="xl"
-          src={session?.user?.image}
+          src={getAvatarUrl(data?.email)}
           alt=""
         />
-        <Title order={3}>{session?.user?.name}</Title>
+        <Title order={3}>{data?.username}</Title>
 
         <Box>
           <Title order={5}>Email address</Title>
-          <Text>{session?.user?.email}</Text>
+          <Text>{data?.email}</Text>
         </Box>
 
         <Group>
