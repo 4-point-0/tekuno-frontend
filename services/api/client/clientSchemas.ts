@@ -47,6 +47,7 @@ export type UserDto = {
   role: "Admin" | "User";
   provider?: "Apple" | "Facebook" | "Google";
   provider_id?: string;
+  organization_id?: string;
   profile?: ProfileDto;
 };
 
@@ -65,6 +66,7 @@ export type FileDto = {
   key: string;
   campaign_id: string;
   created_by_id: string;
+  updated_by_id?: string;
   /**
    * @format date-time
    */
@@ -109,6 +111,7 @@ export type CampaignDto = {
   end_date?: string | null;
   description?: string | null;
   additional_description?: string | null;
+  organization_id?: string | null;
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
