@@ -7,7 +7,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Logout } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";

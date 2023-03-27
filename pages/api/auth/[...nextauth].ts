@@ -1,13 +1,37 @@
-import fetch from "isomorphic-fetch";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 import {
+  fetchAdminControllerFindMe,
   fetchAuthControllerLogin,
   fetchAuthControllerRegister,
+  fetchGoogleControllerAuthenticate,
 } from "@/services/api/admin/adminComponents";
-import { GoogleVerificationDto } from "@/services/api/admin/adminSchemas";
+import {
+  GoogleVerificationDto,
+  UserDto,
+} from "@/services/api/admin/adminSchemas";
+
+interface CredentialsRequestBody {
+  type: "register" | "login";
+  password: string;
+  email: string;
+  password_confirm?: string;
+}
+
+interface WithToken {
+  token: string;
+}
+
+async function login(email: string, password: string): Promise<WithToken> {
+  return (await fetchAuthControllerLogin({
+    body: {
+      email,
+      password,
+    },
+  })) as unknown as WithToken;
+}
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -17,33 +41,36 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       credentials: {},
       async authorize(_, req) {
-        const { password, email, type, password_confirm } = req.body as any;
+        const { password, email, type, password_confirm } =
+          req.body as unknown as CredentialsRequestBody;
 
-        if (type === "register") {
+        if (type === "register" && password_confirm) {
           try {
-            await fetchAuthControllerRegister({
+            const user = await fetchAuthControllerRegister({
               body: {
                 email,
                 password,
                 password_confirm,
               },
             });
+
+            const { token } = await login(email, password);
+
+            return { token, ...user };
           } catch (error) {
             console.error(error);
-
             return null;
           }
         }
 
         try {
-          const jwt = await fetchAuthControllerLogin({
-            body: {
-              email,
-              password,
-            },
-          });
+          const { token } = await login(email, password);
 
-          return { id: email, token: (jwt as any).token };
+          const user = (await fetchAdminControllerFindMe({
+            headers: { authorization: `Bearer ${token}` },
+          })) as unknown as UserDto;
+
+          return { token, ...user };
         } catch (error) {
           console.error(error);
 
@@ -58,28 +85,24 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, user }) {
+    async jwt({ token: jwt, account, user }) {
+      const userWithToken = user as unknown as WithToken;
+
       if (account?.access_token) {
-        const res = await fetch(`${process.env.API_URL}/api/v1/google/auth`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        const { token } = (await fetchGoogleControllerAuthenticate({
+          body: { token: account?.access_token },
+        })) as unknown as GoogleVerificationDto;
 
-          body: JSON.stringify({
-            token: account?.access_token,
-          }),
-        });
-
-        token.res = (await res.json()) as GoogleVerificationDto;
-      } else if ((user as any)?.token) {
-        token.res = { token: (user as any).token };
+        jwt.token = token;
+      } else if (userWithToken?.token) {
+        jwt.token = userWithToken.token;
       }
 
-      return token;
+      return jwt;
     },
     async session({ session, token }) {
-      session.token = (token.res as GoogleVerificationDto).token;
+      session.token = (token as unknown as WithToken).token;
+
       return session;
     },
   },
