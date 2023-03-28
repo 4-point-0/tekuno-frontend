@@ -84,7 +84,7 @@ export const DescriptionStep = () => {
             value={form.getInputProps("description").value}
             onChange={form.getInputProps("description").onChange}
           />
-        </Box>{" "}
+        </Box>
       </Field>
 
       <Field

@@ -91,6 +91,144 @@ export const useAuthControllerLogin = (
   );
 };
 
+export type AuthControllerForgotPasswordError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerForgotPasswordVariables = {
+  body: Schemas.ForgotPasswordDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerForgotPassword = (
+  variables: AuthControllerForgotPasswordVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    boolean,
+    AuthControllerForgotPasswordError,
+    Schemas.ForgotPasswordDto,
+    {},
+    {},
+    {}
+  >({
+    url: "/api/v1/auth/password/forgot",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useAuthControllerForgotPassword = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      boolean,
+      AuthControllerForgotPasswordError,
+      AuthControllerForgotPasswordVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    boolean,
+    AuthControllerForgotPasswordError,
+    AuthControllerForgotPasswordVariables
+  >(
+    (variables: AuthControllerForgotPasswordVariables) =>
+      fetchAuthControllerForgotPassword({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type AuthControllerResetPasswordError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerResetPasswordVariables = {
+  body: Schemas.ResetPasswordDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerResetPassword = (
+  variables: AuthControllerResetPasswordVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    boolean,
+    AuthControllerResetPasswordError,
+    Schemas.ResetPasswordDto,
+    {},
+    {},
+    {}
+  >({
+    url: "/api/v1/auth/password/reset",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useAuthControllerResetPassword = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      boolean,
+      AuthControllerResetPasswordError,
+      AuthControllerResetPasswordVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    boolean,
+    AuthControllerResetPasswordError,
+    AuthControllerResetPasswordVariables
+  >(
+    (variables: AuthControllerResetPasswordVariables) =>
+      fetchAuthControllerResetPassword({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type AuthControllerChangePasswordError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerChangePasswordVariables = {
+  body: Schemas.ChangePasswordDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerChangePassword = (
+  variables: AuthControllerChangePasswordVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    boolean,
+    AuthControllerChangePasswordError,
+    Schemas.ChangePasswordDto,
+    {},
+    {},
+    {}
+  >({
+    url: "/api/v1/auth/password/change",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useAuthControllerChangePassword = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      boolean,
+      AuthControllerChangePasswordError,
+      AuthControllerChangePasswordVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    boolean,
+    AuthControllerChangePasswordError,
+    AuthControllerChangePasswordVariables
+  >(
+    (variables: AuthControllerChangePasswordVariables) =>
+      fetchAuthControllerChangePassword({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type AuthControllerConfirmInvitePathParams = {
   code: string;
 };
@@ -239,22 +377,32 @@ export const fetchAdminControllerFindMe = (
   variables: AdminControllerFindMeVariables,
   signal?: AbortSignal
 ) =>
-  adminFetch<undefined, AdminControllerFindMeError, undefined, {}, {}, {}>({
-    url: "/api/v1/admin/me",
-    method: "get",
-    ...variables,
-    signal,
-  });
+  adminFetch<
+    Schemas.UserDto,
+    AdminControllerFindMeError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/admin/me", method: "get", ...variables, signal });
 
-export const useAdminControllerFindMe = <TData = undefined>(
+export const useAdminControllerFindMe = <TData = Schemas.UserDto>(
   variables: AdminControllerFindMeVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<undefined, AdminControllerFindMeError, TData>,
+    reactQuery.UseQueryOptions<
+      Schemas.UserDto,
+      AdminControllerFindMeError,
+      TData
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
-  return reactQuery.useQuery<undefined, AdminControllerFindMeError, TData>(
+  return reactQuery.useQuery<
+    Schemas.UserDto,
+    AdminControllerFindMeError,
+    TData
+  >(
     queryKeyFn({
       path: "/api/v1/admin/me",
       operationId: "adminControllerFindMe",
