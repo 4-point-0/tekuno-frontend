@@ -8,18 +8,21 @@ import {
   Title,
 } from "@mantine/core";
 import { signOut } from "next-auth/react";
-import { Logout } from "tabler-icons-react";
+import Link from "next/link";
+import { CirclePlus, Logout, Settings } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
-import { useAdminUser } from "@/hooks/useAdminUser";
+import { useUserOrganization } from "@/hooks/useUserOrganization";
 import { getAvatarUrl } from "@/utils/avatar";
 
 export const UserDetails = () => {
-  const { data } = useAdminUser();
+  const { user, hasOrganization, organization } = useUserOrganization();
 
   const handleLogOut = () => {
     signOut();
   };
+
+  const isAdmin = user?.role === "Admin";
 
   return (
     <Container>
@@ -28,17 +31,43 @@ export const UserDetails = () => {
           height={160}
           width={160}
           radius="xl"
-          src={getAvatarUrl(data?.email)}
+          src={getAvatarUrl(user?.email)}
           alt=""
         />
-        <Title order={3}>{data?.username}</Title>
+
+        <Title order={3}>{user?.username}</Title>
+
+        {hasOrganization && (
+          <Box>
+            <Title order={5}>Organization</Title>
+            <Text>{organization?.name}</Text>
+          </Box>
+        )}
 
         <Box>
           <Title order={5}>Email address</Title>
-          <Text>{data?.email}</Text>
+          <Text>{user?.email}</Text>
         </Box>
 
         <Group>
+          {isAdmin && (
+            <Link href="/admin/organization">
+              <IndigoButton
+                leftIcon={
+                  hasOrganization ? (
+                    <Settings size={14} />
+                  ) : (
+                    <CirclePlus size={14} />
+                  )
+                }
+              >
+                {hasOrganization
+                  ? "Manage organization"
+                  : "Create organization"}
+              </IndigoButton>
+            </Link>
+          )}
+
           <IndigoButton leftIcon={<Logout size={14} />} onClick={handleLogOut}>
             Log Out
           </IndigoButton>

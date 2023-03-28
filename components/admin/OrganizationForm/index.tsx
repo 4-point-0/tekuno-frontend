@@ -80,7 +80,7 @@ export const OrganizationForm = ({ organization }: OrganizationFormProps) => {
       {!isUpdate && (
         <Text c="dimmed">
           {`Creating an organization is required before creating and launching
-          campaigns. You'll be able to to edit the organization and invite new
+          campaigns. You'll be able to edit the organization and invite new
           users to join you.`}
         </Text>
       )}

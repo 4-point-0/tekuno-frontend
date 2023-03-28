@@ -1,9 +1,10 @@
 import { Container, Paper } from "@mantine/core";
-import { GetServerSideProps } from "next";
+import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 
 import { CampaignForm } from "@/components/admin/CampaignForm";
 import { CampaignType, TYPES } from "@/enums/CampaignType";
+import { getUserServerSideProps } from "@/utils/organization";
 
 export default function CreatePOD() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function CreatePOD() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (
     !(
       typeof ctx.query.type === "string" &&
@@ -25,14 +26,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     )
   ) {
     return {
-      redirect: {
-        destination: "/404",
-      },
-      props: {},
+      notFound: true,
     };
   }
 
-  return {
-    props: {},
-  };
+  return getUserServerSideProps({ organizationRequired: true })(ctx);
 };

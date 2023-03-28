@@ -18,9 +18,11 @@ export const OrganizationDetails = ({ user }: OrganizationDetailsProps) => {
     { enabled: Boolean(user.organization_id) }
   );
 
+  const show = Boolean(user.organization_id) ? !isLoading : true;
+
   return (
     <>
-      {!isLoading && (
+      {show && (
         <Stack spacing={80}>
           <OrganizationForm organization={organization} />
           {organization && (
