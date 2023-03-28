@@ -43,7 +43,7 @@ export const CampaignList = () => {
   if (!isLoading && data?.results.length === 0) {
     return (
       <Paper radius="lg" p="xl" h="100%">
-        <CallToAction emptyState />
+        <CallToAction description="No previous PODs found" />
       </Paper>
     );
   }
