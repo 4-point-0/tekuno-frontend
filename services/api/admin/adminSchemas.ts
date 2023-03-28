@@ -43,6 +43,22 @@ export type LoginDto = {
 
 export type JwtTokenDto = {};
 
+export type ForgotPasswordDto = {
+  email: string;
+};
+
+export type ResetPasswordDto = {
+  email: string;
+  token: string;
+  password: string;
+};
+
+export type ChangePasswordDto = {
+  email: string;
+  old_password: string;
+  new_password: string;
+};
+
 export type GoogleVerificationDto = {
   token: string;
 };

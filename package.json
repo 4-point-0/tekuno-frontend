@@ -41,6 +41,7 @@
     "http-proxy": "^1.18.1",
     "isomorphic-fetch": "^3.0.0",
     "jszip": "^3.10.1",
+    "mantine-datatable": "^2.2.7",
     "near-api-js": "^1.1.0",
     "next": "^13.2.4",
     "next-auth": "^4.19.2",
