@@ -41,8 +41,6 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
     inviteCode ? ["register"] : ["login", "register"]
   );
 
-  console.log(inviteCode);
-
   const form = useForm<AuthFormValues>({
     initialValues: {
       email: "",
