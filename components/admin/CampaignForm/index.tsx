@@ -198,7 +198,7 @@ export const CampaignForm = () => {
     }
 
     try {
-      await createCampaign.mutate({
+      await createCampaign.mutateAsync({
         body: {
           name,
           campaign_type_id: campaignTypeId,
@@ -211,14 +211,14 @@ export const CampaignForm = () => {
           file_ids: fileIds as string[],
         },
       });
+
+      notifications.success({
+        title: "Campaign successfully created!",
+      });
     } catch (error) {
       console.error(error);
       notifications.error({
         title: "Error while creating the campaign",
-      });
-    } finally {
-      notifications.success({
-        title: "Campaign successfully created!",
       });
     }
   };

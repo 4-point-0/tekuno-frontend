@@ -1426,7 +1426,7 @@ export type OrganizationControllerUpdatePathParams = {
 export type OrganizationControllerUpdateError = Fetcher.ErrorWrapper<undefined>;
 
 export type OrganizationControllerUpdateVariables = {
-  body: Schemas.UpdateOrganizationDto;
+  body?: Schemas.UpdateOrganizationDto;
   pathParams: OrganizationControllerUpdatePathParams;
 } & AdminContext["fetcherOptions"];
 
@@ -1602,6 +1602,60 @@ export const useOrganizationControllerFindAll = <
       ...options,
       ...queryOptions,
     }
+  );
+};
+
+export type OrganizationControllerResendInvitePathParams = {
+  email: string;
+};
+
+export type OrganizationControllerResendInviteError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerResendInviteVariables = {
+  pathParams: OrganizationControllerResendInvitePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerResendInvite = (
+  variables: OrganizationControllerResendInviteVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    boolean,
+    OrganizationControllerResendInviteError,
+    undefined,
+    {},
+    {},
+    OrganizationControllerResendInvitePathParams
+  >({
+    url: "/api/v1/organization/resend-invite/{email}",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerResendInvite = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      boolean,
+      OrganizationControllerResendInviteError,
+      OrganizationControllerResendInviteVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    boolean,
+    OrganizationControllerResendInviteError,
+    OrganizationControllerResendInviteVariables
+  >(
+    (variables: OrganizationControllerResendInviteVariables) =>
+      fetchOrganizationControllerResendInvite({
+        ...fetcherOptions,
+        ...variables,
+      }),
+    options
   );
 };
 

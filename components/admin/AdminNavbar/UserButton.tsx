@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ChevronRight } from "tabler-icons-react";
 
-import { useAdminUser } from "@/hooks/useAdminUser";
+import { useAdminControllerFindMe } from "@/services/api/admin/adminComponents";
 import { getAvatarUrl } from "@/utils/avatar";
 
 interface ButtonProps {
@@ -36,7 +36,7 @@ export const UserButton = ({ ...rest }: UnstyledButtonProps) => {
   const router = useRouter();
   const { classes } = useStyles({ active: router.route === "/admin/user" });
 
-  const { data } = useAdminUser();
+  const { data } = useAdminControllerFindMe({});
 
   return (
     <UnstyledButton

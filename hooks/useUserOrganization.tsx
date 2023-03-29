@@ -1,11 +1,15 @@
 import { useMemo } from "react";
 
-import { useOrganizationControllerFindOne } from "@/services/api/admin/adminComponents";
-
-import { useAdminUser } from "./useAdminUser";
+import {
+  useAdminControllerFindMe,
+  useOrganizationControllerFindOne,
+} from "@/services/api/admin/adminComponents";
 
 export function useUserOrganization(enabled = true) {
-  const { data: user, isLoading: isLoadingUser } = useAdminUser(enabled);
+  const { data: user, isLoading: isLoadingUser } = useAdminControllerFindMe(
+    {},
+    { enabled }
+  );
   const hasOrganization = useMemo(() => {
     return Boolean(user?.organization_id);
   }, [user?.organization_id]);

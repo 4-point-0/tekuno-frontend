@@ -89,9 +89,9 @@ export const authOptions: NextAuthOptions = {
         try {
           const { token } = await login(email, password);
 
-          const user = (await fetchAdminControllerFindMe({
+          const user = await fetchAdminControllerFindMe({
             headers: { authorization: `Bearer ${token}` },
-          })) as unknown as UserDto;
+          });
 
           return { token, ...user };
         } catch (error) {

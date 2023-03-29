@@ -20,6 +20,7 @@ const Organization = ({
 
 export const getServerSideProps = getUserServerSideProps({
   organizationRequired: false,
+  adminOnly: true,
 });
 
 export default Organization;
