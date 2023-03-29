@@ -7,6 +7,7 @@ import { UserDto } from "@/services/api/admin/adminSchemas";
 
 import { DeleteUser } from "./DeleteUser";
 import { InviteUser } from "./InviteUser";
+import { ResendInvite } from "./ResendInvite";
 
 const PAGE_LIMIT = 10;
 
@@ -36,7 +37,9 @@ export const OrganizationUsers = ({ currentUser }: OrganizationUserProps) => {
         }
 
         return (
-          <Group>
+          <Group spacing="xs">
+            <ResendInvite user={user} />
+
             <DeleteUser user={user} onRemove={refetch} />
           </Group>
         );

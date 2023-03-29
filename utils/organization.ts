@@ -7,8 +7,10 @@ import { authOptions } from "../pages/api/auth/[...nextauth]";
 
 export const getUserServerSideProps = ({
   organizationRequired,
+  adminOnly,
 }: {
   organizationRequired?: boolean;
+  adminOnly?: boolean;
 }) =>
   async function (context: GetServerSidePropsContext) {
     const session = await getServerSession(
@@ -36,7 +38,7 @@ export const getUserServerSideProps = ({
         : { notfound: true };
     }
 
-    if (!(user.role === "Admin" || user.organization_id)) {
+    if (adminOnly && user.role !== "Admin") {
       return { notFound: true };
     }
 

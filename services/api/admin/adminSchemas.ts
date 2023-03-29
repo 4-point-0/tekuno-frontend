@@ -29,7 +29,7 @@ export type UserDto = {
   id: string;
   email: string;
   username: string;
-  role: "Admin" | "User";
+  role: "Admin" | "User" | "Member";
   provider?: "Apple" | "Facebook" | "Google";
   provider_id?: string;
   organization_id?: string;
@@ -214,7 +214,7 @@ export type OrganizationDto = {
 };
 
 export type UpdateOrganizationDto = {
-  name: string;
+  name?: string;
   description?: string | null;
   file_id?: string;
 };
