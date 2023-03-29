@@ -4,8 +4,8 @@ import { useOrganizationControllerFindOne } from "@/services/api/admin/adminComp
 
 import { useAdminUser } from "./useAdminUser";
 
-export function useUserOrganization() {
-  const { data: user, isLoading: isLoadingUser } = useAdminUser();
+export function useUserOrganization(enabled = true) {
+  const { data: user, isLoading: isLoadingUser } = useAdminUser(enabled);
   const hasOrganization = useMemo(() => {
     return Boolean(user?.organization_id);
   }, [user?.organization_id]);

@@ -7,8 +7,8 @@ interface AdminUser {
   username: string;
 }
 
-export const useAdminUser = () => {
-  const { data, ...rest } = useAdminControllerFindMe({});
+export const useAdminUser = (enabled = true) => {
+  const { data, ...rest } = useAdminControllerFindMe({}, { enabled });
 
   return {
     data: data as unknown as AdminUser | undefined,
