@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 
 import {
   fetchAdminControllerFindMe,
+  fetchAuthControllerConfirmInvite,
   fetchAuthControllerLogin,
   fetchAuthControllerRegister,
   fetchGoogleControllerAuthenticate,
@@ -17,7 +18,8 @@ interface CredentialsRequestBody {
   type: "register" | "login";
   password: string;
   email: string;
-  password_confirm?: string;
+  passwordConfirm?: string;
+  inviteCode?: string;
 }
 
 interface WithToken {
@@ -33,6 +35,28 @@ async function login(email: string, password: string): Promise<WithToken> {
   })) as unknown as WithToken;
 }
 
+async function registerOrConfirmInvite({
+  password,
+  passwordConfirm,
+  email,
+  inviteCode,
+}: Omit<CredentialsRequestBody, "type">) {
+  const body = {
+    email,
+    password,
+    password_confirm: passwordConfirm as string,
+  };
+
+  if (inviteCode) {
+    return await fetchAuthControllerConfirmInvite({
+      body,
+      pathParams: { code: inviteCode },
+    });
+  } else {
+    return await fetchAuthControllerRegister({ body });
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/admin/auth/signin",
@@ -41,17 +65,16 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       credentials: {},
       async authorize(_, req) {
-        const { password, email, type, password_confirm } =
+        const { password, email, type, passwordConfirm, inviteCode } =
           req.body as unknown as CredentialsRequestBody;
 
-        if (type === "register" && password_confirm) {
+        if (type === "register" && passwordConfirm) {
           try {
-            const user = await fetchAuthControllerRegister({
-              body: {
-                email,
-                password,
-                password_confirm,
-              },
+            const user = await registerOrConfirmInvite({
+              email,
+              password,
+              passwordConfirm,
+              inviteCode,
             });
 
             const { token } = await login(email, password);

@@ -1,5 +1,6 @@
 import {
   Anchor,
+  Box,
   Button,
   Divider,
   Group,
@@ -28,18 +29,25 @@ interface AuthFormProps extends PaperProps {
 interface AuthFormValues {
   email: string;
   password: string;
-  password_confirm: string;
+  passwordConfirm: string;
 }
 
 export function AuthForm({ providers, ...props }: AuthFormProps) {
-  const [type, toggle] = useToggle(["login", "register"]);
   const router = useRouter();
+
+  const inviteCode = router.query.code;
+
+  const [type, toggle] = useToggle(
+    inviteCode ? ["register"] : ["login", "register"]
+  );
+
+  console.log(inviteCode);
 
   const form = useForm<AuthFormValues>({
     initialValues: {
       email: "",
       password: "",
-      password_confirm: "",
+      passwordConfirm: "",
     },
 
     validate: {
@@ -48,7 +56,7 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
         value.length < 8
           ? "Password should include at least 8 characters"
           : null,
-      password_confirm: (value, values) => {
+      passwordConfirm: (value, values) => {
         if (type === "login") {
           return null;
         }
@@ -69,22 +77,27 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
   const handleSubmit = (values: AuthFormValues) => {
     signIn("credentials", {
       ...values,
+      inviteCode: inviteCode,
       type,
       redirect: true,
       callbackUrl: router.query.callbackUrl as string,
     });
   };
 
+  const showProviders = Boolean(!inviteCode && providers?.google);
+
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="lg" weight={500}>
-        Welcome to Tekuno, {type} with
-      </Text>
+      <Box mb="md">
+        <Text size="lg" weight={500}>
+          Welcome to Tekuno, {type} with
+        </Text>
+      </Box>
 
-      {providers?.google && (
+      {showProviders && (
         <>
-          <Group grow mb="md" mt="md">
-            <GoogleButton radius="xl" onClick={handleSignIn(providers.google)}>
+          <Group grow mb="md">
+            <GoogleButton radius="xl" onClick={handleSignIn(providers?.google)}>
               Google
             </GoogleButton>
           </Group>
@@ -121,23 +134,25 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
               label="Confirm password"
               placeholder="Confirm password"
               radius="md"
-              {...form.getInputProps("password_confirm")}
+              {...form.getInputProps("passwordConfirm")}
             />
           )}
         </Stack>
 
-        <Group position="apart" mt="xl">
-          <Anchor
-            component="button"
-            type="button"
-            color="dimmed"
-            onClick={() => toggle()}
-            size="xs"
-          >
-            {type === "register"
-              ? "Already have an account? Login"
-              : "Don't have an account? Register"}
-          </Anchor>
+        <Group position={inviteCode ? "right" : "apart"} mt="xl">
+          {!inviteCode && (
+            <Anchor
+              component="button"
+              type="button"
+              color="dimmed"
+              onClick={() => toggle()}
+              size="xs"
+            >
+              {type === "register"
+                ? "Already have an account? Login"
+                : "Don't have an account? Register"}
+            </Anchor>
+          )}
           <Button type="submit" radius="xl">
             {upperFirst(type)}
           </Button>
