@@ -113,6 +113,8 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
           <TextInput
             required
             label="Email"
+            name="email"
+            autoComplete="email"
             placeholder="hello@tekuno.app"
             radius="md"
             {...form.getInputProps("email")}
@@ -120,6 +122,10 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
 
           <PasswordInput
             required
+            name="password"
+            autoComplete={
+              type === "login" ? "current-password" : "new-password"
+            }
             label="Password"
             placeholder="Your password"
             radius="md"
@@ -129,6 +135,8 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
           {type === "register" && (
             <PasswordInput
               required
+              name="confirm-password"
+              autoComplete="new-password"
               label="Confirm password"
               placeholder="Confirm password"
               radius="md"
