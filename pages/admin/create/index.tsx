@@ -1,7 +1,7 @@
 import { Container, Paper } from "@mantine/core";
 
 import { CampaignTypes } from "@/components/admin/CampaignTypes";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function SelectPODTemplate() {
   return (

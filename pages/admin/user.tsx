@@ -1,7 +1,7 @@
 import { Container, Paper } from "@mantine/core";
 
 import { UserDetails } from "@/components/admin/UserDetails";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function AdminUser() {
   return (

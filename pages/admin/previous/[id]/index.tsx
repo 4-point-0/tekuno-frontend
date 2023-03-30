@@ -1,5 +1,5 @@
 import { CampaignDetails } from "@/components/admin/CampaignDetails";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function ManageCampaign() {
   return <CampaignDetails />;

@@ -34,6 +34,7 @@ export type UserDto = {
   provider_id?: string;
   organization_id?: string;
   profile?: ProfileDto;
+  status?: "Pending" | "Active";
 };
 
 export type LoginDto = {
@@ -51,6 +52,7 @@ export type ResetPasswordDto = {
   email: string;
   token: string;
   password: string;
+  password_confirm: string;
 };
 
 export type ChangePasswordDto = {

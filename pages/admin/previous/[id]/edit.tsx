@@ -1,7 +1,7 @@
 import { Container, Paper } from "@mantine/core";
 
 import { EditCampaign } from "@/components/admin/EditCampaign";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function EditCampaignPage() {
   return (

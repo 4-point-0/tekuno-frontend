@@ -1486,7 +1486,7 @@ export const fetchOrganizationControllerFindOneUser = (
   signal?: AbortSignal
 ) =>
   adminFetch<
-    Schemas.OrganizationDto,
+    Schemas.UserDto,
     OrganizationControllerFindOneUserError,
     undefined,
     {},
@@ -1499,13 +1499,11 @@ export const fetchOrganizationControllerFindOneUser = (
     signal,
   });
 
-export const useOrganizationControllerFindOneUser = <
-  TData = Schemas.OrganizationDto
->(
+export const useOrganizationControllerFindOneUser = <TData = Schemas.UserDto>(
   variables: OrganizationControllerFindOneUserVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
-      Schemas.OrganizationDto,
+      Schemas.UserDto,
       OrganizationControllerFindOneUserError,
       TData
     >,
@@ -1514,7 +1512,7 @@ export const useOrganizationControllerFindOneUser = <
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
   return reactQuery.useQuery<
-    Schemas.OrganizationDto,
+    Schemas.UserDto,
     OrganizationControllerFindOneUserError,
     TData
   >(
@@ -1549,7 +1547,7 @@ export type OrganizationControllerFindAllResponse = {
   limit: number;
   offset: number;
   count: number;
-  results: Schemas.OrganizationDto[];
+  results: Schemas.UserDto[];
 };
 
 export type OrganizationControllerFindAllVariables = {

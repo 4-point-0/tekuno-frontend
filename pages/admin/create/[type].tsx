@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import { CampaignForm } from "@/components/admin/CampaignForm";
 import { CampaignType, TYPES } from "@/enums/CampaignType";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function CreatePOD() {
   const router = useRouter();

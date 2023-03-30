@@ -49,6 +49,7 @@ export type UserDto = {
   provider_id?: string;
   organization_id?: string;
   profile?: ProfileDto;
+  status?: "Pending" | "Active";
 };
 
 export type CampaignTypeDto = {

@@ -1,5 +1,5 @@
 import { CampaignPreview } from "@/components/admin/CampaignPreview";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function PreviewCampaign() {
   return <CampaignPreview />;
