@@ -29,6 +29,7 @@ export const OrganizationUsers = ({ currentUser }: OrganizationUserProps) => {
   const columns: DataTableColumn<UserDto>[] = [
     { accessor: "email" },
     { accessor: "role" },
+    { accessor: "status" },
     {
       accessor: "actions",
       render: (user) => {
@@ -38,9 +39,8 @@ export const OrganizationUsers = ({ currentUser }: OrganizationUserProps) => {
 
         return (
           <Group spacing="xs">
-            <ResendInvite user={user} />
-
             <DeleteUser user={user} onRemove={refetch} />
+            {user.status === "Pending" && <ResendInvite user={user} />}
           </Group>
         );
       },
