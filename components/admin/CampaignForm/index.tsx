@@ -15,7 +15,7 @@ import {
 } from "@/services/api/admin/adminComponents";
 import { CreateNftDto, NftTypeDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
-import { getFormValidateInput } from "@/utils/validation";
+import { getCampaignFormValidateInput } from "@/utils/validation";
 
 import {
   CreateFormValues,
@@ -118,7 +118,7 @@ export const CampaignForm = () => {
       poap: hasPoap ? NFT_INITIAL_VALUE : undefined,
       reward: hasRewards ? NFT_INITIAL_VALUE : undefined,
     },
-    validate: getFormValidateInput(active, { hasPoap, hasRewards }),
+    validate: getCampaignFormValidateInput(active, { hasPoap, hasRewards }),
   });
 
   const changeStep = (step: number) => {

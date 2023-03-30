@@ -2,7 +2,7 @@ import { Container, Paper } from "@mantine/core";
 import { InferGetServerSidePropsType } from "next";
 
 import { OrganizationDetails } from "@/components/admin/OrganizationDetails";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 const Organization = ({
   user,

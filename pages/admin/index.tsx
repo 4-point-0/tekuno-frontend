@@ -2,7 +2,7 @@ import { Container, Paper } from "@mantine/core";
 import { InferGetServerSidePropsType } from "next";
 
 import { CallToAction } from "@/components/admin/CallToAction";
-import { getUserServerSideProps } from "@/utils/organization";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function Admin({
   user,

@@ -15,7 +15,10 @@ import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { BuiltInProviderType } from "next-auth/providers";
 import { ClientSafeProvider, LiteralUnion, signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+
+import { authValidatons } from "@/utils/validation";
 
 import { GoogleButton } from "./SocialButtons";
 
@@ -36,6 +39,7 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
   const router = useRouter();
 
   const inviteCode = router.query.code;
+  const callbackUrl = (router.query.callbackUrl as string) || "/admin";
 
   const [type, toggle] = useToggle(
     inviteCode ? ["register"] : ["login", "register"]
@@ -49,17 +53,14 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      password: (value) =>
-        value.length < 8
-          ? "Password should include at least 8 characters"
-          : null,
+      email: authValidatons.email,
+      password: authValidatons.password,
       passwordConfirm: (value, values) => {
         if (type === "login") {
           return null;
         }
 
-        return value === values.password ? null : "Passwords do not match";
+        return authValidatons.passwordConfirm(value, values.password);
       },
     },
   });
@@ -67,8 +68,8 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
   const handleSignIn = (provider?: ClientSafeProvider) => {
     return () =>
       signIn(provider?.id, {
+        callbackUrl,
         redirect: true,
-        callbackUrl: router.query.callbackUrl as string,
       });
   };
 
@@ -77,8 +78,8 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
       ...values,
       inviteCode: inviteCode,
       type,
+      callbackUrl,
       redirect: true,
-      callbackUrl: router.query.callbackUrl as string,
     });
   };
 
@@ -131,6 +132,16 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
             radius="md"
             {...form.getInputProps("password")}
           />
+          {type === "login" && (
+            <Link
+              href="/admin/auth/reset-password"
+              style={{ textDecoration: "none" }}
+            >
+              <Text color="dimmed" size="xs">
+                Forgot your password?
+              </Text>
+            </Link>
+          )}
 
           {type === "register" && (
             <PasswordInput

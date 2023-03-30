@@ -78,7 +78,7 @@ export function getNftValidator(enabled: boolean) {
   };
 }
 
-const sharedValidations = {
+const campaignSharedValidations = {
   name: (value?: string) => {
     if (!value) {
       return "Name is required";
@@ -118,11 +118,12 @@ const sharedValidations = {
   },
 };
 
-export function getFormValidateInput(
+export function getCampaignFormValidateInput(
   step: number,
   { hasPoap, hasRewards }: CampaignFormConfig
 ) {
-  const { name, startDate, endDate, image, description } = sharedValidations;
+  const { name, startDate, endDate, image, description } =
+    campaignSharedValidations;
 
   if (step === 0)
     return {
@@ -155,5 +156,14 @@ export function getFormValidateInput(
 }
 
 export function getEditFormValidateInput() {
-  return sharedValidations;
+  return campaignSharedValidations;
 }
+
+export const authValidatons = {
+  email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+  password: (value: string) =>
+    value.length < 8 ? "Password should include at least 8 characters" : null,
+  passwordConfirm: (value: string, password: string) => {
+    return value === password ? null : "Passwords do not match";
+  },
+};

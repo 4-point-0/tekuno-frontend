@@ -48,3 +48,20 @@ export const getUserServerSideProps = ({
       },
     };
   };
+
+export const redirectIfActiveSession = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/admin/user",
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: {} };
+};
