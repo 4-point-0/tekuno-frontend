@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 
 import { AdminContext } from "./adminContext";
 
-const baseUrl = "";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export type ErrorWrapper<TError> =
   | TError
