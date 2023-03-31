@@ -29,7 +29,7 @@ import {
 import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
-import { getEditFormValidateInput } from "@/utils/validation";
+import { getEditFormValidateInput } from "@/utils/validations";
 
 import {
   CAMPAIGN_DOCUMENT_TYPES,
