@@ -35,6 +35,8 @@ interface AuthFormValues {
   passwordConfirm: string;
 }
 
+const REGISTRATION_ENABLED = false;
+
 export function AuthForm({ providers, ...props }: AuthFormProps) {
   const router = useRouter();
 
@@ -84,6 +86,7 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
   };
 
   const showProviders = Boolean(!inviteCode && providers?.google);
+  const showToggle = REGISTRATION_ENABLED && !inviteCode;
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
@@ -157,8 +160,8 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
           )}
         </Stack>
 
-        <Group position={inviteCode ? "right" : "apart"} mt="xl">
-          {!inviteCode && (
+        <Group position="right" mt="xl">
+          {showToggle && (
             <Anchor
               component="button"
               type="button"
