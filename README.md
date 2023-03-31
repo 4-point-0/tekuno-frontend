@@ -14,24 +14,26 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Pull environment variables
+## Set environment variables
 
-Install [Vercal CLI](https://vercel.com/docs/cli) globally:
+Add `.env.local` file to the directory with the following structure:
 
-```bash
-npm i -g vercel
+```
+API_URL="https://api-dev.tekuno.app"
+ADMIN_SWAGGER_URL="$API_URL/swagger-json"
+CLIENT_SWAGGER_URL="$API_URL/swagger-user-json"
+GOOGLE_CLIENT_ID=""
+GOOGLE_SECRET=""
+NEXT_PUBLIC_NETWORK="testnet"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-[Link](https://vercel.com/docs/cli/link) the project to Vercel from the root directory:
+Google secrets have to be set manually from the Google Test account.
+
+NEXTAUTH_SECRET is not needed during the development, but if needed can be generated with
 
 ```bash
-vercel link
-```
-
-Pull environment variables to `.env.local` file.
-
-```bash
-npm run env:pull
+openssl rand -base64 32
 ```
 
 ## API Code Generation

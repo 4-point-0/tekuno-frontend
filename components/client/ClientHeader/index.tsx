@@ -1,5 +1,3 @@
-import { useRamper } from "@/context/RamperContext";
-import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import {
   Box,
   Burger,
@@ -21,6 +19,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
+
+import { useRamper } from "@/context/RamperContext";
+import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
+import { CampaignDto } from "@/services/api/client/clientSchemas";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -105,7 +107,7 @@ export function ClientHeader() {
     );
   };
 
-  const campaignDropdownLinks = (campaigns?: any[]) => {
+  const campaignDropdownLinks = (campaigns?: CampaignDto[]) => {
     if (!(isClient && user && campaigns?.length)) return null;
 
     const menuItems = campaigns?.map((campaign) => (
@@ -121,7 +123,11 @@ export function ClientHeader() {
 
     if (menuItems) {
       return (
-        <Menu key={"Campaigns"} trigger="hover" exitTransitionDuration={0}>
+        <Menu
+          key={"Campaigns"}
+          trigger="hover"
+          transitionProps={{ exitDuration: 0 }}
+        >
           <Menu.Target>
             <Center>
               <NavLink
@@ -139,7 +145,7 @@ export function ClientHeader() {
     return null;
   };
 
-  const campaignLinks = (campaigns?: any[]) => {
+  const campaignLinks = (campaigns?: CampaignDto[]) => {
     if (!user) return null;
 
     return campaigns?.map((campaign) => (
@@ -185,11 +191,7 @@ export function ClientHeader() {
         padding="md"
         title={
           <Link href="/">
-            <img
-              style={{ widows: "120px" }}
-              src="/tekuno.svg"
-              alt="Tekuno logo"
-            />
+            <Image src="/tekuno.svg" alt="Tekuno logo" />
           </Link>
         }
         className={classes.hiddenDesktop}

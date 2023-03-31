@@ -1,7 +1,6 @@
 import { Input, InputWrapperProps } from "@mantine/core";
-import React from "react";
 
-export const Field: React.FC<InputWrapperProps> = (props) => {
+export const Field = (props: InputWrapperProps) => {
   return (
     <Input.Wrapper
       styles={{

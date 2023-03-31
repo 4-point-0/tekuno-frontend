@@ -1,5 +1,3 @@
-import { IndigoButton } from "@/components/core/IndigoButton";
-import { campaignTypeData, TYPES } from "@/enums/CampaignType";
 import {
   Card,
   Group,
@@ -9,9 +7,11 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
-import React from "react";
+import Link from "next/link";
 import { CirclePlus } from "tabler-icons-react";
+
+import { IndigoButton } from "@/components/core/IndigoButton";
+import { campaignTypeData, TYPES } from "@/enums/CampaignType";
 
 export const CampaignTypes = () => {
   return (
@@ -24,13 +24,11 @@ export const CampaignTypes = () => {
         return (
           <Card
             key={template}
-            component={NextLink}
+            component={Link}
             href={href}
-            legacyBehavior
             h="100%"
             shadow="sm"
             radius="xl"
-            p="xl"
             pb={72}
           >
             <Card.Section mb="xl">

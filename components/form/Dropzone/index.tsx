@@ -1,33 +1,34 @@
-import { MAX_FILE_SIZE } from "@/components/admin/CampaignForm/FormContext";
 import {
-  Group,
-  useMantineTheme,
-  Text,
-  Stack,
-  Button,
   Box,
+  Button,
+  Group,
   Image,
+  Stack,
+  Text,
+  useMantineTheme,
 } from "@mantine/core";
 import {
-  Dropzone as MantineDropzone,
-  DropzoneProps,
   FileWithPath,
+  Dropzone as MantineDropzone,
+  DropzoneProps as MantineDropzoneProps,
 } from "@mantine/dropzone";
-import React, { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Photo, Upload, X } from "tabler-icons-react";
 
-interface IDropzoneProps extends Partial<DropzoneProps> {
+import { MAX_FILE_SIZE } from "@/components/admin/CampaignForm/FormContext";
+
+interface DropzoneProps extends Partial<MantineDropzoneProps> {
   title: string;
   description: string;
   label: string;
   error?: string;
   previewUrl?: string;
-  formValue?: Array<FileWithPath>;
+  formValue?: FileWithPath[];
   isLoading: boolean;
-  dropzone: Omit<DropzoneProps, "children">;
+  dropzone: Omit<MantineDropzoneProps, "children">;
 }
 
-export const Dropzone: React.FC<IDropzoneProps> = ({
+export const Dropzone = ({
   title,
   description,
   label,
@@ -35,14 +36,14 @@ export const Dropzone: React.FC<IDropzoneProps> = ({
   previewUrl,
   dropzone,
   isLoading,
-}) => {
+}: DropzoneProps) => {
   const [aspectRatio, setAspectRatio] = useState<number>();
   const openRef = useRef<() => void>(null);
   const theme = useMantineTheme();
 
   const { onDrop, ...rest } = dropzone;
 
-  const handleDrop = (files: Array<FileWithPath>) => {
+  const handleDrop = (files: FileWithPath[]) => {
     onDrop(files);
   };
 

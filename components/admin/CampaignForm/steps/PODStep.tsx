@@ -1,12 +1,12 @@
-import { Box, Button, Divider, Group, Stack, Text, Title } from "@mantine/core";
+import { Button, Divider, Group, Stack, Text, Title } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
-import React from "react";
+import { Fragment } from "react";
 import { CirclePlus, Trash } from "tabler-icons-react";
 
 import { NFT_INITIAL_VALUE, useFormContext } from "../FormContext";
 import { NFTForm } from "../NFTForm";
 
-export const PODStep: React.FC = ({}) => {
+export const PODStep = () => {
   const form = useFormContext();
 
   const { poap, collectibles } = form.values;
@@ -51,7 +51,7 @@ export const PODStep: React.FC = ({}) => {
       {Boolean(collectibles.length) && (
         <Stack>
           {collectibles.map((_, i) => (
-            <React.Fragment key={i}>
+            <Fragment key={i}>
               {i !== 0 && <Divider my="xl" />}
 
               {collectibles.length > 1 && <Title order={5}>{i + 1}.</Title>}
@@ -70,7 +70,7 @@ export const PODStep: React.FC = ({}) => {
                   </Button>
                 </Group>
               )}
-            </React.Fragment>
+            </Fragment>
           ))}
 
           <Group>

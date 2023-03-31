@@ -6,45 +6,44 @@ import {
   Stack,
   Switch,
   Text,
-  Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
-import React from "react";
-import { useForm } from "@mantine/form";
-import dayjs from "dayjs";
-import { Calendar, Check, X } from "tabler-icons-react";
+import { DatePickerInput } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
-import { DatePicker } from "@mantine/dates";
+import { useForm } from "@mantine/form";
+import { useIsMutating } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
+import { Calendar, Check, X } from "tabler-icons-react";
 
-import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
-import {
-  CAMPAIGN_DOCUMENT_TYPES,
-  CAMPAIGN_IMAGE_TYPES,
-  ISharedFormValues,
-  IUploadedFile,
-} from "../CampaignForm/FormContext";
+import { IndigoBadge } from "@/components/core/IndigoBadge";
 import { Dropzone } from "@/components/form/Dropzone";
+import { Field } from "@/components/form/Field";
+import { TextEditor } from "@/components/form/TextEditor";
 import {
   useCampaignControllerUpdate,
   useFileControllerUpdateFile,
   useFileControllerUploadFile,
 } from "@/services/api/admin/adminComponents";
-import { Field } from "@/components/form/Field";
-import { IndigoBadge } from "@/components/core/IndigoBadge";
-import { useIsMutating } from "@tanstack/react-query";
+import { CampaignDto, FileDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
 import { notifications } from "@/utils/notifications";
-import { useRouter } from "next/router";
 import { getEditFormValidateInput } from "@/utils/validation";
-import { useDayStyle } from "@/utils/date";
 
-interface IEditCampaign {
+import {
+  CAMPAIGN_DOCUMENT_TYPES,
+  CAMPAIGN_IMAGE_TYPES,
+  SharedFormValues,
+  UploadedFileValue,
+} from "../CampaignForm/FormContext";
+
+interface EditFormProps {
   campaign: CampaignDto;
 }
 
-export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
-  const form = useForm<ISharedFormValues>({
+export const EditForm = ({ campaign }: EditFormProps) => {
+  const form = useForm<SharedFormValues>({
     validateInputOnChange: true,
     initialValues: {
       name: campaign.name,
@@ -66,7 +65,6 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
 
   const isMutating = useIsMutating();
   const router = useRouter();
-  const dayStyle = useDayStyle();
 
   const uploadFile = useFileControllerUploadFile({});
   const updateFile = useFileControllerUpdateFile({});
@@ -86,7 +84,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
 
   const { documents } = form.values;
 
-  const handleImageDrop = async (files: Array<FileWithPath>) => {
+  const handleImageDrop = async (files: FileWithPath[]) => {
     const file = files[0];
     const previousResponse = form.values.image?.response;
 
@@ -126,7 +124,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     }
   };
 
-  const handleDocumentsDrop = async (files: Array<FileWithPath>) => {
+  const handleDocumentsDrop = async (files: FileWithPath[]) => {
     const previous = documents;
 
     const uniqueFiles = files.filter(({ path }) => {
@@ -144,10 +142,10 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
       })
     );
 
-    const newDocuments: Array<IUploadedFile> = uniqueFiles.map((file, i) => {
+    const newDocuments: UploadedFileValue[] = uniqueFiles.map((file, i) => {
       return {
         file,
-        response: respones[i],
+        response: respones[i] as unknown as FileDto,
       };
     });
 
@@ -162,7 +160,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     form.setFieldValue("endDate", endDate);
   };
 
-  const handleRemove = (file: IUploadedFile) => {
+  const handleRemove = (file: UploadedFileValue) => {
     return () => {
       form.setFieldValue(
         "documents",
@@ -171,7 +169,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     };
   };
 
-  const handleSubmit = async (values: ISharedFormValues) => {
+  const handleSubmit = async (values: SharedFormValues) => {
     const {
       image,
       name,
@@ -185,7 +183,7 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
     const fileIds = [
       image?.response?.id,
       ...documents.map(({ response }) => response?.id),
-    ].filter(Boolean) as Array<string>;
+    ].filter(Boolean) as string[];
 
     await updateCampaign.mutateAsync({
       pathParams: {
@@ -250,11 +248,10 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
             />
 
             <Group>
-              <DatePicker
+              <DatePickerInput
                 withAsterisk
                 placeholder="Select start date"
                 icon={<Calendar size={16} />}
-                dayStyle={dayStyle}
                 maxDate={
                   form.values.endDate
                     ? dayjs(form.values.endDate).subtract(1, "day").toDate()
@@ -262,11 +259,10 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
                 }
                 {...form.getInputProps("startDate")}
               />
-              <DatePicker
+              <DatePickerInput
                 withAsterisk
                 placeholder="Select end date"
                 icon={<Calendar size={16} />}
-                dayStyle={dayStyle}
                 disabled={!form.values.limitDate}
                 minDate={
                   form.values.startDate
@@ -282,20 +278,26 @@ export const EditForm: React.FC<IEditCampaign> = ({ campaign }) => {
         <Field
           label="Edit the catchy phrase for your campaign"
           description="This text will be visible on each POD page"
+          error={form.getInputProps("description").error}
         >
-          <Textarea
-            mt="sm"
-            placeholder="Placeholder text"
-            {...form.getInputProps("description")}
-          />
+          <Box my="xs">
+            <TextEditor
+              value={form.getInputProps("description").value}
+              onChange={form.getInputProps("description").onChange}
+            />
+          </Box>
         </Field>
 
-        <Field label="Edit the details of your campaign">
-          <Textarea
-            mt="sm"
-            placeholder="Placeholder text"
-            {...form.getInputProps("additionalDescription")}
-          />
+        <Field
+          label="Edit the details of your campaign"
+          error={form.getInputProps("additionalDescription").error}
+        >
+          <Box my="xs">
+            <TextEditor
+              value={form.getInputProps("additionalDescription").value}
+              onChange={form.getInputProps("additionalDescription").onChange}
+            />
+          </Box>
         </Field>
 
         <Field label="Upload files related to your campaign (optional)">

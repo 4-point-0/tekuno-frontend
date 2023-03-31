@@ -7,16 +7,16 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  BrandDiscord,
   BrandInstagram,
   BrandLinkedin,
   BrandTwitter,
-  BrandDiscord,
 } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
   footer: {
-    paddingTop: theme.spacing.xl * 2,
-    paddingBottom: theme.spacing.xl * 2,
+    paddingTop: `calc(${theme.spacing.xl} * 2)`,
+    paddingBottom: `calc(${theme.spacing.xl} * 2)`,
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.colors.dark[6]
@@ -87,7 +87,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.lg,
     fontWeight: 700,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    marginBottom: theme.spacing.xs / 2,
+    marginBottom: `calc(${theme.spacing.xs} / 2)`,
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
   },
 

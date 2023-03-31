@@ -1,14 +1,13 @@
 import { GetServerSideProps, NextPage } from "next";
 
+import { NftDetails } from "@/components/client/NftDetails";
 import {
   fetchNftControllerFindOneNft,
   useNftControllerFindOneNft,
 } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
-import { ClientContainer } from "@/components/layout/ClientContainer";
-import { NftDetails } from "@/components/client/NftDetails";
 
-interface ICollectibleProps {
+interface CollectiblePageProps {
   initialData?: NftDto;
 }
 
@@ -29,17 +28,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-const CollectiblePage: NextPage<ICollectibleProps> = ({ initialData }) => {
+const CollectiblePage: NextPage<CollectiblePageProps> = ({ initialData }) => {
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }
   );
 
-  return (
-    <ClientContainer key={nft?.id}>
-      {nft && <NftDetails key={nft.id} nft={nft} disableClaim />}
-    </ClientContainer>
-  );
+  return <>{nft && <NftDetails key={nft.id} nft={nft} disableClaim />}</>;
 };
 
 export default CollectiblePage;

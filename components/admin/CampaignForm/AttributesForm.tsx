@@ -1,39 +1,40 @@
+import { ActionIcon, Group, Select, Stack, TextInput } from "@mantine/core";
+import { useState } from "react";
+import { CirclePlus, Trash } from "tabler-icons-react";
+
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { Field } from "@/components/form/Field";
-import { ActionIcon, Group, Select, Stack, TextInput } from "@mantine/core";
-import React, { useState } from "react";
-import { CirclePlus, Trash } from "tabler-icons-react";
 
 import {
   ATTRIBUTE_INITIAL_VALUE,
-  IFormAttribute,
+  FormAttributeValue,
   useFormContext,
 } from "./FormContext";
 
-interface IAttributesFormProps {
+interface AttributesFormProps {
   formKey: string;
 }
 
 const ATTRIBUTE_KEYS = ["Rarity", "Tier", "Privacy"];
 
-export const AttributesForm: React.FC<IAttributesFormProps> = ({ formKey }) => {
+export const AttributesForm = ({ formKey }: AttributesFormProps) => {
   const [data, setData] = useState(() =>
     ATTRIBUTE_KEYS.map((key) => ({ label: key, value: key }))
   );
   const form = useFormContext();
   const attributes = form.getInputProps(formKey).value
-    .attributes as Array<IFormAttribute>;
+    .attributes as FormAttributeValue[];
   const { error } = form.getInputProps(`${formKey}.attributes`);
 
   const traitTypeValues = attributes.map(
-    ({ trait_type }: IFormAttribute) => trait_type
+    ({ trait_type }: FormAttributeValue) => trait_type
   );
   const unselectedKeys = data.filter(
     ({ value }) => !traitTypeValues.includes(value)
   );
   const hasEmptyAttributes = traitTypeValues.some((key: string) => !key);
 
-  const getData = ({ trait_type }: IFormAttribute) => {
+  const getData = ({ trait_type }: FormAttributeValue) => {
     const data = trait_type
       ? [...unselectedKeys, { label: trait_type, value: trait_type }]
       : unselectedKeys;
@@ -71,7 +72,7 @@ export const AttributesForm: React.FC<IAttributesFormProps> = ({ formKey }) => {
         error={error}
       >
         <Stack my="md" align="flex-start">
-          {attributes.map((attribute: IFormAttribute, i: number) => (
+          {attributes.map((attribute: FormAttributeValue, i: number) => (
             <Group key={attribute.trait_type} align="baseline">
               <Select
                 searchable

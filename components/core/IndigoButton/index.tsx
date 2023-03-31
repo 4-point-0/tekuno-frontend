@@ -5,13 +5,12 @@ import {
   createStyles,
 } from "@mantine/core";
 import { PolymorphicComponentProps } from "@mantine/utils";
-import React from "react";
 
 const useStyles = createStyles((theme) => ({
   root: {
     backgroundColor: theme.colors.indigo[0],
 
-    "&:hover": {
+    "&:hover:not([data-disabled])": {
       backgroundColor: theme.colors.indigo[1],
     },
   },

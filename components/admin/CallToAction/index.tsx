@@ -8,15 +8,14 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { NextLink } from "@mantine/next";
-import React from "react";
+import Link from "next/link";
 import { CirclePlus } from "tabler-icons-react";
 
-interface ICallToActionProps {
+interface CallToActionProps {
   emptyState?: boolean;
 }
 
-export const CallToAction: React.FC<ICallToActionProps> = ({ emptyState }) => {
+export const CallToAction = ({ emptyState }: CallToActionProps) => {
   return (
     <Paper sx={{ backgroundColor: "#ffe6e6" }} p={40} maw={810}>
       <Group spacing={48}>
@@ -31,9 +30,8 @@ export const CallToAction: React.FC<ICallToActionProps> = ({ emptyState }) => {
           </Text>
           <Group position="left">
             <Button
-              component={NextLink}
+              component={Link}
               href="/admin/create"
-              legacyBehavior
               color="dark"
               leftIcon={<CirclePlus size={20} />}
             >

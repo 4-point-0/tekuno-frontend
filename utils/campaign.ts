@@ -1,5 +1,6 @@
-import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import dayjs from "dayjs";
+
+import { CampaignDto } from "@/services/api/admin/adminSchemas";
 
 export const getCampaignAssets = (campaign?: CampaignDto) => {
   const image = campaign?.files?.find(({ tags }) => tags.includes("image"));

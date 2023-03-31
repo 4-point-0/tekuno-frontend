@@ -1,22 +1,23 @@
+import {
+  Card,
+  Center,
+  Grid,
+  Group,
+  Image,
+  Loader,
+  Paper,
+  Stack,
+  Title,
+} from "@mantine/core";
+import Link from "next/link";
+import { Pencil } from "tabler-icons-react";
+
+import { FormattedHTML } from "@/components/core/FormattedHTML";
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { getImageUrl } from "@/utils/file";
-import {
-  Card,
-  Image,
-  Stack,
-  Title,
-  Group,
-  Text,
-  Grid,
-  Paper,
-  Center,
-  Loader,
-} from "@mantine/core";
-import { NextLink } from "@mantine/next";
-import React from "react";
-import { Pencil } from "tabler-icons-react";
+
 import { CallToAction } from "../CallToAction";
 import { CampaignStatus } from "../CampaignStatus";
 
@@ -52,14 +53,12 @@ export const CampaignList = () => {
       {data?.results.map((campaign) => (
         <Grid.Col key={campaign.id} span="content">
           <Card
-            component={NextLink}
+            component={Link}
             href={`/admin/previous/${campaign.id}`}
-            legacyBehavior
             h="100%"
             w={332}
             shadow="sm"
             radius="xl"
-            p="xl"
             pb={72}
           >
             <Card.Section mb="xl">
@@ -75,7 +74,7 @@ export const CampaignList = () => {
               <Title order={4}>{campaign.name}</Title>
 
               {campaign.description && (
-                <Text fz="sm">{campaign.description}</Text>
+                <FormattedHTML fz="sm" content={campaign.description} />
               )}
 
               <Group position="right" noWrap>

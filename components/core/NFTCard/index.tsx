@@ -1,21 +1,22 @@
-import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
-import { NftDto } from "@/services/api/admin/adminSchemas";
 import { Badge, Box, Flex, Group, Text, ThemeIcon, Title } from "@mantine/core";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { Check, Flame, Lock, Minus } from "tabler-icons-react";
 
-interface INFTCardProps extends PropsWithChildren {
+import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
+import { NftDto } from "@/services/api/admin/adminSchemas";
+
+interface NFTCardProps extends PropsWithChildren {
   nft: NftDto;
   isCollected?: boolean;
   isBurned?: boolean;
 }
 
-export const NFTCard: React.FC<INFTCardProps> = ({
+export const NFTCard = ({
   nft,
   isCollected,
   isBurned,
   children,
-}) => {
+}: NFTCardProps) => {
   const isReward = nft.nft_type.name === "reward";
 
   return (

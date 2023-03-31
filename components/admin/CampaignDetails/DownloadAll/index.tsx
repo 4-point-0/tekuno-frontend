@@ -1,23 +1,20 @@
-import React, { useRef } from "react";
-import { Download } from "tabler-icons-react";
-import { QRCode } from "react-qrcode-logo";
+import { Box, Portal } from "@mantine/core";
 import { saveAs } from "file-saver";
+import { RefObject, useRef } from "react";
+import { QRCode } from "react-qrcode-logo";
+import { Download } from "tabler-icons-react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
 import { CampaignDto, NftDto } from "@/services/api/admin/adminSchemas";
-import { Box, Portal } from "@mantine/core";
 import { getClaimURL } from "@/utils/qrcode";
 
-interface IDownloadAllProps {
+interface DownloadAllProps {
   campaign: CampaignDto;
-  nfts: Array<NftDto>;
+  nfts: NftDto[];
 }
 
-export const DownloadAll: React.FC<IDownloadAllProps> = ({
-  campaign,
-  nfts,
-}) => {
-  const ref = useRef<Array<QRCode | null>>([]);
+export const DownloadAll = ({ campaign, nfts }: DownloadAllProps) => {
+  const ref = useRef<(QRCode | null)[]>([]);
 
   const handleDownloadAll = async () => {
     const JSZip = (await import("jszip")).default;
@@ -28,7 +25,13 @@ export const DownloadAll: React.FC<IDownloadAllProps> = ({
 
     ref.current.forEach((component, i) => {
       if (component) {
-        const canvas: HTMLCanvasElement = (component as any).canvas.current;
+        const canvas = (
+          component as unknown as { canvas: RefObject<HTMLCanvasElement> }
+        ).canvas.current;
+        if (!canvas) {
+          return;
+        }
+
         const nft = nfts[i];
         const data = canvas.toDataURL().replace("data:image/png;base64", "");
 
