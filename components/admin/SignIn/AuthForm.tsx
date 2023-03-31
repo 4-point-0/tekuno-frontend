@@ -18,7 +18,7 @@ import { ClientSafeProvider, LiteralUnion, signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { authValidatons } from "@/utils/validation";
+import { authValidatons } from "@/utils/validations";
 
 import { GoogleButton } from "./SocialButtons";
 
@@ -54,7 +54,7 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
 
     validate: {
       email: authValidatons.email,
-      password: authValidatons.password,
+      password: type === "register" ? authValidatons.strongPassword : undefined,
       passwordConfirm: (value, values) => {
         if (type === "login") {
           return null;
@@ -132,6 +132,7 @@ export function AuthForm({ providers, ...props }: AuthFormProps) {
             radius="md"
             {...form.getInputProps("password")}
           />
+
           {type === "login" && (
             <Link
               href="/admin/auth/reset-password"

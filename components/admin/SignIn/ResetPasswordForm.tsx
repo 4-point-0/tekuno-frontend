@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 
 import { useAuthControllerResetPassword } from "@/services/api/admin/adminComponents";
 import { notifications } from "@/utils/notifications";
-import { authValidatons } from "@/utils/validation";
+import { authValidatons } from "@/utils/validations";
 
 interface ResetPasswordFormProps extends PaperProps {
   resetToken: string;
@@ -43,7 +43,7 @@ export function ResetPasswordForm({
 
     validate: {
       email: authValidatons.email,
-      password: authValidatons.password,
+      password: authValidatons.strongPassword,
       passwordConfirm: (value, values) => {
         return authValidatons.passwordConfirm(value, values.password);
       },

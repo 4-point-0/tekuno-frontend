@@ -15,7 +15,7 @@ import {
 } from "@/services/api/admin/adminComponents";
 import { CreateNftDto, NftTypeDto } from "@/services/api/admin/adminSchemas";
 import { notifications } from "@/utils/notifications";
-import { getCampaignFormValidateInput } from "@/utils/validation";
+import { getCampaignFormValidateInput } from "@/utils/validations";
 
 import {
   CreateFormValues,

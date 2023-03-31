@@ -161,8 +161,21 @@ export function getEditFormValidateInput() {
 
 export const authValidatons = {
   email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-  password: (value: string) =>
-    value.length < 8 ? "Password should include at least 8 characters" : null,
+  strongPassword: (value: string) => {
+    if (value.length < 8) {
+      return "Password too short";
+    }
+
+    if (value.length > 20) {
+      return "Password too long";
+    }
+
+    return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/.test(
+      value
+    )
+      ? null
+      : "Password too weak";
+  },
   passwordConfirm: (value: string, password: string) => {
     return value === password ? null : "Passwords do not match";
   },

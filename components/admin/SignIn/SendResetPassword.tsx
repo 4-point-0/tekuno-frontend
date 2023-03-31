@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 
 import { useAuthControllerForgotPassword } from "@/services/api/admin/adminComponents";
 import { notifications } from "@/utils/notifications";
-import { authValidatons } from "@/utils/validation";
+import { authValidatons } from "@/utils/validations";
 
 export const SendResetPassword = () => {
   const forgotPassword = useAuthControllerForgotPassword({});
