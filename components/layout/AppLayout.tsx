@@ -46,26 +46,27 @@ export const AppLayout = ({ children }: PropsWithChildren) => {
               {
                 title: "Company",
                 links: [
-                  { label: "About", link: "https://www.tekuno.xyz" },
-                  { label: "Blog", link: "https://www.tekuno.xyz" },
+                  { label: "About", link: "https://tekuno.xyz/about-us/" },
+                  { label: "Blog", link: "https://medium.com/@tekuno" },
                 ],
               },
               {
                 title: "Support",
                 links: [
-                  { label: "Help Center", link: "https://www.tekuno.xyz" },
                   {
                     label: "Terms of Service",
-                    link: "https://www.tekuno.xyz",
+                    link: "https://tekuno.xyz/terms-of-use/",
                   },
-                  { label: "Privacy Policy", link: "https://www.tekuno.xyz" },
+                  {
+                    label: "Privacy Policy",
+                    link: "https://tekuno.xyz/privacy-policy/",
+                  },
                 ],
               },
               {
                 title: "Connect",
                 links: [
-                  { label: "Contact", link: "https://www.tekuno.xyz" },
-                  { label: "Newsletter", link: "https://www.tekuno.xyz" },
+                  { label: "Contact", link: "https://medium.com/@tekuno" },
                 ],
               },
             ]}

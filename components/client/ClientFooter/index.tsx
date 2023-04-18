@@ -207,6 +207,19 @@ export function ClientFooter({ data }: FooterLinksProps) {
           </ActionIcon>
         </Group>
       </Container>
+      <Container>
+        <Text size="xs" color="dimmed" className={classes.description}>
+          GDPR
+          <br /> If you are a resident of the EEA, you have the right to access
+          the Personal Information we hold about you, to port it to a new
+          service, and to ask that your Personal Information be corrected,
+          updated, or erased. If you would like to exercise these rights, please
+          contact us at Altonomics d.o.o through the contact information above
+          or reach out to us at info@nearbalkans.org Your Personal Information
+          will be initially processed in Croatian and then will be transferred
+          for storage in Germany.
+        </Text>
+      </Container>
     </footer>
   );
 }
