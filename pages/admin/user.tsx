@@ -1,6 +1,7 @@
 import { Container, Paper } from "@mantine/core";
 
 import { UserDetails } from "@/components/admin/UserDetails";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function AdminUser() {
   return (
@@ -11,3 +12,7 @@ export default function AdminUser() {
     </Container>
   );
 }
+
+export const getServerSideProps = getUserServerSideProps({
+  organizationRequired: false,
+});

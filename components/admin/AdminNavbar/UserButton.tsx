@@ -6,10 +6,12 @@ import {
   UnstyledButton,
   UnstyledButtonProps,
 } from "@mantine/core";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ChevronRight } from "tabler-icons-react";
+
+import { useAdminControllerFindMe } from "@/services/api/admin/adminComponents";
+import { getAvatarUrl } from "@/utils/avatar";
 
 interface ButtonProps {
   active: boolean;
@@ -34,7 +36,7 @@ export const UserButton = ({ ...rest }: UnstyledButtonProps) => {
   const router = useRouter();
   const { classes } = useStyles({ active: router.route === "/admin/user" });
 
-  const { data: session } = useSession();
+  const { data } = useAdminControllerFindMe({});
 
   return (
     <UnstyledButton
@@ -44,15 +46,15 @@ export const UserButton = ({ ...rest }: UnstyledButtonProps) => {
       {...rest}
     >
       <Group>
-        <Avatar src={session?.user?.image} radius="xl" />
+        <Avatar src={getAvatarUrl(data?.email)} radius="xl" />
 
         <div style={{ flex: 1 }}>
           <Text size="sm" weight={500}>
-            {session?.user?.name}
+            {data?.username}
           </Text>
 
           <Text color="dimmed" size="xs">
-            {session?.user?.email}
+            {data?.email}
           </Text>
         </div>
 

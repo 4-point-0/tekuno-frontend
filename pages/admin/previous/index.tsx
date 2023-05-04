@@ -1,6 +1,7 @@
 import { Container } from "@mantine/core";
 
 import { CampaignList } from "@/components/admin/CampaignList";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function PreviousCampaings() {
   return (
@@ -9,3 +10,7 @@ export default function PreviousCampaings() {
     </Container>
   );
 }
+
+export const getServerSideProps = getUserServerSideProps({
+  organizationRequired: true,
+});

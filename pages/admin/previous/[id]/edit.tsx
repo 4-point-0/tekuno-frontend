@@ -1,6 +1,7 @@
 import { Container, Paper } from "@mantine/core";
 
 import { EditCampaign } from "@/components/admin/EditCampaign";
+import { getUserServerSideProps } from "@/utils/auth";
 
 export default function EditCampaignPage() {
   return (
@@ -11,3 +12,7 @@ export default function EditCampaignPage() {
     </Container>
   );
 }
+
+export const getServerSideProps = getUserServerSideProps({
+  organizationRequired: false,
+});

@@ -1,5 +1,8 @@
 import { Divider, Navbar } from "@mantine/core";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+
+import { useUserOrganization } from "@/hooks/useUserOrganization";
 
 import { Links } from "./Links";
 import { UserButton } from "./UserButton";
@@ -10,8 +13,11 @@ interface AdminNavbarProps {
 
 export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  if (router.route.endsWith("preview")) {
+  const { hasOrganization } = useUserOrganization(Boolean(session));
+
+  if (router.route.endsWith("preview") || !session) {
     return null;
   }
 
@@ -23,11 +29,14 @@ export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
       px="sm"
       py="md"
     >
-      <Navbar.Section>
-        <Links />
-      </Navbar.Section>
-
-      <Divider mt="xl" mb="md" />
+      {hasOrganization && (
+        <>
+          <Navbar.Section>
+            <Links />
+          </Navbar.Section>
+          <Divider mt="xl" mb="md" />
+        </>
+      )}
 
       <Navbar.Section>
         <UserButton />

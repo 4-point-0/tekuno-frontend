@@ -12,10 +12,14 @@ import Link from "next/link";
 import { CirclePlus } from "tabler-icons-react";
 
 interface CallToActionProps {
-  emptyState?: boolean;
+  description?: string;
+  hasOrganization?: boolean;
 }
 
-export const CallToAction = ({ emptyState }: CallToActionProps) => {
+export const CallToAction = ({
+  description = "Digital Collectible PODs",
+  hasOrganization = true,
+}: CallToActionProps) => {
   return (
     <Paper sx={{ backgroundColor: "#ffe6e6" }} p={40} maw={810}>
       <Group spacing={48}>
@@ -26,17 +30,30 @@ export const CallToAction = ({ emptyState }: CallToActionProps) => {
         <Stack>
           <Title order={4}>Create your new Proof Of Doing</Title>
           <Text>
-            {emptyState ? "No previous PODs found" : "Digital Collectible PODs"}
+            {hasOrganization
+              ? description
+              : "Create your organization to start"}
           </Text>
           <Group position="left">
-            <Button
-              component={Link}
-              href="/admin/create"
-              color="dark"
-              leftIcon={<CirclePlus size={20} />}
-            >
-              Create POD
-            </Button>
+            {hasOrganization ? (
+              <Button
+                component={Link}
+                href="/admin/create"
+                color="dark"
+                leftIcon={<CirclePlus size={20} />}
+              >
+                Create POD
+              </Button>
+            ) : (
+              <Button
+                component={Link}
+                href="/admin/organization"
+                color="dark"
+                leftIcon={<CirclePlus size={20} />}
+              >
+                Create organization
+              </Button>
+            )}
           </Group>
         </Stack>
       </Group>
