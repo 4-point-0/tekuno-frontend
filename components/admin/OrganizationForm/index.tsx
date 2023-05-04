@@ -1,5 +1,6 @@
 import { Button, Group, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useRouter } from "next/router";
 import { Check, Pencil } from "tabler-icons-react";
 
 import { Field } from "@/components/form/Field";
@@ -23,6 +24,8 @@ export const OrganizationForm = ({ organization }: OrganizationFormProps) => {
   const updateOrganization = useOrganizationControllerUpdate({});
   const isUpdate = Boolean(organization);
 
+  const router = useRouter();
+
   const form = useForm<OrganizationFormValues>({
     initialValues: {
       name: organization?.name || "",
@@ -41,6 +44,8 @@ export const OrganizationForm = ({ organization }: OrganizationFormProps) => {
       });
 
       notifications.success({ message: "New organization created!" });
+
+      router.push("/admin/user");
     } catch {
       notifications.error({});
     }
