@@ -8,7 +8,7 @@ import { redirectIfActiveSession } from "@/utils/auth";
 const ResetPassword = () => {
   const router = useRouter();
 
-  const resetToken = router.query.code as string;
+  const resetToken = router.asPath.split("code=")[1];
 
   return (
     <Container size="xs">
