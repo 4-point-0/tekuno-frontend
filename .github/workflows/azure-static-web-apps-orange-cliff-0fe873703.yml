@@ -23,6 +23,7 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         env:
           NEXT_PUBLIC_NETWORK: "mainnet"
+          NEXT_PUBLIC_API_URL: https://api.tekuno.app
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ORANGE_CLIFF_0FE873703 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)

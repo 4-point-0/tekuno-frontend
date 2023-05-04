@@ -3,9 +3,7 @@ import { getSession } from "next-auth/react";
 
 import { AdminContext } from "./adminContext";
 
-const isServer = typeof window === "undefined";
-
-const baseUrl = isServer ? process.env.API_URL : "";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export type ErrorWrapper<TError> =
   | TError
