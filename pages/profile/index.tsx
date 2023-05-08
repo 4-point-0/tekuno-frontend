@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { ChevronRight, Logout, Wallet } from "tabler-icons-react";
+import { ChevronRight, Logout, Password, Wallet } from "tabler-icons-react";
 
 import { CopyActionButton } from "@/components/core/CopyActionButton";
 import { ClientContainer } from "@/components/layout/ClientContainer";
@@ -81,6 +81,19 @@ export default function Profile() {
             alt="Tekuno logo"
           />
           <Group>
+            <Button
+              leftIcon={<Password />}
+              loading={loading}
+              mt={"lg"}
+              variant="light"
+              radius={"xl"}
+              color="indigo.0"
+              sx={(theme) => ({
+                color: theme.colors.dark[9],
+              })}
+            >
+              Change password
+            </Button>
             <Button
               leftIcon={<Wallet />}
               loading={loading}
