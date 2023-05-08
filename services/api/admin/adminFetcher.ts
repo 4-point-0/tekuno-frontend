@@ -1,3 +1,4 @@
+import FormData from "form-data";
 import fetch from "isomorphic-fetch";
 import { getSession } from "next-auth/react";
 
@@ -74,7 +75,7 @@ export async function adminFetch<
     }
 
     const isFileUpload = body?.hasOwnProperty("file");
-    let formData = new FormData();
+    let formData: any = new FormData();
 
     if (isFileUpload) {
       delete requestHeaders["Content-Type"];
