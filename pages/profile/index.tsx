@@ -82,19 +82,6 @@ export default function Profile() {
           />
           <Group>
             <Button
-              leftIcon={<Password />}
-              loading={loading}
-              mt={"lg"}
-              variant="light"
-              radius={"xl"}
-              color="indigo.0"
-              sx={(theme) => ({
-                color: theme.colors.dark[9],
-              })}
-            >
-              Change password
-            </Button>
-            <Button
               leftIcon={<Wallet />}
               loading={loading}
               mt={"lg"}
