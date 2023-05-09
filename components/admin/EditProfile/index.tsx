@@ -1,6 +1,8 @@
 import { Button, PasswordInput, Stack, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { Field } from "@/components/form/Field";
 import { UserDto } from "@/services/api/admin/adminSchemas";
@@ -20,9 +22,14 @@ interface ChangePasswordFormValues {
 }
 
 export const ProfileForm = ({ user }: OrganizationDetailsProps) => {
-  console.log("user", user);
-
   const changePassword = useAuthControllerChangePassword();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user?.provider) {
+      router.replace("/admin/user");
+    }
+  }, []);
 
   const form = useForm<ChangePasswordFormValues>({
     initialValues: {
