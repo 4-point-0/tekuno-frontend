@@ -50,7 +50,7 @@ export const UserDetails = () => {
         </Box>
 
         <Group>
-          {user?.provider ? (
+          {!user?.provider ? (
             <Link href="/admin/profile">
               <IndigoButton leftIcon={<Settings size={14} />}>
                 Edit profile
