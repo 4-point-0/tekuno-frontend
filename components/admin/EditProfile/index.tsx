@@ -20,6 +20,8 @@ interface ChangePasswordFormValues {
 }
 
 export const ProfileForm = ({ user }: OrganizationDetailsProps) => {
+  console.log("user", user);
+
   const changePassword = useAuthControllerChangePassword();
 
   const form = useForm<ChangePasswordFormValues>({

@@ -50,11 +50,13 @@ export const UserDetails = () => {
         </Box>
 
         <Group>
-          <Link href="/admin/profile">
-            <IndigoButton leftIcon={<Settings size={14} />}>
-              Edit profile
-            </IndigoButton>
-          </Link>
+          {user?.provider ? (
+            <Link href="/admin/profile">
+              <IndigoButton leftIcon={<Settings size={14} />}>
+                Edit profile
+              </IndigoButton>
+            </Link>
+          ) : null}
 
           {isAdmin && (
             <Link href="/admin/organization">
