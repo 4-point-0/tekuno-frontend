@@ -42,8 +42,6 @@ export const getUserServerSideProps = ({
       return { notFound: true };
     }
 
-    console.log(user);
-
     return {
       props: {
         user,
