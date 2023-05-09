@@ -44,3 +44,11 @@ API hooks, functions and types are genereated from the API Swagger files. APIs a
 npm run api:codegen:admin
 npm run api:codegen:client
 ```
+
+## Project URLs
+
+[Development](https://development-tekuno-app.vercel.app/)
+
+[Staging](https://staging-tekuno-app.vercel.app/)
+
+[Production](https://use.tekuno.app/)
