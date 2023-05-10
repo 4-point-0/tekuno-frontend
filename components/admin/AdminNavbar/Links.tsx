@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { CircleDot, CirclePlus, Clock, Icon } from "tabler-icons-react";
 
 import { useCampaignControllerFindAll } from "@/services/api/admin/adminComponents";
@@ -64,6 +65,12 @@ export const LinkButton = ({
   const isActive = router.asPath === href;
   const { classes } = useStlyes({ active: isActive, child: Boolean(isChild) });
 
+  const [collapseOpen, setCollapseOpen] = useState(isOpen);
+
+  const toggleCollapse = () => {
+    setCollapseOpen(!collapseOpen);
+  };
+
   return (
     <>
       <Button
@@ -90,10 +97,11 @@ export const LinkButton = ({
           )
         }
         classNames={classes}
+        onClick={toggleCollapse}
       >
         {label}
       </Button>
-      <Collapse in={isOpen}>
+      <Collapse in={collapseOpen}>
         {links?.map((props) => (
           <LinkButton key={props.href} {...props} isChild />
         ))}
@@ -104,6 +112,8 @@ export const LinkButton = ({
 
 export const Links = () => {
   const { data } = useCampaignControllerFindAll({});
+
+  const maxLength = 34;
 
   const previousCampaings = data?.results;
 
@@ -131,7 +141,7 @@ export const Links = () => {
       Icon: Clock,
       links: previousCampaings?.map(({ name, id, status }) => {
         return {
-          label: name,
+          label: name.substring(0, maxLength),
           href: `/admin/previous/${id}`,
           Icon: CircleDot,
           color: COLORS[status],
