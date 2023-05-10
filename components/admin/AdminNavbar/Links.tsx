@@ -112,6 +112,7 @@ export const LinkButton = ({
 
 export const Links = () => {
   const { data } = useCampaignControllerFindAll({});
+  console.log("data", data);
 
   const previousCampaings = data?.results;
 
