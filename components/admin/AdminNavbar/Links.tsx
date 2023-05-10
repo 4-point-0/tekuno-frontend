@@ -113,8 +113,6 @@ export const LinkButton = ({
 export const Links = () => {
   const { data } = useCampaignControllerFindAll({});
 
-  const maxLength = 34;
-
   const previousCampaings = data?.results;
 
   const links = [
@@ -141,7 +139,7 @@ export const Links = () => {
       Icon: Clock,
       links: previousCampaings?.map(({ name, id, status }) => {
         return {
-          label: name.substring(0, maxLength),
+          label: name.length >= 25 ? `${name.substring(0, 25)}...` : name,
           href: `/admin/previous/${id}`,
           Icon: CircleDot,
           color: COLORS[status],
