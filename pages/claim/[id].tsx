@@ -1,6 +1,6 @@
-import { Text } from "@mantine/core";
+import { Button, Stack, Text } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import { NftDetails } from "@/components/client/NftDetails";
@@ -9,6 +9,7 @@ import {
   useNftControllerFindOneNft,
 } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
+import { notifications } from "@/utils/notifications";
 
 import { ClientContainer } from "../../components/layout/ClientContainer";
 
@@ -41,6 +42,17 @@ const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
 
 const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
   const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
+  const [isInApp, setIsInApp] = useState(false);
+
+  useEffect(() => {
+    let agent = window.navigator.userAgent;
+    setIsInApp(
+      agent.indexOf("Instagram") > -1 ||
+        agent.indexOf("FBAN") > -1 ||
+        agent.indexOf("FBAV") > -1 ||
+        agent.indexOf("FB_IAB") > -1
+    );
+  }, []);
 
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
@@ -61,6 +73,36 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
         </Text>
         {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
       </ClientContainer>
+    );
+  }
+
+  if (isInApp) {
+    return (
+      <Stack>
+        <Text align="center" fz={"md"} fw={700}>
+          Claiming NFTs is not supported within apps
+        </Text>
+        <Text align="center" fz={"lg"} fw={700}>
+          Please visit this page in your browser
+        </Text>
+        <Button
+          mt={"lg"}
+          variant="filled"
+          color="dark"
+          radius={"xl"}
+          size="lg"
+          onClick={() => {
+            notifications.create({ message: `` });
+
+            navigator.clipboard.writeText(window.location.href);
+            notifications.success({
+              message: "Link copied to clipboard! 🎉",
+            });
+          }}
+        >
+          Copy Link
+        </Button>
+      </Stack>
     );
   }
 
