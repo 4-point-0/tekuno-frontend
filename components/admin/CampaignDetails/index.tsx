@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import {
   AlertTriangle,
+  Copy,
   ExternalLink,
   Eye,
   Pencil,
@@ -131,6 +132,14 @@ export const CampaignDetails = () => {
                       color="dark"
                     >
                       Edit
+                    </Button>
+                    <Button
+                      component={Link}
+                      href={`/admin/create/loyalty`}
+                      leftIcon={<Copy size={14} />}
+                      color="dark"
+                    >
+                      Duplicate Campaign
                     </Button>
                   </>
                 )}
