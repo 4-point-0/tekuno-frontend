@@ -80,10 +80,10 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
     return (
       <Stack>
         <Text align="center" fz={"md"} fw={700}>
-          Claiming NFTs is not supported within apps
+          Claiming NFTs is not supported in a browser within apps
         </Text>
         <Text align="center" fz={"lg"} fw={700}>
-          Please visit this page in your browser
+          Please visit this page in your mobile browser to claim your NFT
         </Text>
         <Button
           mt={"lg"}
