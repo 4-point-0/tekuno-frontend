@@ -135,7 +135,7 @@ export const CampaignDetails = () => {
                     </Button>
                     <Button
                       component={Link}
-                      href={`/admin/create/loyalty`}
+                      href={`/admin/previous/${router.query.id}/duplicate?type=${campaign.campaign_type.name}`}
                       leftIcon={<Copy size={14} />}
                       color="dark"
                     >
@@ -163,6 +163,14 @@ export const CampaignDetails = () => {
                     >
                       Open campaign
                     </IndigoButton>
+                    <Button
+                      component={Link}
+                      href={`/admin/previous/${router.query.id}/duplicate?type=${campaign.campaign_type.name}`}
+                      leftIcon={<Copy size={14} />}
+                      color="dark"
+                    >
+                      Duplicate Campaign
+                    </Button>
                   </>
                 )}
 
