@@ -6,10 +6,10 @@ import { CirclePlus, Trash } from "tabler-icons-react";
 import { NFT_INITIAL_VALUE, useFormContext } from "../FormContext";
 import { NFTForm } from "../NFTForm";
 
-export const PODStep = () => {
+export const PODStep = ({ isReward }: any) => {
   const form = useFormContext();
 
-  const { poap, collectibles } = form.values;
+  const { poap, collectibles, reward } = form.values;
 
   const handleAddNew = () => {
     form.setFieldValue("collectibles", [...collectibles, NFT_INITIAL_VALUE]);
@@ -39,6 +39,26 @@ export const PODStep = () => {
       }
     };
   };
+
+  if (isReward) {
+    return (
+      <>
+        {poap && (
+          <Stack>
+            <NFTForm formKey="poap" withAttributes />
+          </Stack>
+        )}
+
+        {reward && (
+          <Stack>
+            <Fragment>
+              <NFTForm formKey={`reward`} withAttributes isReward />
+            </Fragment>
+          </Stack>
+        )}
+      </>
+    );
+  }
 
   return (
     <>
