@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import {
   AlertTriangle,
+  Copy,
   ExternalLink,
   Eye,
   Pencil,
@@ -132,6 +133,14 @@ export const CampaignDetails = () => {
                     >
                       Edit
                     </Button>
+                    <Button
+                      component={Link}
+                      href={`/admin/previous/${router.query.id}/duplicate?type=${campaign.campaign_type.name}`}
+                      leftIcon={<Copy size={14} />}
+                      color="dark"
+                    >
+                      Duplicate Campaign
+                    </Button>
                   </>
                 )}
                 {campaign?.status !== "Created" && (
@@ -154,6 +163,14 @@ export const CampaignDetails = () => {
                     >
                       Open campaign
                     </IndigoButton>
+                    <Button
+                      component={Link}
+                      href={`/admin/previous/${router.query.id}/duplicate?type=${campaign.campaign_type.name}`}
+                      leftIcon={<Copy size={14} />}
+                      color="dark"
+                    >
+                      Duplicate Campaign
+                    </Button>
                   </>
                 )}
 
