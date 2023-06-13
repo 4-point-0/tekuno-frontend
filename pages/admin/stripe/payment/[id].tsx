@@ -15,17 +15,6 @@ const stripePromise = loadStripe(
 export default function Checkout() {
   const [clientSecret, setClientSecret] = React.useState("");
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
-
   const appearance = {
     theme: "minimal",
     variables: {
@@ -77,19 +66,20 @@ export default function Checkout() {
   // };
 
   const options: any = {
-    clientSecret,
+    // clientSecret,
     appearance,
+    mode: "payment",
     paymentMethodCreation: "manual",
+    amount: 1000,
+    currency: "usd",
   };
 
   return (
     <div className="App">
       <ClientContainer>
-        {clientSecret && (
-          <Elements options={options} stripe={stripePromise}>
-            <PaymentForm />
-          </Elements>
-        )}
+        <Elements options={options} stripe={stripePromise}>
+          <PaymentForm />
+        </Elements>
       </ClientContainer>
     </div>
   );
