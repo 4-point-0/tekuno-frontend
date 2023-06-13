@@ -63,7 +63,7 @@ export const CampaignList = () => {
           >
             <Card.Section mb="xl">
               <Image
-                src={getCampaiImage(campaign)}
+                src={getCampaignImage(campaign)}
                 w="100%"
                 height={184}
                 alt={campaign.name}
