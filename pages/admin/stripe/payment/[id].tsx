@@ -1,6 +1,6 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import PaymentForm from "../../../../components/admin/Stripe/PaymentForm";
 import { ClientContainer } from "../../../../components/layout/ClientContainer";
@@ -13,7 +13,12 @@ const stripePromise = loadStripe(
 );
 
 export default function Checkout() {
-  const [clientSecret, setClientSecret] = React.useState("");
+  useEffect(() => {
+    async function initializeStripe() {
+      await stripePromise;
+    }
+    initializeStripe();
+  }, []);
 
   const appearance = {
     theme: "minimal",
