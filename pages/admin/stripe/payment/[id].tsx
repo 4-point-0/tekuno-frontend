@@ -11,7 +11,7 @@ import { ClientContainer } from "../../../../components/layout/ClientContainer";
 
 export default function Checkout() {
   const stripePromise = loadStripe(
-    `${process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY}`
+    `pk_test_51MvyrIFQJt4X4BR30p2KmUzuQVOxsb8WZ1PdeA1NcoLWXMgcMiczx6uDnPACt7oL2YTDST2EOnOPPHOeDnTrZM52007EzP2nrq`
   );
 
   useEffect(() => {
