@@ -1,6 +1,6 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import PaymentForm from "../../../../components/admin/Stripe/PaymentForm";
 import { ClientContainer } from "../../../../components/layout/ClientContainer";
@@ -8,22 +8,17 @@ import { ClientContainer } from "../../../../components/layout/ClientContainer";
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string
-);
 
 export default function Checkout() {
-  const [clientSecret, setClientSecret] = React.useState("");
+  const stripePromise = loadStripe(
+    `${process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY}`
+  );
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
+    async function initializeStripe() {
+      await stripePromise;
+    }
+    initializeStripe();
   }, []);
 
   const appearance = {
@@ -77,19 +72,20 @@ export default function Checkout() {
   // };
 
   const options: any = {
-    clientSecret,
+    // clientSecret,
     appearance,
+    mode: "payment",
     paymentMethodCreation: "manual",
+    amount: 1000,
+    currency: "usd",
   };
 
   return (
     <div className="App">
       <ClientContainer>
-        {clientSecret && (
-          <Elements options={options} stripe={stripePromise}>
-            <PaymentForm />
-          </Elements>
-        )}
+        <Elements options={options} stripe={stripePromise}>
+          <PaymentForm />
+        </Elements>
       </ClientContainer>
     </div>
   );
