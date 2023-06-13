@@ -93,10 +93,6 @@ export const CampaignDetails = () => {
   if (isLoading) {
     return null;
   }
-  console.log("CAMPANJA", campaign);
-  console.log(" .CREATOR ORDER ", campaign.creator_order);
-  console.log("CAMPANJA.CREATOR ORDER.STATUS ", campaign.creator_order?.status);
-  console.log("CAMPANJA.STATUS ", campaign.status);
   return (
     <Container fluid>
       <Paper radius="lg" p="xl">
