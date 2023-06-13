@@ -97,6 +97,13 @@ export type NftDto = {
   file: FileDto;
 };
 
+export type CreatorOrderDto = {
+  order_id: string;
+  campaign_id: string;
+  price: number;
+  status: string;
+};
+
 export type CampaignDto = {
   id: string;
   name: string;
@@ -116,6 +123,7 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
+  creator_order: CreatorOrderDto;
 };
 
 export type NearNftAttribute = {
