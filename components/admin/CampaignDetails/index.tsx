@@ -93,7 +93,10 @@ export const CampaignDetails = () => {
   if (isLoading) {
     return null;
   }
-
+  console.log("CAMPANJA", campaign);
+  console.log(" .CREATOR ORDER ", campaign.creator_order);
+  console.log("CAMPANJA.CREATOR ORDER.STATUS ", campaign.creator_order?.status);
+  console.log("CAMPANJA.STATUS ", campaign.status);
   return (
     <Container fluid>
       <Paper radius="lg" p="xl">
@@ -154,20 +157,26 @@ export const CampaignDetails = () => {
                     >
                       Duplicate Campaign
                     </Button>
-                    <Button
-                      component={Link}
-                      href={
-                        orderExists
-                          ? `/admin/stripe/payment/${router.query.id}`
-                          : `/admin/stripe/${router.query.id}`
-                      }
-                      leftIcon={<Wallet size={14} />}
-                      color="dark"
-                    >
-                      Make a payment
-                    </Button>
                   </>
                 )}
+                {/* render make a payment button*/}
+
+                {(!campaign.creator_order ||
+                  campaign.creator_order?.status === "Created") && (
+                  <Button
+                    component={Link}
+                    href={
+                      orderExists
+                        ? `/admin/stripe/payment/${router.query.id}`
+                        : `/admin/stripe/${router.query.id}`
+                    }
+                    leftIcon={<Wallet size={14} />}
+                    color="dark"
+                  >
+                    Make a payment
+                  </Button>
+                )}
+
                 {campaign?.status !== "Created" && (
                   <>
                     <IndigoButton
