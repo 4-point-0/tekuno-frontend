@@ -4,7 +4,8 @@
  * @version 1.0
  */
 import * as reactQuery from "@tanstack/react-query";
-import { useAdminContext, AdminContext } from "./adminContext";
+
+import { AdminContext, useAdminContext } from "./adminContext";
 import type * as Fetcher from "./adminFetcher";
 import { adminFetch } from "./adminFetcher";
 import type * as Schemas from "./adminSchemas";
@@ -420,7 +421,7 @@ export const useAdminControllerFindMe = <TData = Schemas.UserDto>(
 export type CampaignControllerCreateError = Fetcher.ErrorWrapper<undefined>;
 
 export type CampaignControllerCreateVariables = {
-  body: Schemas.CreateCampaingDto;
+  body: Schemas.CreateCampaignDto;
 } & AdminContext["fetcherOptions"];
 
 export const fetchCampaignControllerCreate = (
@@ -430,7 +431,7 @@ export const fetchCampaignControllerCreate = (
   adminFetch<
     Schemas.CampaignDto,
     CampaignControllerCreateError,
-    Schemas.CreateCampaingDto,
+    Schemas.CreateCampaignDto,
     {},
     {},
     {}
@@ -704,6 +705,36 @@ export const fetchCampaignControllerPause = (
     signal,
   });
 
+export type CampaignControllerChangePaymentTypePathParams = {
+  id: string;
+};
+
+export type CampaignControllerChangePaymentTypeError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignControllerChangePaymentTypeVariables = {
+  body: Schemas.CampaignPaymentTypeDto;
+  pathParams: CampaignControllerPausePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchCampaignControllerChangePaymentType = (
+  variables: CampaignControllerChangePaymentTypeVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.CampaignDto,
+    CampaignControllerChangePaymentTypeError,
+    Schemas.CampaignPaymentTypeDto,
+    {},
+    {},
+    CampaignControllerChangePaymentTypePathParams
+  >({
+    url: "/api/v1/campaign/payment-type/{id}",
+    method: "patch",
+    ...variables,
+    signal,
+  });
+
 export const useCampaignControllerPause = (
   options?: Omit<
     reactQuery.UseMutationOptions<
@@ -722,6 +753,31 @@ export const useCampaignControllerPause = (
   >(
     (variables: CampaignControllerPauseVariables) =>
       fetchCampaignControllerPause({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export const useCampaignControllerChangePaymentType = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CampaignDto,
+      CampaignControllerChangePaymentTypeError,
+      CampaignControllerChangePaymentTypeVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.CampaignDto,
+    CampaignControllerChangePaymentTypeError,
+    CampaignControllerChangePaymentTypeVariables
+  >(
+    (variables: CampaignControllerChangePaymentTypeVariables) =>
+      fetchCampaignControllerChangePaymentType({
+        ...fetcherOptions,
+        ...variables,
+      }),
     options
   );
 };
@@ -1758,6 +1814,115 @@ export const useOrganizationControllerRemove = (
   );
 };
 
+/***************************************** PAYMENT ***************************************************/
+
+/***************************************** ORDER ***************************************************/
+
+export type OrderControllerFindOnePathParams = {
+  id: string;
+};
+
+export type OrderControllerFindOneError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrderControllerFindOneVariables = {
+  pathParams: OrderControllerFindOnePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrderControllerFindOne = (
+  variables: OrderControllerFindOneVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.OrderDto,
+    OrderControllerFindOneError,
+    undefined,
+    {},
+    {},
+    OrderControllerFindOnePathParams
+  >({
+    url: "/api/v1/order/active-order/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useOrderControllerFindOne = <TData = Schemas.OrderDto>(
+  variables: OrderControllerFindOneVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.OrderDto,
+      OrderControllerFindOneError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.OrderDto,
+    OrderControllerFindOneError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/order/active-order/{id}",
+      operationId: "orderControllerFindOne",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrderControllerFindOne({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type OrderControllerCreateError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrderControllerCreateVariables = {
+  body: Schemas.CreateOrderDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrderControllerCreate = (
+  variables: OrderControllerCreateVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.OrderDto,
+    OrderControllerCreateError,
+    Schemas.CreateOrderDto,
+    {},
+    {},
+    {}
+  >({
+    url: "/api/v1/order/create-order",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useOrderControllerCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.OrderDto,
+      OrderControllerCreateError,
+      OrderControllerCreateVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.OrderDto,
+    OrderControllerCreateError,
+    OrderControllerCreateVariables
+  >(
+    (variables: OrderControllerCreateVariables) =>
+      fetchOrderControllerCreate({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type QueryOperation =
   | {
       path: "/api/v1/google/sign-in-backend";
@@ -1828,4 +1993,9 @@ export type QueryOperation =
       path: "/api/v1/organization/users";
       operationId: "organizationControllerFindAll";
       variables: OrganizationControllerFindAllVariables;
+    }
+  | {
+      path: "/api/v1/order/active-order/{id}";
+      operationId: "orderControllerFindOne";
+      variables: OrderControllerFindOneVariables;
     };
