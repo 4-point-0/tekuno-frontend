@@ -9,7 +9,7 @@ import { ClientContainer } from "../../../../components/layout/ClientContainer";
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string
+  `${process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY}`
 );
 
 export default function Checkout() {
