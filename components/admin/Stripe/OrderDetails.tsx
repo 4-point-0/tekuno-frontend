@@ -24,7 +24,6 @@ import {
   useOrderControllerCreate,
   useOrderControllerFindOne,
 } from "../../../services/api/admin/adminComponents";
-import { OrderDto } from "../../../services/api/admin/adminSchemas";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -93,8 +92,6 @@ const OrderDetails = (props: any) => {
     },
   });
 
-  console.log(router.query.id);
-
   const handleCreateOrder = async () => {
     createOrder({
       body: {
@@ -137,7 +134,7 @@ const OrderDetails = (props: any) => {
           <Image
             src={`${campaign?.files![0].url}`}
             radius="xl"
-            alt="Campaing Image"
+            alt="Campaign Image"
           />
         </Card.Section>
 
@@ -165,7 +162,7 @@ const OrderDetails = (props: any) => {
           <Group spacing={30}>
             <div>
               <Text fz="xl" fw={700} sx={{ lineHeight: 1 }}>
-                {`${order?.price} $`}
+                {`${order?.price ?? 0} $`}
               </Text>
               <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
                 One time payment

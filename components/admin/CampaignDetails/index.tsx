@@ -67,8 +67,6 @@ export const CampaignDetails = () => {
     setOrderExists(order?.status === "Created");
   }, []);
 
-  console.log("orderExists", orderExists);
-
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
   const isEnded = campaign && hasEnded(campaign);
