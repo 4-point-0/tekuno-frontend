@@ -193,9 +193,6 @@ export default function CheckoutForm() {
       return;
     }
 
-    console.log("paymentMethod", paymentMethod.id);
-    console.log("order", order?.order_id);
-
     // Create the PaymentIntent
     //TODO: Needs to be implemented in adminComponents file
     const res = await fetch(
