@@ -15,7 +15,7 @@ import {
 import { saveAs } from "file-saver";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   AlertTriangle,
   Copy,
@@ -23,6 +23,7 @@ import {
   Eye,
   Pencil,
   Report,
+  Wallet,
 } from "tabler-icons-react";
 
 import { DownloadBadge } from "@/components/core/DownloadBadge";
@@ -32,6 +33,7 @@ import { NFTCard } from "@/components/core/NFTCard";
 import {
   fetchCampaignControllerExportReport,
   useCampaignControllerFindOne,
+  useOrderControllerFindOne,
 } from "@/services/api/admin/adminComponents";
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import { getCampaignAssets, hasEnded } from "@/utils/campaign";
@@ -46,6 +48,7 @@ import { StatusButtons } from "./StatusButtons";
 
 export const CampaignDetails = () => {
   const router = useRouter();
+  const [orderExists, setOrderExists] = useState(false);
   const [downloadingReport, setDownlaodingReport] = useState(false);
 
   const { data: campaign, isLoading } = useCampaignControllerFindOne({
@@ -53,6 +56,16 @@ export const CampaignDetails = () => {
       id: router.query.id as string,
     },
   });
+
+  const { data: order } = useOrderControllerFindOne({
+    pathParams: {
+      id: router.query.id as string,
+    },
+  });
+
+  useEffect(() => {
+    setOrderExists(order?.status === "Created");
+  }, []);
 
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
@@ -141,6 +154,18 @@ export const CampaignDetails = () => {
                     >
                       Duplicate Campaign
                     </Button>
+                    <Button
+                      component={Link}
+                      href={
+                        orderExists
+                          ? `/admin/stripe/payment/${router.query.id}`
+                          : `/admin/stripe/${router.query.id}`
+                      }
+                      leftIcon={<Wallet size={14} />}
+                      color="dark"
+                    >
+                      Make a payment
+                    </Button>
                   </>
                 )}
                 {campaign?.status !== "Created" && (
@@ -174,7 +199,9 @@ export const CampaignDetails = () => {
                   </>
                 )}
 
-                {campaign && <StatusButtons campaign={campaign} />}
+                {campaign && campaign.creator_order?.status === "Paid" && (
+                  <StatusButtons campaign={campaign} />
+                )}
               </Group>
 
               {campaign?.description && (
@@ -197,6 +224,7 @@ export const CampaignDetails = () => {
             />
           ))}
         </SimpleGrid> */}
+
               {documents?.length !== 0 && (
                 <Group position="apart" align="flex-start" noWrap>
                   <Group miw={200}>

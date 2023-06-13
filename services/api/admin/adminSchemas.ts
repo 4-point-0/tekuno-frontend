@@ -91,7 +91,7 @@ export type CreateNftDto = {
   supply?: number | null;
 };
 
-export type CreateCampaingDto = {
+export type CreateCampaignDto = {
   name: string;
   campaign_type_id: string;
   chain_id: string;
@@ -160,6 +160,13 @@ export type NftDto = {
   file: FileDto;
 };
 
+export type CreatorOrderDto = {
+  order_id: string;
+  campaign_id: string;
+  price: number;
+  status: string;
+};
+
 export type CampaignDto = {
   id: string;
   name: string;
@@ -179,6 +186,7 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
+  creator_order: CreatorOrderDto;
 };
 
 export type UpdateCampaignDto = {
@@ -202,6 +210,10 @@ export type CampaignStatusDto = {
   status: "Ended" | "Paused" | "Started";
 };
 
+export type CampaignPaymentTypeDto = {
+  paymentType: "BuyerPays" | "CreatorPays";
+};
+
 export type CreateOrganizationDto = {
   name: string;
   description?: string | null;
@@ -223,4 +235,15 @@ export type UpdateOrganizationDto = {
 
 export type InviteUserDto = {
   role: "Admin" | "Member";
+};
+
+export type OrderDto = {
+  order_id: string;
+  campaign_id: string;
+  price: number;
+  status: string;
+};
+
+export type CreateOrderDto = {
+  campaign_id: string;
 };
