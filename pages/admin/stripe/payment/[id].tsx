@@ -10,7 +10,9 @@ import { ClientContainer } from "../../../../components/layout/ClientContainer";
 // This is your test publishable API key.
 
 export default function Checkout() {
-  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
+  const stripePromise = loadStripe(
+    `pk_test_51MvyrIFQJt4X4BR30p2KmUzuQVOxsb8WZ1PdeA1NcoLWXMgcMiczx6uDnPACt7oL2YTDST2EOnOPPHOeDnTrZM52007EzP2nrq`
+  );
 
   useEffect(() => {
     async function initializeStripe() {
