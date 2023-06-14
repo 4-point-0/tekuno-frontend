@@ -141,7 +141,7 @@ const OrderDetails = (props: any) => {
         <Group position="apart" mt="md">
           <div>
             <Text fw={500}>{campaign?.name}</Text>
-            <Text fz="xs" c="dimmed">
+            <Text pt={3} fz="xs" c="dimmed">
               {campaign?.campaign_type.description}
             </Text>
           </div>
@@ -149,11 +149,11 @@ const OrderDetails = (props: any) => {
         </Group>
 
         <Card.Section className={classes.section} mt="md">
-          <Text fz="sm" c="dimmed" className={classes.label}>
+          <Text fz="sm" c="dimmed" p={8} pl={0} className={classes.label}>
             Payment Information
           </Text>
 
-          <Group spacing={8} mb={-8}>
+          <Group spacing={8} mb={3}>
             {features}
           </Group>
         </Card.Section>
@@ -161,27 +161,27 @@ const OrderDetails = (props: any) => {
         <Card.Section className={classes.section}>
           <Group spacing={30}>
             <div>
-              <Text fz="xl" fw={700} sx={{ lineHeight: 1 }}>
+              <Text p={8} pl={0} fz="xl" fw={700} sx={{ lineHeight: 1 }}>
                 {`${order?.price ?? 0} $`}
               </Text>
               <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
                 One time payment
               </Text>
             </div>
-            {orderCompleted ? null : (
-              <Button
-                component={Link}
-                href={`/admin/stripe/payment/${router.query.id}`}
-                color="dark"
-                size="sm"
-                mt="md"
-                radius="xl"
-                style={{ flex: 1 }}
-              >
-                Confirm Order
-              </Button>
-            )}
           </Group>
+          {orderCompleted ? null : (
+            <Button
+              component={Link}
+              href={`/admin/stripe/payment/${router.query.id}`}
+              color="dark"
+              size="sm"
+              mt={20}
+              radius="xl"
+              style={{ flex: 1 }}
+            >
+              Confirm Order
+            </Button>
+          )}
         </Card.Section>
       </Card>
     </ClientContainer>
