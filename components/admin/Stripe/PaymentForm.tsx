@@ -106,7 +106,6 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 import {
-  useGoogleControllerGoogleAuth,
   useOrderControllerFindOne,
 } from "../../../services/api/admin/adminComponents";
 import OrderDetails from "./OrderDetails";
@@ -230,7 +229,31 @@ export default function CheckoutForm() {
       <form id="payment-form" onSubmit={handleSubmit}>
         <LinkAuthenticationElement id="link-authentication-element" />
         <PaymentElement id="payment-element" />
-        <button disabled={isLoading || !stripe || !elements} id="submit">
+        {/*     <button disabled={isLoading || !stripe || !elements} id="submit">
+          <span id="button-text">
+            {isLoading ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
+          </span>
+        </button> */}
+        <button
+          disabled={isLoading || !stripe || !elements}
+          id="submit"
+          className=""
+          style={{
+            padding: "10px 20px",
+            margin: "2% 0 ",
+            borderRadius: "45px",
+            color: "white",
+            background: "black",
+            border: "none",
+            cursor:
+              isLoading || !stripe || !elements ? "not-allowed" : "pointer",
+            opacity: isLoading || !stripe || !elements ? 0.6 : 1,
+          }}
+        >
           <span id="button-text">
             {isLoading ? (
               <div className="spinner" id="spinner"></div>
