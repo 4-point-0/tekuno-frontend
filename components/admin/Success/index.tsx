@@ -33,6 +33,7 @@ const Success = () => {
   const campaignData = [
     { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar },
     { label: `Type: ${campaign?.campaign_type.name}`, icon: IconCalendar },
+    
   ];
 
   const features = campaignData.map((feature) => (
