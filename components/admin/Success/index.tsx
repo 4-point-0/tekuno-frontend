@@ -33,7 +33,6 @@ const Success = () => {
   const campaignData = [
     { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar },
     { label: `Type: ${campaign?.campaign_type.name}`, icon: IconCalendar },
-    
   ];
 
   const features = campaignData.map((feature) => (
@@ -42,9 +41,6 @@ const Success = () => {
       <Text size="xs">{feature.label}</Text>
     </Center>
   ));
-
-  console.log(campaign);
-
   const getCampaignImage = (campaign: CampaignDto) => {
     const imageFile = campaign.files?.find((file) =>
       file.tags.includes("image")
@@ -54,18 +50,18 @@ const Success = () => {
   return (
     <>
       <ClientContainer>
-        <Title order={2}>Success</Title>
+        <Title order={2}>Successful payment</Title>
         {isBuyer ? (
           <Text pb={10}>
             You have sucessfully transfered the payment for the
-            <span style={{ fontWeight: "bold" }}>{campaign?.name}</span> to the
-            Tekuno users!
+            <b>{` ${campaign?.name} `}</b>
+            to the Tekuno users!
           </Text>
         ) : (
           <Text pt="md">
             {" "}
             You have successfully completed the payment for the
-            <span style={{ fontWeight: "bold" }}>{campaign?.name}</span>{" "}
+            <b>{` ${campaign?.name} `}</b>
             campaign!
           </Text>
         )}
