@@ -78,6 +78,8 @@ const OrderDetails = (props: any) => {
     },
   });
 
+  console.log(campaign);
+
   const { mutate: createOrder } = useOrderControllerCreate({
     onSuccess: () => {
       notifications.success({
@@ -100,8 +102,10 @@ const OrderDetails = (props: any) => {
     });
   };
 
+  console.log(campaign?.creator_order === null && orderCompleted);
+
   useEffect(() => {
-    if (!orderCompleted) {
+    if (campaign?.creator_order === null || !orderCompleted) {
       handleCreateOrder();
     }
   }, []);
@@ -162,7 +166,7 @@ const OrderDetails = (props: any) => {
           <Group spacing={30}>
             <div>
               <Text p={8} pl={0} fz="xl" fw={700} sx={{ lineHeight: 1 }}>
-                {`${order?.price ?? 0} $`}
+                {`${order?.price ?? `Calculating`} $`}
               </Text>
               <Text fz="sm" c="dimmed" fw={500} sx={{ lineHeight: 1 }} mt={3}>
                 One time payment

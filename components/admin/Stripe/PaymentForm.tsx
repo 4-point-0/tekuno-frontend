@@ -105,9 +105,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-import {
-  useOrderControllerFindOne,
-} from "../../../services/api/admin/adminComponents";
+import { useOrderControllerFindOne } from "../../../services/api/admin/adminComponents";
 import OrderDetails from "./OrderDetails";
 
 export default function CheckoutForm() {
@@ -193,7 +191,7 @@ export default function CheckoutForm() {
     }
 
     // Create the PaymentIntent
-    //TODO: Needs to be implemented in adminComponents file
+    // TODO: Needs to be implemented in adminComponents file
     const res = await fetch(
       "https://api-dev.tekuno.app/api/v1/payment/create-payment",
       {
@@ -229,15 +227,6 @@ export default function CheckoutForm() {
       <form id="payment-form" onSubmit={handleSubmit}>
         <LinkAuthenticationElement id="link-authentication-element" />
         <PaymentElement id="payment-element" />
-        {/*     <button disabled={isLoading || !stripe || !elements} id="submit">
-          <span id="button-text">
-            {isLoading ? (
-              <div className="spinner" id="spinner"></div>
-            ) : (
-              "Pay now"
-            )}
-          </span>
-        </button> */}
         <button
           disabled={isLoading || !stripe || !elements}
           id="submit"
