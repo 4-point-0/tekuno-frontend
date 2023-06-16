@@ -78,8 +78,6 @@ const OrderDetails = (props: any) => {
     },
   });
 
-  console.log(campaign);
-
   const { mutate: createOrder } = useOrderControllerCreate({
     onSuccess: () => {
       notifications.success({
@@ -101,8 +99,6 @@ const OrderDetails = (props: any) => {
       },
     });
   };
-
-  console.log(campaign?.creator_order === null && orderCompleted);
 
   useEffect(() => {
     if (campaign?.creator_order === null || !orderCompleted) {
