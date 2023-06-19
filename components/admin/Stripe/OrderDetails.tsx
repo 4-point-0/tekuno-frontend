@@ -115,7 +115,14 @@ const OrderDetails = (props: any) => {
   });
 
   const campaignData = [
-    /*   { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar }, */
+    {
+      label: !campaign?.end_date
+        ? `${formatDateRange(campaign?.start_date as string)}- ∞`
+        : `${formatDateRange(
+            campaign?.start_date as string
+          )} - ${formatDateRange(campaign?.end_date as string)}`,
+      icon: IconCalendar,
+    },
     { label: `Type: ${campaign?.campaign_type.name}`, icon: IconInfoCircle },
   ];
 
@@ -154,20 +161,6 @@ const OrderDetails = (props: any) => {
           <Text fz="sm" c="dimmed" p={8} pl={0} className={classes.label}>
             Payment Information
           </Text>
-
-          <Text p={8} pl={0}>
-            <IconCalendar
-              size="1.05rem"
-              className={classes.icon}
-              stroke={1.5}
-            />
-            {!campaign?.end_date
-              ? `${formatDateRange(campaign?.start_date as string)} - ∞`
-              : `${formatDateRange(
-                  campaign?.start_date as string
-                )} - ${formatDateRange(campaign?.end_date as string)}`}
-          </Text>
-
           <Group spacing={8} mb={3}>
             {features}
           </Group>
