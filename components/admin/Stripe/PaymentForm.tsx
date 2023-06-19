@@ -46,7 +46,7 @@ export default function CheckoutForm() {
       });
 
       setTimeout(() => {
-        router.push(`admin/previous/${router.query.id}`);
+        router.push(`/admin/previous/${router.query.id}`);
       }, 4000);
     } else {
       notifications.success({
