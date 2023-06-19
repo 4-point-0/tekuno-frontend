@@ -64,8 +64,10 @@ export const CampaignDetails = () => {
   });
 
   useEffect(() => {
-    setOrderExists(order?.status === "Created");
-  }, []);
+    if (campaign && order) {
+      setOrderExists(true);
+    }
+  }, [campaign, order]);
 
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 

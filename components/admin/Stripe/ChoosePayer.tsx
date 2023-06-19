@@ -114,7 +114,7 @@ export const ChoosePayer = (campaignId: any) => {
             component={Link}
             href={
               isBuyer
-                ? `/admin/stripe/success`
+                ? `/admin/stripe/success/${router.query.id}`
                 : `/admin/stripe/order/${router.query.id}`
             }
             color="dark"
