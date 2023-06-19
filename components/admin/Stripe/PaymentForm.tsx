@@ -44,6 +44,10 @@ export default function CheckoutForm() {
         title: "Payment Error",
         message: response.message,
       });
+
+      setTimeout(() => {
+        router.push(`admin/previous/${router.query.id}`);
+      }, 4000);
     } else {
       notifications.success({
         title: "Payment Success",
