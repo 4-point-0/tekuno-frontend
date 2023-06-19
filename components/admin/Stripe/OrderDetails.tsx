@@ -11,11 +11,13 @@ import {
   Title,
 } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
+import { IconInfoCircle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { ClientContainer } from "@/components/layout/ClientContainer";
+import { formatDateRange } from "@/utils/date";
 import { notifications } from "@/utils/notifications";
 
 import {
@@ -113,8 +115,8 @@ const OrderDetails = (props: any) => {
   });
 
   const campaignData = [
-    { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar },
-    { label: `Type: ${campaign?.campaign_type.name}`, icon: IconCalendar },
+    /*   { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar }, */
+    { label: `Type: ${campaign?.campaign_type.name}`, icon: IconInfoCircle },
   ];
 
   const features = campaignData.map((feature) => (
@@ -151,6 +153,19 @@ const OrderDetails = (props: any) => {
         <Card.Section className={classes.section} mt="md">
           <Text fz="sm" c="dimmed" p={8} pl={0} className={classes.label}>
             Payment Information
+          </Text>
+
+          <Text p={8} pl={0}>
+            <IconCalendar
+              size="1.05rem"
+              className={classes.icon}
+              stroke={1.5}
+            />
+            {!campaign?.end_date
+              ? `${formatDateRange(campaign?.start_date as string)} - ∞`
+              : `${formatDateRange(
+                  campaign?.start_date as string
+                )} - ${formatDateRange(campaign?.end_date as string)}`}
           </Text>
 
           <Group spacing={8} mb={3}>
