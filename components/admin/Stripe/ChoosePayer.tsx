@@ -1,4 +1,4 @@
-import { Box, Button, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Box, Button, Group, Image, Text, Title } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
