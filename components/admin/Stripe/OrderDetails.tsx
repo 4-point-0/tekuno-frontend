@@ -14,16 +14,12 @@ import { IconCalendar } from "@tabler/icons-react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 import { ClientContainer } from "@/components/layout/ClientContainer";
 import { formatDateRange } from "@/utils/date";
-import { notifications } from "@/utils/notifications";
 
 import {
-  OrderControllerCreateError,
   useCampaignControllerFindOne,
-  useOrderControllerCreate,
   useOrderControllerFindOne,
 } from "../../../services/api/admin/adminComponents";
 
@@ -79,34 +75,6 @@ const OrderDetails = (props: any) => {
       id: router.query.id as string,
     },
   });
-
-  const { mutate: createOrder } = useOrderControllerCreate({
-    onSuccess: () => {
-      notifications.success({
-        title: "Order successfully created!",
-      });
-    },
-    onError: (error: OrderControllerCreateError) => {
-      console.error(error);
-      notifications.error({
-        title: "Error while creating the order",
-      });
-    },
-  });
-
-  const handleCreateOrder = async () => {
-    createOrder({
-      body: {
-        campaign_id: router.query.id as string,
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (campaign?.creator_order === null || !orderCompleted) {
-      handleCreateOrder();
-    }
-  }, []);
 
   const { data: order } = useOrderControllerFindOne({
     pathParams: {
