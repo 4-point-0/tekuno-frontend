@@ -48,7 +48,6 @@ import { StatusButtons } from "./StatusButtons";
 
 export const CampaignDetails = () => {
   const router = useRouter();
-  // const [orderExists, setOrderExists] = useState(false);
   const [downloadingReport, setDownlaodingReport] = useState(false);
 
   const { data: campaign, isLoading } = useCampaignControllerFindOne({
@@ -64,12 +63,6 @@ export const CampaignDetails = () => {
   });
 
   const orderExists = Boolean(order);
-
-  // useEffect(() => {
-  //   if (campaign && order) {
-  //     setOrderExists(true);
-  //   }
-  // }, [campaign, order]);
 
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
