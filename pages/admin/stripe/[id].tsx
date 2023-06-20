@@ -7,7 +7,7 @@ const Stripe = () => {
 
   return (
     <div>
-      <ChoosePayer campaignId={router.query.id} />
+      <ChoosePayer />
     </div>
   );
 };
