@@ -1,4 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
+import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { NftDetails } from "@/components/client/NftDetails";
 import {
@@ -33,10 +35,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
+  const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
+  const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
+
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }
   );
+
+  const onChange = () => {
+    setRecaptchaIsDone(true);
+  };
+
+  if (!recaptchaIsDone) {
+    return (
+      <>
+        <ReCAPTCHA sitekey={key} onChange={onChange} />
+      </>
+    );
+  }
 
   return <>{nft && <NftDetails key={nft.id} nft={nft} />}</>;
 };
