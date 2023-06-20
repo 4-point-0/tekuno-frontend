@@ -1,9 +1,9 @@
 import { Button, Stack, Text } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { NftDetails } from "@/components/client/NftDetails";
-import { CopyActionButton } from "@/components/core/CopyActionButton";
 import {
   fetchNftControllerFindOneNft,
   useNftControllerFindOneNft,
@@ -48,11 +48,25 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
         agent.indexOf("FB_IAB") > -1
     );
   }, []);
+  const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
+  const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
 
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }
   );
+
+  const onChange = () => {
+    setRecaptchaIsDone(true);
+  };
+
+  if (!recaptchaIsDone) {
+    return (
+      <>
+        <ReCAPTCHA sitekey={key} onChange={onChange} />
+      </>
+    );
+  }
 
   if (isInApp) {
     return (
