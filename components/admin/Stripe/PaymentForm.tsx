@@ -21,7 +21,6 @@ export default function CheckoutForm() {
   const { data: session } = useSession();
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [message, setMessage] = useState("");
   const [mail, setMail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 

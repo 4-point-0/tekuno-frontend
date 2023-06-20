@@ -12,7 +12,7 @@ import { notifications } from "@/utils/notifications";
 
 import { ClientContainer } from "../../layout/ClientContainer";
 
-export const ChoosePayer = (campaignId: any) => {
+export const ChoosePayer = () => {
   const router = useRouter();
 
   const [isCreator, setIsCreator] = useState(false);
