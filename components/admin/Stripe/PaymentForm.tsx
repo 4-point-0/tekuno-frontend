@@ -39,15 +39,17 @@ export default function CheckoutForm() {
   const handleServerResponse = async (response: any) => {
     notifications.create({ title: "Processing payment" });
 
+    console.log("response status code", response.statusCode);
+
     if (response.statusCode !== 200) {
       notifications.error({
         title: "Payment Error",
         message: response.message,
       });
 
-      setTimeout(() => {
-        router.push(`/admin/previous/${router.query.id}`);
-      }, 4000);
+      // setTimeout(() => {
+      //   router.push(`/admin/previous/${router.query.id}`);
+      // }, 4000);
     } else {
       notifications.success({
         title: "Payment Success",
