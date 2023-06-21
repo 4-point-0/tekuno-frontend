@@ -34,8 +34,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
+// const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
+
 const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
-  const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
   const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
 
   const { data: nft } = useNftControllerFindOneNft(
@@ -51,7 +52,10 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
   if (!recaptchaIsDone) {
     return (
       <>
-        <ReCAPTCHA sitekey={key} onChange={onChange} />
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+          onChange={onChange}
+        />
       </>
     );
   }
