@@ -1,3 +1,4 @@
+import { keyStores } from "near-api-js";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -11,10 +12,12 @@ import { NftDto } from "@/services/api/client/clientSchemas";
 
 interface ClaimPageProps {
   initialData?: NftDto;
+  siteKey: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const nftId = ctx.query.id as string;
+  const siteKey = process.env.RECAPTCHA_SITE_KEY;
 
   try {
     const initialData = await fetchNftControllerFindOneNft({
@@ -25,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       throw new Error("Rewards can't be claimed");
     }
 
-    return { props: { initialData, key: nftId } };
+    return { props: { initialData, key: nftId, siteKey } };
   } catch (error) {
     console.error(error);
     return {
@@ -36,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 // const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
 
-const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
+const ClaimPage: NextPage<ClaimPageProps> = ({ initialData, siteKey }) => {
   const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
 
   const { data: nft } = useNftControllerFindOneNft(
@@ -52,10 +55,7 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
   if (!recaptchaIsDone) {
     return (
       <>
-        <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
-          onChange={onChange}
-        />
+        <ReCAPTCHA sitekey={siteKey} onChange={onChange} />
       </>
     );
   }
