@@ -1,4 +1,4 @@
-import { keyStores } from "near-api-js";
+import { Text } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -10,14 +10,14 @@ import {
 } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
 
+import { ClientContainer } from "../../components/layout/ClientContainer";
+
 interface ClaimPageProps {
   initialData?: NftDto;
-  siteKey: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const nftId = ctx.query.id as string;
-  const siteKey = process.env.RECAPTCHA_SITE_KEY;
 
   try {
     const initialData = await fetchNftControllerFindOneNft({
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       throw new Error("Rewards can't be claimed");
     }
 
-    return { props: { initialData, key: nftId, siteKey } };
+    return { props: { initialData, key: nftId } };
   } catch (error) {
     console.error(error);
     return {
@@ -37,10 +37,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-const key =
-  (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string) ?? "neki glupi string";
+const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
 
-const ClaimPage: NextPage<ClaimPageProps> = ({ initialData, siteKey }) => {
+const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
   const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
 
   const { data: nft } = useNftControllerFindOneNft(
@@ -49,16 +48,19 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData, siteKey }) => {
   );
 
   const onChange = () => {
-    console.log("reCaptcha done");
     setRecaptchaIsDone(true);
   };
 
   if (!recaptchaIsDone) {
     return (
-      <>
-        <p>{key}</p>
+      <ClientContainer>
+        <Text pb={30} size="xl" fw={700}>
+          Hold on tight, adventurer! <br /> Before we continue, we must ensure
+          you are not a robot in disguise. Show us your human-like intelligence
+          by completing the reCaptcha challenge.
+        </Text>
         {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
-      </>
+      </ClientContainer>
     );
   }
 
