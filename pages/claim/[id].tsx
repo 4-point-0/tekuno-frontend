@@ -11,6 +11,8 @@ import {
 import { NftDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
 
+import { ClientContainer } from "../../components/layout/ClientContainer";
+
 interface ClaimPageProps {
   initialData?: NftDto;
 }
@@ -62,9 +64,14 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
 
   if (!recaptchaIsDone) {
     return (
-      <>
-        <ReCAPTCHA sitekey={key} onChange={onChange} />
-      </>
+      <ClientContainer>
+        <Text pb={30} size="xl" fw={700}>
+          Hold on tight, adventurer! <br /> Before we continue, we must ensure
+          you are not a robot in disguise. Show us your human-like intelligence
+          by completing the reCaptcha challenge.
+        </Text>
+        {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
+      </ClientContainer>
     );
   }
 
