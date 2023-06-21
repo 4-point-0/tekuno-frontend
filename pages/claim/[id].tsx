@@ -37,7 +37,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY! as string;
+const key =
+  (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string) ?? "neki glupi string";
 
 const ClaimPage: NextPage<ClaimPageProps> = ({ initialData, siteKey }) => {
   const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
@@ -56,7 +57,7 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData, siteKey }) => {
     return (
       <>
         <p>{key}</p>
-        {siteKey && <ReCAPTCHA sitekey={key} onChange={onChange} />}
+        {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
       </>
     );
   }
