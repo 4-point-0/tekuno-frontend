@@ -44,6 +44,7 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
   );
 
   const onChange = () => {
+    console.log("reCaptcha done");
     setRecaptchaIsDone(true);
   };
 
