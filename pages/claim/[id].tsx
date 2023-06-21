@@ -55,7 +55,8 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData, siteKey }) => {
   if (!recaptchaIsDone) {
     return (
       <>
-        <ReCAPTCHA sitekey={siteKey} onChange={onChange} />
+        <p>{siteKey}</p>
+        {siteKey && <ReCAPTCHA sitekey={siteKey} onChange={onChange} />}
       </>
     );
   }
