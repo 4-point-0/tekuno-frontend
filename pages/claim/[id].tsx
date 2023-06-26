@@ -51,6 +51,7 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
     );
   }, []);
   const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
+  console.log("key has been loaded");
   const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
 
   const { data: nft } = useNftControllerFindOneNft(
