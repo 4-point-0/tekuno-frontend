@@ -2,15 +2,14 @@ import { useRouter } from "next/router";
 
 import { CampaignDetails } from "@/components/admin/CampaignDetails";
 
-import Success from "../../../../components/admin/Success";
+import SuccessfullPayment from "../../../../components/admin/SuccessfullPayment";
 
 function SuccessPage() {
-    const router = useRouter();
-
+  const router = useRouter();
 
   return (
     <div>
-      <Success />
+      <SuccessfullPayment />
     </div>
   );
 }

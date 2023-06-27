@@ -11,17 +11,15 @@ import {
   Title,
 } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
+import { IconInfoCircle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 import { ClientContainer } from "@/components/layout/ClientContainer";
-import { notifications } from "@/utils/notifications";
+import { formatDateRange } from "@/utils/date";
 
 import {
-  OrderControllerCreateError,
   useCampaignControllerFindOne,
-  useOrderControllerCreate,
   useOrderControllerFindOne,
 } from "../../../services/api/admin/adminComponents";
 
@@ -78,34 +76,6 @@ const OrderDetails = (props: any) => {
     },
   });
 
-  const { mutate: createOrder } = useOrderControllerCreate({
-    onSuccess: () => {
-      notifications.success({
-        title: "Order successfully created!",
-      });
-    },
-    onError: (error: OrderControllerCreateError) => {
-      console.error(error);
-      notifications.error({
-        title: "Error while creating the order",
-      });
-    },
-  });
-
-  const handleCreateOrder = async () => {
-    createOrder({
-      body: {
-        campaign_id: router.query.id as string,
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (campaign?.creator_order === null || !orderCompleted) {
-      handleCreateOrder();
-    }
-  }, []);
-
   const { data: order } = useOrderControllerFindOne({
     pathParams: {
       id: router.query.id as string,
@@ -113,8 +83,15 @@ const OrderDetails = (props: any) => {
   });
 
   const campaignData = [
-    { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar },
-    { label: `Type: ${campaign?.campaign_type.name}`, icon: IconCalendar },
+    {
+      label: !campaign?.end_date
+        ? `${formatDateRange(campaign?.start_date as string)}- ∞`
+        : `${formatDateRange(
+            campaign?.start_date as string
+          )} - ${formatDateRange(campaign?.end_date as string)}`,
+      icon: IconCalendar,
+    },
+    { label: `Type: ${campaign?.campaign_type.name}`, icon: IconInfoCircle },
   ];
 
   const features = campaignData.map((feature) => (
@@ -152,7 +129,6 @@ const OrderDetails = (props: any) => {
           <Text fz="sm" c="dimmed" p={8} pl={0} className={classes.label}>
             Payment Information
           </Text>
-
           <Group spacing={8} mb={3}>
             {features}
           </Group>

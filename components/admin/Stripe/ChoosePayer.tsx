@@ -1,14 +1,18 @@
-import { Box, Button, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Box, Button, Group, Image, Text, Title } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-import { fetchCampaignControllerChangePaymentType } from "@/services/api/admin/adminComponents";
+import {
+  fetchCampaignControllerChangePaymentType,
+  OrderControllerCreateError,
+  useOrderControllerCreate,
+} from "@/services/api/admin/adminComponents";
 import { notifications } from "@/utils/notifications";
 
 import { ClientContainer } from "../../layout/ClientContainer";
 
-export const ChoosePayer = (campaignId: any) => {
+export const ChoosePayer = () => {
   const router = useRouter();
 
   const [isCreator, setIsCreator] = useState(false);
@@ -17,6 +21,28 @@ export const ChoosePayer = (campaignId: any) => {
   const handlePayerSelection = (payer: string) => {
     setIsCreator(payer === "Creator");
     setIsBuyer(payer === "Buyer");
+  };
+
+  const { mutate: createOrder } = useOrderControllerCreate({
+    onSuccess: () => {
+      notifications.success({
+        title: "Order successfully created!",
+      });
+    },
+    onError: (error: OrderControllerCreateError) => {
+      console.error(error);
+      notifications.error({
+        title: "Error while creating the order",
+      });
+    },
+  });
+
+  const handleCreateOrder = async () => {
+    createOrder({
+      body: {
+        campaign_id: router.query.id as string,
+      },
+    });
   };
 
   const handleSubmit = async () => {
@@ -33,6 +59,8 @@ export const ChoosePayer = (campaignId: any) => {
           paymentType: isCreator ? "CreatorPays" : "BuyerPays",
         },
       });
+
+      handleCreateOrder();
 
       notifications.success({
         title: "You have selected the payer!",

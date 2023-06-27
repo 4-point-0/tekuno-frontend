@@ -21,7 +21,6 @@ export default function CheckoutForm() {
   const { data: session } = useSession();
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [message, setMessage] = useState("");
   const [mail, setMail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,14 +38,14 @@ export default function CheckoutForm() {
   const handleServerResponse = async (response: any) => {
     notifications.create({ title: "Processing payment" });
 
-    if (response.statusCode !== 200) {
+    if (response.statusCode === 500) {
       notifications.error({
         title: "Payment Error",
         message: response.message,
       });
 
       setTimeout(() => {
-        router.push(`admin/previous/${router.query.id}`);
+        router.push(`/admin/previous/${router.query.id}`);
       }, 4000);
     } else {
       notifications.success({
@@ -113,15 +112,11 @@ export default function CheckoutForm() {
     const data = await res.json();
 
     if (data.status === "succeeded") {
-      router.push("/admin/stripe/success");
+      router.push(`/admin/stripe/success/${order?.order_id}`);
     }
 
     // Handle any next actions or errors. See the Handle any next actions step for implementation.
     handleServerResponse(data);
-  };
-
-  const paymentElementOptions = {
-    layout: "tabs",
   };
 
   return (
@@ -154,8 +149,6 @@ export default function CheckoutForm() {
             )}
           </span>
         </button>
-        {/* Show any error or success messages */}
-        {message && <div id="payment-message">{message}</div>}
       </form>
     </>
   );

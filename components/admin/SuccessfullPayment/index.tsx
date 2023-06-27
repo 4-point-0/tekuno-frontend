@@ -9,16 +9,16 @@ import {
   Title,
 } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
+import { IconInfoCircle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { useCampaignControllerFindOne } from "@/services/api/admin/adminComponents";
-import { CampaignDto } from "@/services/api/admin/adminSchemas";
-import { getImageUrl } from "@/utils/file";
+import { formatDateRange } from "@/utils/date";
 
-import { ClientContainer } from "../../../components/layout/ClientContainer";
+import { ClientContainer } from "../../layout/ClientContainer";
 
-const Success = () => {
+const SuccessfullPayment = () => {
   const isBuyer = false;
   const router = useRouter();
 
@@ -26,27 +26,26 @@ const Success = () => {
 
   const { data: campaign } = useCampaignControllerFindOne({
     pathParams: {
-      id: router.query.id as string,
+      id: id as string,
     },
   });
-
   const campaignData = [
-    { label: `${campaign?.start_date.split("T")[0]}`, icon: IconCalendar },
-    { label: `Type: ${campaign?.campaign_type.name}`, icon: IconCalendar },
+    {
+      label: !campaign?.end_date
+        ? `${formatDateRange(campaign?.start_date as string)}- ∞`
+        : `${formatDateRange(
+            campaign?.start_date as string
+          )} - ${formatDateRange(campaign?.end_date as string)}`,
+      icon: IconCalendar,
+    },
+    { label: `Type: ${campaign?.campaign_type.name}`, icon: IconInfoCircle },
   ];
-
   const features = campaignData.map((feature) => (
     <Center key={feature.label}>
       <feature.icon size="1.05rem" />
       <Text size="xs">{feature.label}</Text>
     </Center>
   ));
-  const getCampaignImage = (campaign: CampaignDto) => {
-    const imageFile = campaign.files?.find((file) =>
-      file.tags.includes("image")
-    );
-    return getImageUrl(imageFile);
-  };
   return (
     <>
       <ClientContainer>
@@ -97,4 +96,4 @@ const Success = () => {
   );
 };
 
-export default Success;
+export default SuccessfullPayment;
