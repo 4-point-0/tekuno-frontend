@@ -4,6 +4,7 @@ import {
   Collapse,
   createStyles,
   MantineColor,
+  ScrollArea,
   Stack,
   ThemeIcon,
 } from "@mantine/core";
@@ -102,9 +103,17 @@ export const LinkButton = ({
         {label}
       </Button>
       <Collapse in={collapseOpen}>
-        {links?.map((props) => (
-          <LinkButton key={props.href} {...props} isChild />
-        ))}
+        {collapseOpen && label === "Previous PODs" ? (
+          <ScrollArea h={500}>
+            {links?.map((props) => (
+              <LinkButton key={props.href} {...props} isChild />
+            ))}
+          </ScrollArea>
+        ) : (
+          links?.map((props) => (
+            <LinkButton key={props.href} {...props} isChild />
+          ))
+        )}
       </Collapse>
     </>
   );
