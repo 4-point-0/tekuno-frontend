@@ -9,47 +9,6 @@ import type * as Fetcher from "./adminFetcher";
 import { adminFetch } from "./adminFetcher";
 import type * as Schemas from "./adminSchemas";
 
-export type AuthControllerRegisterError = Fetcher.ErrorWrapper<undefined>;
-
-export type AuthControllerRegisterVariables = {
-  body: Schemas.RegisterDto;
-} & AdminContext["fetcherOptions"];
-
-export const fetchAuthControllerRegister = (
-  variables: AuthControllerRegisterVariables,
-  signal?: AbortSignal
-) =>
-  adminFetch<
-    Schemas.UserDto,
-    AuthControllerRegisterError,
-    Schemas.RegisterDto,
-    {},
-    {},
-    {}
-  >({ url: "/api/v1/auth/register", method: "post", ...variables, signal });
-
-export const useAuthControllerRegister = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      Schemas.UserDto,
-      AuthControllerRegisterError,
-      AuthControllerRegisterVariables
-    >,
-    "mutationFn"
-  >
-) => {
-  const { fetcherOptions } = useAdminContext();
-  return reactQuery.useMutation<
-    Schemas.UserDto,
-    AuthControllerRegisterError,
-    AuthControllerRegisterVariables
-  >(
-    (variables: AuthControllerRegisterVariables) =>
-      fetchAuthControllerRegister({ ...fetcherOptions, ...variables }),
-    options
-  );
-};
-
 export type AuthControllerLoginError = Fetcher.ErrorWrapper<undefined>;
 
 export type AuthControllerLoginVariables = {
@@ -722,6 +681,61 @@ export const useCampaignControllerPause = (
   >(
     (variables: CampaignControllerPauseVariables) =>
       fetchCampaignControllerPause({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type CampaignControllerChangePaymentTypePathParams = {
+  id: string;
+};
+
+export type CampaignControllerChangePaymentTypeError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignControllerChangePaymentTypeVariables = {
+  body: Schemas.ChangePaymentTypeDto;
+  pathParams: CampaignControllerChangePaymentTypePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchCampaignControllerChangePaymentType = (
+  variables: CampaignControllerChangePaymentTypeVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.CampaignDto,
+    CampaignControllerChangePaymentTypeError,
+    Schemas.ChangePaymentTypeDto,
+    {},
+    {},
+    CampaignControllerChangePaymentTypePathParams
+  >({
+    url: "/api/v1/campaign/payment-type/{id}",
+    method: "patch",
+    ...variables,
+    signal,
+  });
+
+export const useCampaignControllerChangePaymentType = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CampaignDto,
+      CampaignControllerChangePaymentTypeError,
+      CampaignControllerChangePaymentTypeVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.CampaignDto,
+    CampaignControllerChangePaymentTypeError,
+    CampaignControllerChangePaymentTypeVariables
+  >(
+    (variables: CampaignControllerChangePaymentTypeVariables) =>
+      fetchCampaignControllerChangePaymentType({
+        ...fetcherOptions,
+        ...variables,
+      }),
     options
   );
 };
@@ -1758,6 +1772,171 @@ export const useOrganizationControllerRemove = (
   );
 };
 
+export type StripeControllerGetProductPathParams = {
+  id: string;
+};
+
+export type StripeControllerGetProductError = Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerGetProductVariables = {
+  pathParams: StripeControllerGetProductPathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchStripeControllerGetProduct = (
+  variables: StripeControllerGetProductVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.ProductDto,
+    StripeControllerGetProductError,
+    undefined,
+    {},
+    {},
+    StripeControllerGetProductPathParams
+  >({
+    url: "/api/v1/stripe/products/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useStripeControllerGetProduct = <TData = Schemas.ProductDto>(
+  variables: StripeControllerGetProductVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.ProductDto,
+      StripeControllerGetProductError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.ProductDto,
+    StripeControllerGetProductError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/stripe/products/{id}",
+      operationId: "stripeControllerGetProduct",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchStripeControllerGetProduct(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerGetProductsError = Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerGetProductsResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.ProductDto[];
+};
+
+export type StripeControllerGetProductsVariables =
+  AdminContext["fetcherOptions"];
+
+export const fetchStripeControllerGetProducts = (
+  variables: StripeControllerGetProductsVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    StripeControllerGetProductsResponse,
+    StripeControllerGetProductsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/stripe/products", method: "get", ...variables, signal });
+
+export const useStripeControllerGetProducts = <
+  TData = StripeControllerGetProductsResponse
+>(
+  variables: StripeControllerGetProductsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      StripeControllerGetProductsResponse,
+      StripeControllerGetProductsError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    StripeControllerGetProductsResponse,
+    StripeControllerGetProductsError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/stripe/products",
+      operationId: "stripeControllerGetProducts",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchStripeControllerGetProducts(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerChargeCapturedError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerChargeCapturedVariables =
+  AdminContext["fetcherOptions"];
+
+export const fetchStripeControllerChargeCaptured = (
+  variables: StripeControllerChargeCapturedVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    undefined,
+    StripeControllerChargeCapturedError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/stripe/webhook", method: "post", ...variables, signal });
+
+export const useStripeControllerChargeCaptured = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      StripeControllerChargeCapturedError,
+      StripeControllerChargeCapturedVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    undefined,
+    StripeControllerChargeCapturedError,
+    StripeControllerChargeCapturedVariables
+  >(
+    (variables: StripeControllerChargeCapturedVariables) =>
+      fetchStripeControllerChargeCaptured({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type QueryOperation =
   | {
       path: "/api/v1/google/sign-in-backend";
@@ -1828,4 +2007,14 @@ export type QueryOperation =
       path: "/api/v1/organization/users";
       operationId: "organizationControllerFindAll";
       variables: OrganizationControllerFindAllVariables;
+    }
+  | {
+      path: "/api/v1/stripe/products/{id}";
+      operationId: "stripeControllerGetProduct";
+      variables: StripeControllerGetProductVariables;
+    }
+  | {
+      path: "/api/v1/stripe/products";
+      operationId: "stripeControllerGetProducts";
+      variables: StripeControllerGetProductsVariables;
     };

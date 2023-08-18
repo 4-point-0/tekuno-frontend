@@ -3,40 +3,6 @@
  *
  * @version 1.0
  */
-export type RegisterDto = {
-  email: string;
-  password: string;
-  password_confirm: string;
-};
-
-export type ProfileDto = {
-  id: string;
-  wallet_address: string;
-  chain_id: string;
-  user_id: string;
-  created_by_id: string;
-  /**
-   * @format date-time
-   */
-  created_at?: string;
-  /**
-   * @format date-time
-   */
-  updated_at?: string;
-};
-
-export type UserDto = {
-  id: string;
-  email: string;
-  username: string;
-  role: "Admin" | "User" | "Member";
-  provider?: "Apple" | "Facebook" | "Google";
-  provider_id?: string;
-  organization_id?: string;
-  profile?: ProfileDto;
-  status?: "Pending" | "Active";
-};
-
 export type LoginDto = {
   email: string;
   password: string;
@@ -59,6 +25,41 @@ export type ChangePasswordDto = {
   email: string;
   old_password: string;
   new_password: string;
+};
+
+export type RegisterDto = {
+  email: string;
+  password: string;
+  password_confirm: string;
+};
+
+export type ProfileDto = {
+  id: string;
+  wallet_address: string;
+  chain_id: string;
+  user_id: string;
+  balance: number;
+  created_by_id: string;
+  /**
+   * @format date-time
+   */
+  created_at?: string;
+  /**
+   * @format date-time
+   */
+  updated_at?: string;
+};
+
+export type UserDto = {
+  id: string;
+  email: string;
+  username: string;
+  role: "Admin" | "User" | "Member";
+  provider?: "Apple" | "Facebook" | "Google";
+  provider_id?: string;
+  organization_id?: string;
+  profile?: ProfileDto;
+  status?: "Pending" | "Active";
 };
 
 export type GoogleVerificationDto = {
@@ -160,6 +161,13 @@ export type NftDto = {
   file: FileDto;
 };
 
+export type CreatorOrderResponseDto = {
+  order_id: string;
+  campaign_id: string;
+  price: number;
+  status: "Created" | "Paid";
+};
+
 export type CampaignDto = {
   id: string;
   name: string;
@@ -179,6 +187,7 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
+  creator_order?: CreatorOrderResponseDto;
 };
 
 export type UpdateCampaignDto = {
@@ -202,6 +211,10 @@ export type CampaignStatusDto = {
   status: "Ended" | "Paused" | "Started";
 };
 
+export type ChangePaymentTypeDto = {
+  paymentType: "BothPay" | "CreatorPays";
+};
+
 export type CreateOrganizationDto = {
   name: string;
   description?: string | null;
@@ -212,6 +225,7 @@ export type OrganizationDto = {
   id: string;
   name: string;
   description?: string | null;
+  balance: number;
   file: FileDto;
 };
 
@@ -223,4 +237,12 @@ export type UpdateOrganizationDto = {
 
 export type InviteUserDto = {
   role: "Admin" | "Member";
+};
+
+export type ProductDto = {
+  id: string;
+  name: string;
+  price?: number;
+  currency: string;
+  payment_url: string;
 };
