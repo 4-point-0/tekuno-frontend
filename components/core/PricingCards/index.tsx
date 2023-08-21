@@ -9,7 +9,6 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
