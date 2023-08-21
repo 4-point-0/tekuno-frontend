@@ -18,6 +18,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { GiCoins, GiTwoCoins } from "react-icons/gi";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
@@ -107,6 +108,19 @@ export function ClientHeader() {
     );
   };
 
+  const buyCreditsLink = () => {
+    return (
+      <NavLink
+        component={Link}
+        href="/credits"
+        label="Buy more credits"
+        icon={<GiTwoCoins size={16} />}
+        variant="subtle"
+        active={router.pathname === "/credits"}
+      />
+    );
+  };
+
   const campaignDropdownLinks = (campaigns?: CampaignDto[]) => {
     if (!(isClient && user && campaigns?.length)) return null;
 
@@ -174,6 +188,13 @@ export function ClientHeader() {
               {campaignDropdownLinks(campaigns?.results)}
 
               <Box>{profileLink()}</Box>
+              <Box>{buyCreditsLink()}</Box>
+              <Box>Credits:</Box>
+              <Box>
+                <Group>
+                  <b>256</b> <GiCoins size={20} />
+                </Group>
+              </Box>
             </Group>
 
             <Burger
