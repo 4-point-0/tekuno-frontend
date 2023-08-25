@@ -1772,6 +1772,114 @@ export const useOrganizationControllerRemove = (
   );
 };
 
+export type OrderControllerPreviewOrderPathParams = {
+  campaignId: string;
+};
+
+export type OrderControllerPreviewOrderError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrderControllerPreviewOrderVariables = {
+  pathParams: OrderControllerPreviewOrderPathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrderControllerPreviewOrder = (
+  variables: OrderControllerPreviewOrderVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.CampaignCostDto,
+    OrderControllerPreviewOrderError,
+    undefined,
+    {},
+    {},
+    OrderControllerPreviewOrderPathParams
+  >({
+    url: "/api/v1/order/calculate-order-price/{campaignId}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useOrderControllerPreviewOrder = <TData = Schemas.CampaignCostDto>(
+  variables: OrderControllerPreviewOrderVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.CampaignCostDto,
+      OrderControllerPreviewOrderError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.CampaignCostDto,
+    OrderControllerPreviewOrderError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/order/calculate-order-price/{campaign_id}",
+      operationId: "orderControllerPreviewOrder",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrderControllerPreviewOrder(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type OrderControllerCreateOrderError = Fetcher.ErrorWrapper<undefined>;
+
+export type OrderControllerCreateOrderVariables = {
+  body: Schemas.CampaignOrderRequestDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrderControllerCreateOrder = (
+  variables: OrderControllerCreateOrderVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.CampaignOrderDto,
+    OrderControllerCreateOrderError,
+    Schemas.CampaignOrderRequestDto,
+    {},
+    {},
+    {}
+  >({
+    url: "/api/v1/order/create-order",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useOrderControllerCreateOrder = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CampaignOrderDto,
+      OrderControllerCreateOrderError,
+      OrderControllerCreateOrderVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.CampaignOrderDto,
+    OrderControllerCreateOrderError,
+    OrderControllerCreateOrderVariables
+  >(
+    (variables: OrderControllerCreateOrderVariables) =>
+      fetchOrderControllerCreateOrder({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type StripeControllerGetProductPathParams = {
   id: string;
 };
@@ -2007,6 +2115,11 @@ export type QueryOperation =
       path: "/api/v1/organization/users";
       operationId: "organizationControllerFindAll";
       variables: OrganizationControllerFindAllVariables;
+    }
+  | {
+      path: "/api/v1/order/calculate-order-price/{campaign_id}";
+      operationId: "orderControllerPreviewOrder";
+      variables: OrderControllerPreviewOrderVariables;
     }
   | {
       path: "/api/v1/stripe/products/{id}";

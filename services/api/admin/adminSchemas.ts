@@ -54,7 +54,7 @@ export type UserDto = {
   id: string;
   email: string;
   username: string;
-  role: "Admin" | "User" | "Member";
+  role: string[];
   provider?: "Apple" | "Facebook" | "Google";
   provider_id?: string;
   organization_id?: string;
@@ -161,11 +161,10 @@ export type NftDto = {
   file: FileDto;
 };
 
-export type CreatorOrderResponseDto = {
-  order_id: string;
+export type CampaignOrderDto = {
+  id: string;
   campaign_id: string;
   price: number;
-  status: "Created" | "Paid";
 };
 
 export type CampaignDto = {
@@ -187,7 +186,8 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
-  creator_order?: CreatorOrderResponseDto;
+  payment_type?: "CreatorPays" | "BothPay";
+  campaign_order?: CampaignOrderDto;
 };
 
 export type UpdateCampaignDto = {
@@ -237,6 +237,15 @@ export type UpdateOrganizationDto = {
 
 export type InviteUserDto = {
   role: "Admin" | "Member";
+};
+
+export type CampaignCostDto = {
+  campaign_id: string;
+  price: number;
+};
+
+export type CampaignOrderRequestDto = {
+  campaign_id: string;
 };
 
 export type ProductDto = {
