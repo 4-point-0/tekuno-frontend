@@ -12,7 +12,8 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { fetchAdminControllerFindMe } from "../../../services/api/admin/adminComponents";
+import { fetchAdminControllerFindMe } from "@/services/api/admin/adminComponents";
+import { UserDto } from "@/services/api/admin/adminSchemas";
 
 const PRIMARY_COL_HEIGHT = rem(470);
 
@@ -22,7 +23,6 @@ const useStyles = createStyles((theme) => ({
     padding: "2%",
     margin: "2%",
     "&:hover": {
-      // backgroundColor: theme.colors.gray[3],
       boxShadow: "2px 0px 63px -9px rgba(0,0,0,0.51)",
       transform: "scale(1.05)",
       transition: "transform 0.3s ease-in-out",
@@ -41,26 +41,26 @@ type CardName = "Small" | "Medium" | "Large" | "Custom";
 const CardData: Record<CardName, { image: string; description: string }> = {
   Small: {
     image: "/images/small.png",
-    description: "Enough for few small campaigns",
+    description: "10 Tokens",
   },
   Medium: {
     image: "/images/medium.png",
-    description: "Enough for a medium campaign",
+    description: "20 Tokens",
   },
   Large: {
     image: "/images/large.png",
-    description: "Enough for a large campaign",
+    description: "50 Tokens",
   },
   Custom: {
     image: "/images/custom.png",
-    description: "Custom size campaign",
+    description: "5 - 10k Tokens",
   },
 };
 
 export const PricingCards = ({ cards }: any) => {
   const { classes } = useStyles();
   const router = useRouter();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<UserDto>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,8 +78,6 @@ export const PricingCards = ({ cards }: any) => {
   if (!userData) {
     return <Loader />;
   }
-
-  console.log("userId", userData);
 
   return (
     <>
@@ -101,7 +99,7 @@ export const PricingCards = ({ cards }: any) => {
                 mt="md"
               >
                 <Text fz={card.name === "Custom" ? 40 : 50} fw={700}>
-                  {card.name === "Custom" ? "0.5 - 10k" : card.price / 100}
+                  {card.name === "Custom" ? "0.5 - 10k" : card.price}
                 </Text>
                 <Text fz={20} fw={700}>
                   euros
