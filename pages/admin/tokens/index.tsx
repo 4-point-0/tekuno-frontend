@@ -47,7 +47,6 @@ const useStyles = createStyles((theme) => ({
 export const Tokens = () => {
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - ${theme.spacing.md} / 2)`;
 
   const { data } = useStripeControllerGetProducts({});
 
