@@ -23,6 +23,7 @@ import {
   Eye,
   Pencil,
   Report,
+  Wallet,
 } from "tabler-icons-react";
 
 import { DownloadBadge } from "@/components/core/DownloadBadge";
@@ -174,7 +175,20 @@ export const CampaignDetails = () => {
                   </>
                 )}
 
-                {campaign && <StatusButtons campaign={campaign} />}
+                {!campaign.campaign_order && (
+                  <Button
+                    component={Link}
+                    href={`/admin/activation/order/${campaign.id}`}
+                    leftIcon={<Wallet size={14} />}
+                    color="dark"
+                  >
+                    Make a payment
+                  </Button>
+                )}
+
+                {campaign.campaign_order !== null && (
+                  <StatusButtons campaign={campaign} />
+                )}
               </Group>
 
               {campaign?.description && (
@@ -187,16 +201,6 @@ export const CampaignDetails = () => {
                 />
               )}
 
-              {/* <SimpleGrid display="none" cols={4}>
-          {stats.map((stat) => (
-            <StatBox
-              key={stat.label}
-              value={stat.value}
-              label={stat.label}
-              subLabel={stat.subLabel}
-            />
-          ))}
-        </SimpleGrid> */}
               {documents?.length !== 0 && (
                 <Group position="apart" align="flex-start" noWrap>
                   <Group miw={200}>
