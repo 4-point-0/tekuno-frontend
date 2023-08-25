@@ -1,69 +1,10 @@
-// import { Divider, Navbar, Text, Stack, rem, createStyles} from "@mantine/core";
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/router";
-// import { useUserOrganization } from "@/hooks/useUserOrganization";
-// import { Links } from "./Links";
-// import { UserButton } from "./UserButton";
-// const useStyles = createStyles((theme) => ({
-//   navbar: {
-//     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-//     paddingBottom: 0,
-//   },
-//   footer: {
-//     marginLeft: `calc(${theme.spacing.md} * -1)`,
-//     marginRight: `calc(${theme.spacing.md} * -1)`,
-//     borderTop: `${rem(1)} solid ${
-//       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-//     }`,
-//   },
-// }));
-// interface AdminNavbarProps {
-//   opened: boolean;
-// }
-// export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
-//   const router = useRouter();
-//   const { classes } = useStyles();
-//   const { data: session } = useSession();
-//   const { hasOrganization } = useUserOrganization(Boolean(session));
-//   if (router.route.endsWith("preview") || !session) {
-//     return null;
-//   }
-//   return (
-//     <Navbar
-//       hiddenBreakpoint="sm"
-//       hidden={!opened}
-//       width={{ base: 300 }}
-//       px="sm"
-//       py="md"
-//     >
-//       {hasOrganization && (
-//         <>
-//           <Navbar.Section>
-//             <Links />
-//           </Navbar.Section>
-//           <Divider mt="xl" mb="md" />
-//         </>
-//       )}
-//       <Navbar.Section>
-//         <UserButton />
-//       </Navbar.Section>
-//     </Navbar>
-//   );
-// };
-import {
-  Button,
-  createStyles,
-  Divider,
-  getStylesRef,
-  Navbar,
-  rem,
-  Text,
-} from "@mantine/core";
+import { createStyles, Divider, Navbar, rem, Text } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { GiCoins } from "react-icons/gi";
+import { PiHandCoinsDuotone } from "react-icons/pi";
 
+import { IndigoButton } from "@/components/core/IndigoButton";
 import { useUserOrganization } from "@/hooks/useUserOrganization";
 
 import { Links } from "./Links";
@@ -78,7 +19,7 @@ const useStyles = createStyles((theme, { active }: ButtonProps) => ({
     paddingTop: theme.spacing.md,
     marginTop: theme.spacing.md,
     borderTop: `${rem(1)} solid ${theme.fn.lighten(
-      theme.fn.variant({ variant: "filled", color: "dark" }).background!,
+      theme.fn.variant({ variant: "filled", color: "gray" }).background!,
       0.1
     )}`,
   },
@@ -129,44 +70,21 @@ export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
   const router = useRouter();
   const { classes } = useStyles({ active: router.route === "/admin/user" });
   const { data: session } = useSession();
-  const { hasOrganization } = useUserOrganization(Boolean(session));
+  const { organization, hasOrganization } = useUserOrganization(
+    Boolean(session)
+  );
+
   if (router.route.endsWith("preview") || !session) {
     return null;
   }
-  // const [active, setActive] = useState("Billing");
-
-  // const links = data.map((item) => (
-  //   <a
-  //     className={cx(classes.link, {
-  //       [classes.linkActive]: item.label === active,
-  //     })}
-  //     href={item.link}
-  //     key={item.label}
-  //     onClick={(event) => {
-  //       event.preventDefault();
-  //       setActive(item.label);
-  //     }}
-  //   >
-  //     <span>{item.label}</span>
-  //   </a>
-  // ));
 
   return (
-    // <Navbar height="auto" width={{ sm: 300 }} p="md" className={classes.navbar}>
-    //   <Navbar.Section grow>
-    //     <Group className={classes.header} position="apart">
-    //       <Code className={classes.version}>v3.1.2</Code>
-    //     </Group>
-    //     {links}
-    //   </Navbar.Section>
-
     <Navbar
       hiddenBreakpoint="sm"
       hidden={!opened}
       width={{ base: 300 }}
       px="sm"
       py="md"
-      // p="md"
       height="auto"
     >
       {hasOrganization && (
@@ -182,20 +100,20 @@ export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <Text className={classes.text}>
-          <b>Available funds:</b>
+        <Text className={classes.text} c="dimmed">
+          <b>Available Tokens:</b>
         </Text>
-        <Text className={classes.text}>
-          <GiCoins size={20} style={{ marginRight: "2%" }} />{" "}
-          <b style={{ marginRight: "2%" }}>256</b> Tokens
+        <Text className={classes.text} fz={17}>
+          <GiCoins size={25} style={{ marginRight: "2%" }} />
+          <b style={{ marginRight: "2%" }}>{organization?.balance || "0"}</b>
         </Text>
-        <Button
-          className={classes.button}
+        <IndigoButton
           onClick={() => router.push("/admin/tokens")}
           mt="sm"
+          leftIcon={<PiHandCoinsDuotone size={20} />}
         >
           Buy more tokens
-        </Button>
+        </IndigoButton>
       </Navbar.Section>
     </Navbar>
   );
