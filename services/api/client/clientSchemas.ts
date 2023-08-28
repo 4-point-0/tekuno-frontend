@@ -29,6 +29,7 @@ export type ProfileDto = {
   wallet_address: string;
   chain_id: string;
   user_id: string;
+  balance: number;
   created_by_id: string;
   /**
    * @format date-time
@@ -50,6 +51,11 @@ export type UserDto = {
   organization_id?: string;
   profile?: ProfileDto;
   status?: "Pending" | "Active";
+};
+
+export type UserLoginDto = {
+  id_token: string;
+  account_id: string;
 };
 
 export type CampaignTypeDto = {
@@ -97,6 +103,12 @@ export type NftDto = {
   file: FileDto;
 };
 
+export type CampaignOrderDto = {
+  id: string;
+  campaign_id: string;
+  price: number;
+};
+
 export type CampaignDto = {
   id: string;
   name: string;
@@ -116,6 +128,8 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
+  payment_type?: "CreatorPays" | "BothPay";
+  campaign_order?: CampaignOrderDto;
 };
 
 export type NearNftAttribute = {
@@ -125,6 +139,12 @@ export type NearNftAttribute = {
 
 export type NearNftAttributes = {
   attributes: NearNftAttribute[];
+};
+
+export type NftOrderDto = {
+  id: string;
+  nft_id: string;
+  price: number;
 };
 
 export type UserNftDto = {
@@ -138,6 +158,26 @@ export type UserNftDto = {
   properties?: NearNftAttributes;
   supply?: number | null;
   file: FileDto;
+  nft_order?: NftOrderDto;
+};
+
+export type NftCostDto = {
+  nft_id: string;
+  campaign_id: string;
+  price: number;
+};
+
+export type NftOrderRequestDto = {
+  nft_id: string;
+  account_id: string;
 };
 
 export type StreamableFile = {};
+
+export type ProductDto = {
+  id: string;
+  name: string;
+  price?: number;
+  currency: string;
+  payment_url: string;
+};
