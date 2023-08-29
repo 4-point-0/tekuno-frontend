@@ -18,12 +18,15 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { GiCoins, GiTwoCoins } from "react-icons/gi";
+import { GiCoins } from "react-icons/gi";
+import { PiHandCoinsDuotone } from "react-icons/pi";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
 import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import { CampaignDto } from "@/services/api/client/clientSchemas";
+
+import { IndigoButton } from "../../core/IndigoButton";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -60,6 +63,8 @@ export function ClientHeader() {
   const router = useRouter();
 
   const { user } = useRamper();
+
+  console.log("user", user);
 
   const [isClient, setIsClient] = useState(false);
 
@@ -108,16 +113,14 @@ export function ClientHeader() {
     );
   };
 
-  const buyCreditsLink = () => {
+  const buyTokensLink = () => {
     return (
-      <NavLink
-        component={Link}
-        href="/credits"
-        label="Buy more credits"
-        icon={<GiTwoCoins size={16} />}
-        variant="subtle"
-        active={router.pathname === "/credits"}
-      />
+      <IndigoButton
+        onClick={() => router.push("/tokens")}
+        leftIcon={<PiHandCoinsDuotone size={20} />}
+      >
+        Buy more tokens
+      </IndigoButton>
     );
   };
 
@@ -186,15 +189,14 @@ export function ClientHeader() {
             </Link>
             <Group className={classes.hiddenMobile}>
               {campaignDropdownLinks(campaigns?.results)}
-
-              <Box>{profileLink()}</Box>
-              <Box>{buyCreditsLink()}</Box>
-              <Box>Credits:</Box>
+              <Box>Available:</Box>
               <Box>
                 <Group>
-                  <b>256</b> <GiCoins size={20} />
+                  <b>{user?.profile?.balance || "0"}</b> <GiCoins size={20} />
                 </Group>
               </Box>
+              <Box>{buyTokensLink()}</Box>
+              <Box>{profileLink()}</Box>
             </Group>
 
             <Burger
