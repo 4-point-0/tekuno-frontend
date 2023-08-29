@@ -1,28 +1,13 @@
 import {
   Box,
-  Button,
-  Card,
-  Container,
   createStyles,
-  Grid,
-  Group,
-  Image,
-  rem,
   SimpleGrid,
-  Skeleton,
-  Text,
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { FaEuroSign } from "react-icons/fa";
 
-import PricingCards from "@/components/core/PricingCards";
-import {
-  useStripeControllerGetProduct,
-  useStripeControllerGetProducts,
-} from "@/services/api/admin/adminComponents";
-
-const PRIMARY_COL_HEIGHT = rem(470);
+import PricingCards from "@/components/core/PricingCards/PricingCardsAdmin";
+import { useStripeControllerGetProducts } from "@/services/api/admin/adminComponents";
 
 const useStyles = createStyles((theme) => ({
   container: {
