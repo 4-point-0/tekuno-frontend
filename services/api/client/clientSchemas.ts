@@ -58,6 +58,10 @@ export type UserLoginDto = {
   account_id: string;
 };
 
+export type JwtTokenDto = {
+  token: string;
+};
+
 export type CampaignTypeDto = {
   id: string;
   name: string;

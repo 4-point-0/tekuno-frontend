@@ -183,7 +183,7 @@ export const fetchUserControllerAuthenticate = (
   signal?: AbortSignal
 ) =>
   clientFetch<
-    Schemas.UserDto,
+    Schemas.JwtTokenDto,
     UserControllerAuthenticateError,
     Schemas.UserLoginDto,
     {},
@@ -194,7 +194,7 @@ export const fetchUserControllerAuthenticate = (
 export const useUserControllerAuthenticate = (
   options?: Omit<
     reactQuery.UseMutationOptions<
-      Schemas.UserDto,
+      Schemas.JwtTokenDto,
       UserControllerAuthenticateError,
       UserControllerAuthenticateVariables
     >,
@@ -203,7 +203,7 @@ export const useUserControllerAuthenticate = (
 ) => {
   const { fetcherOptions } = useClientContext();
   return reactQuery.useMutation<
-    Schemas.UserDto,
+    Schemas.JwtTokenDto,
     UserControllerAuthenticateError,
     UserControllerAuthenticateVariables
   >(
@@ -522,7 +522,7 @@ export const fetchNftControllerCreatePayment = (
   signal?: AbortSignal
 ) =>
   clientFetch<
-    Schemas.NftOrderRequestDto,
+    Schemas.NftOrderDto,
     NftControllerCreatePaymentError,
     Schemas.NftOrderRequestDto,
     {},
@@ -533,7 +533,7 @@ export const fetchNftControllerCreatePayment = (
 export const useNftControllerCreatePayment = (
   options?: Omit<
     reactQuery.UseMutationOptions<
-      Schemas.NftOrderRequestDto,
+      Schemas.NftOrderDto,
       NftControllerCreatePaymentError,
       NftControllerCreatePaymentVariables
     >,
@@ -542,13 +542,83 @@ export const useNftControllerCreatePayment = (
 ) => {
   const { fetcherOptions } = useClientContext();
   return reactQuery.useMutation<
-    Schemas.NftOrderRequestDto,
+    Schemas.NftOrderDto,
     NftControllerCreatePaymentError,
     NftControllerCreatePaymentVariables
   >(
     (variables: NftControllerCreatePaymentVariables) =>
       fetchNftControllerCreatePayment({ ...fetcherOptions, ...variables }),
     options
+  );
+};
+
+export type NftControllerFindAllNftOrdersQueryParams = {
+  offset?: string;
+  limit?: string;
+};
+
+export type NftControllerFindAllNftOrdersError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerFindAllNftOrdersResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.NftOrderDto[];
+};
+
+export type NftControllerFindAllNftOrdersVariables = {
+  queryParams?: NftControllerFindAllNftOrdersQueryParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerFindAllNftOrders = (
+  variables: NftControllerFindAllNftOrdersVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    NftControllerFindAllNftOrdersResponse,
+    NftControllerFindAllNftOrdersError,
+    undefined,
+    {},
+    NftControllerFindAllNftOrdersQueryParams,
+    {}
+  >({ url: "/api/v1/nft/nft-orders/all", method: "get", ...variables, signal });
+
+export const useNftControllerFindAllNftOrders = <
+  TData = NftControllerFindAllNftOrdersResponse
+>(
+  variables: NftControllerFindAllNftOrdersVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NftControllerFindAllNftOrdersResponse,
+      NftControllerFindAllNftOrdersError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    NftControllerFindAllNftOrdersResponse,
+    NftControllerFindAllNftOrdersError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft/nft-orders/all",
+      operationId: "nftControllerFindAllNftOrders",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerFindAllNftOrders(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
   );
 };
 
@@ -1013,6 +1083,11 @@ export type QueryOperation =
       path: "/api/v1/nft/calculate-order-price/{nft_id}";
       operationId: "nftControllerPreviewOrder";
       variables: NftControllerPreviewOrderVariables;
+    }
+  | {
+      path: "/api/v1/nft/nft-orders/all";
+      operationId: "nftControllerFindAllNftOrders";
+      variables: NftControllerFindAllNftOrdersVariables;
     }
   | {
       path: "/api/v1/nft/{tokenId}/media";
