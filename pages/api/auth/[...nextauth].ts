@@ -5,9 +5,9 @@ import GoogleProvider from "next-auth/providers/google";
 import {
   fetchAdminControllerFindMe,
   fetchAuthControllerConfirmInvite,
-  fetchAuthControllerLogin,
-  fetchAuthControllerRegister,
+  fetchAuthControllerLogin, // fetchAuthControllerRegister,
   fetchGoogleControllerAuthenticate,
+  fetchGoogleControllerGoogleAuth,
 } from "@/services/api/admin/adminComponents";
 import {
   GoogleVerificationDto,
@@ -53,7 +53,8 @@ async function registerOrConfirmInvite({
       pathParams: { code: inviteCode },
     });
   } else {
-    return await fetchAuthControllerRegister({ body });
+    return undefined;
+    // return await fetchAuthControllerRegister({ body });
   }
 }
 
@@ -79,7 +80,7 @@ export const authOptions: NextAuthOptions = {
 
             const { token } = await login(email, password);
 
-            return { token, ...user };
+            return { token, ...user } as any;
           } catch (error) {
             console.error(error);
             return null;
