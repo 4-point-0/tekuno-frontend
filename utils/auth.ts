@@ -28,7 +28,7 @@ export const getUserServerSideProps = ({
     });
 
     if (organizationRequired && !user.organization_id) {
-      return user.role === "Admin"
+      return user.role.some((role: string) => role === "Admin")
         ? {
             redirect: {
               destination: "/admin/organization",
@@ -38,7 +38,7 @@ export const getUserServerSideProps = ({
         : { notfound: true };
     }
 
-    if (adminOnly && user.role !== "Admin") {
+    if (!adminOnly && !user.role.some((role: string) => role === "Admin")) {
       return { notFound: true };
     }
 

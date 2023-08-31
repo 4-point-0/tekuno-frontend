@@ -39,7 +39,6 @@ export const campaignTypeData: Record<CampaignType, CampaignTypeDatum> = {
       image: "/images/loyalty.png",
       perks: [
         "Claimed after scanning QR code or can be sent by email and claimed afterwards",
-        "Multiple collections",
         "User receives an award upon completion",
         "Transferable",
         "Lead generation",

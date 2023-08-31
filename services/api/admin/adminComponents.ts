@@ -1617,80 +1617,6 @@ export const useOrganizationControllerFindAll = <
   );
 };
 
-export type OrganizationControllerFindAllInvoicesQueryParams = {
-  offset?: string;
-  limit?: string;
-};
-
-export type OrganizationControllerFindAllInvoicesError =
-  Fetcher.ErrorWrapper<undefined>;
-
-export type OrganizationControllerFindAllInvoicesResponse = {
-  total: number;
-  limit: number;
-  offset: number;
-  count: number;
-  results: Schemas.UserDto[];
-};
-
-export type OrganizationControllerFindAllInvoicesVariables = {
-  queryParams?: OrganizationControllerFindAllInvoicesQueryParams;
-} & AdminContext["fetcherOptions"];
-
-export const fetchOrganizationControllerFindAllInvoices = (
-  variables: OrganizationControllerFindAllInvoicesVariables,
-  signal?: AbortSignal
-) =>
-  adminFetch<
-    OrganizationControllerFindAllInvoicesResponse,
-    OrganizationControllerFindAllInvoicesError,
-    undefined,
-    {},
-    OrganizationControllerFindAllInvoicesQueryParams,
-    {}
-  >({
-    url: "/api/v1/organization/invoices",
-    method: "get",
-    ...variables,
-    signal,
-  });
-
-export const useOrganizationControllerFindAllInvoices = <
-  TData = OrganizationControllerFindAllInvoicesResponse
->(
-  variables: OrganizationControllerFindAllInvoicesVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      OrganizationControllerFindAllInvoicesResponse,
-      OrganizationControllerFindAllInvoicesError,
-      TData
-    >,
-    "queryKey" | "queryFn"
-  >
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
-  return reactQuery.useQuery<
-    OrganizationControllerFindAllInvoicesResponse,
-    OrganizationControllerFindAllInvoicesError,
-    TData
-  >(
-    queryKeyFn({
-      path: "/api/v1/organization/invoices",
-      operationId: "organizationControllerFindAllInvoices",
-      variables,
-    }),
-    ({ signal }) =>
-      fetchOrganizationControllerFindAllInvoices(
-        { ...fetcherOptions, ...variables },
-        signal
-      ),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
-};
-
 export type OrganizationControllerResendInvitePathParams = {
   email: string;
 };
@@ -1954,75 +1880,6 @@ export const useOrderControllerCreateOrder = (
   );
 };
 
-export type OrderControllerFindAllCampaignOrdersQueryParams = {
-  offset?: string;
-  limit?: string;
-};
-
-export type OrderControllerFindAllCampaignOrdersError =
-  Fetcher.ErrorWrapper<undefined>;
-
-export type OrderControllerFindAllCampaignOrdersResponse = {
-  total: number;
-  limit: number;
-  offset: number;
-  count: number;
-  results: Schemas.CampaignOrderDto[];
-};
-
-export type OrderControllerFindAllCampaignOrdersVariables = {
-  queryParams?: OrderControllerFindAllCampaignOrdersQueryParams;
-} & AdminContext["fetcherOptions"];
-
-export const fetchOrderControllerFindAllCampaignOrders = (
-  variables: OrderControllerFindAllCampaignOrdersVariables,
-  signal?: AbortSignal
-) =>
-  adminFetch<
-    OrderControllerFindAllCampaignOrdersResponse,
-    OrderControllerFindAllCampaignOrdersError,
-    undefined,
-    {},
-    OrderControllerFindAllCampaignOrdersQueryParams,
-    {}
-  >({ url: "/api/v1/order", method: "get", ...variables, signal });
-
-export const useOrderControllerFindAllCampaignOrders = <
-  TData = OrderControllerFindAllCampaignOrdersResponse
->(
-  variables: OrderControllerFindAllCampaignOrdersVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      OrderControllerFindAllCampaignOrdersResponse,
-      OrderControllerFindAllCampaignOrdersError,
-      TData
-    >,
-    "queryKey" | "queryFn"
-  >
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
-  return reactQuery.useQuery<
-    OrderControllerFindAllCampaignOrdersResponse,
-    OrderControllerFindAllCampaignOrdersError,
-    TData
-  >(
-    queryKeyFn({
-      path: "/api/v1/order",
-      operationId: "orderControllerFindAllCampaignOrders",
-      variables,
-    }),
-    ({ signal }) =>
-      fetchOrderControllerFindAllCampaignOrders(
-        { ...fetcherOptions, ...variables },
-        signal
-      ),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
-};
-
 export type StripeControllerGetProductPathParams = {
   id: string;
 };
@@ -2260,19 +2117,9 @@ export type QueryOperation =
       variables: OrganizationControllerFindAllVariables;
     }
   | {
-      path: "/api/v1/organization/invoices";
-      operationId: "organizationControllerFindAllInvoices";
-      variables: OrganizationControllerFindAllInvoicesVariables;
-    }
-  | {
       path: "/api/v1/order/calculate-order-price/{campaign_id}";
       operationId: "orderControllerPreviewOrder";
       variables: OrderControllerPreviewOrderVariables;
-    }
-  | {
-      path: "/api/v1/order";
-      operationId: "orderControllerFindAllCampaignOrders";
-      variables: OrderControllerFindAllCampaignOrdersVariables;
     }
   | {
       path: "/api/v1/stripe/products/{id}";

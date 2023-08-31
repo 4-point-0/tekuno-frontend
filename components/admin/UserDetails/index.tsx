@@ -22,7 +22,7 @@ export const UserDetails = () => {
     signOut();
   };
 
-  const isAdmin = user?.role === "Admin";
+  const isAdmin = user?.role.some((role: string) => role === "Admin");
 
   return (
     <Container>

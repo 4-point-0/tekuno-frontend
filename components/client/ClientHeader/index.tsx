@@ -1,6 +1,7 @@
 import {
   Box,
   Burger,
+  Button,
   Center,
   Container,
   createStyles,
@@ -10,6 +11,7 @@ import {
   Image,
   Menu,
   NavLink,
+  Popover,
   ScrollArea,
   Skeleton,
   Stack,
@@ -18,11 +20,14 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { PiCoinsDuotone, PiHandCoinsDuotone } from "react-icons/pi";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
 import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import { CampaignDto } from "@/services/api/client/clientSchemas";
+
+import { IndigoButton } from "../../core/IndigoButton";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -107,6 +112,17 @@ export function ClientHeader() {
     );
   };
 
+  const buyTokensLink = () => {
+    return (
+      <IndigoButton
+        onClick={() => router.push("/tokens")}
+        leftIcon={<PiHandCoinsDuotone size={20} />}
+      >
+        Buy more tokens
+      </IndigoButton>
+    );
+  };
+
   const campaignDropdownLinks = (campaigns?: CampaignDto[]) => {
     if (!(isClient && user && campaigns?.length)) return null;
 
@@ -172,6 +188,17 @@ export function ClientHeader() {
             </Link>
             <Group className={classes.hiddenMobile}>
               {campaignDropdownLinks(campaigns?.results)}
+              <Box>Tokens:</Box>
+              <Popover width={200} position="bottom" withArrow shadow="md">
+                <Popover.Target>
+                  <Button rightIcon={<PiCoinsDuotone size={17} />}>
+                    {user?.profile?.balance || "0"}
+                  </Button>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Box>{buyTokensLink()}</Box>
+                </Popover.Dropdown>
+              </Popover>
 
               <Box>{profileLink()}</Box>
             </Group>

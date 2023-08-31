@@ -15,7 +15,7 @@ import {
 import { saveAs } from "file-saver";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import {
   AlertTriangle,
   Copy,
@@ -33,7 +33,6 @@ import { NFTCard } from "@/components/core/NFTCard";
 import {
   fetchCampaignControllerExportReport,
   useCampaignControllerFindOne,
-  useOrderControllerFindOne,
 } from "@/services/api/admin/adminComponents";
 import { NftDto } from "@/services/api/admin/adminSchemas";
 import { getCampaignAssets, hasEnded } from "@/utils/campaign";
@@ -55,14 +54,6 @@ export const CampaignDetails = () => {
       id: router.query.id as string,
     },
   });
-
-  const { data: order } = useOrderControllerFindOne({
-    pathParams: {
-      id: router.query.id as string,
-    },
-  });
-
-  const orderExists = Boolean(order);
 
   const { image, documents, reward, nfts } = getCampaignAssets(campaign);
 
@@ -90,6 +81,7 @@ export const CampaignDetails = () => {
   if (isLoading) {
     return null;
   }
+
   return (
     <Container fluid>
       <Paper radius="lg" p="xl">
@@ -152,24 +144,6 @@ export const CampaignDetails = () => {
                     </Button>
                   </>
                 )}
-                {/* render make a payment button*/}
-
-                {(!campaign.creator_order ||
-                  campaign.creator_order?.status === "Created") && (
-                  <Button
-                    component={Link}
-                    href={
-                      orderExists
-                        ? `/admin/stripe/payment/${router.query.id}`
-                        : `/admin/stripe/${router.query.id}`
-                    }
-                    leftIcon={<Wallet size={14} />}
-                    color="dark"
-                  >
-                    Make a payment
-                  </Button>
-                )}
-
                 {campaign?.status !== "Created" && (
                   <>
                     <IndigoButton
@@ -201,7 +175,18 @@ export const CampaignDetails = () => {
                   </>
                 )}
 
-                {campaign && campaign.creator_order?.status === "Paid" && (
+                {!campaign.campaign_order && (
+                  <Button
+                    component={Link}
+                    href={`/admin/activation/order/${campaign.id}`}
+                    leftIcon={<Wallet size={14} />}
+                    color="dark"
+                  >
+                    Make a payment
+                  </Button>
+                )}
+
+                {campaign.campaign_order !== null && (
                   <StatusButtons campaign={campaign} />
                 )}
               </Group>
@@ -215,17 +200,6 @@ export const CampaignDetails = () => {
                   content={campaign.additional_description}
                 />
               )}
-
-              {/* <SimpleGrid display="none" cols={4}>
-          {stats.map((stat) => (
-            <StatBox
-              key={stat.label}
-              value={stat.value}
-              label={stat.label}
-              subLabel={stat.subLabel}
-            />
-          ))}
-        </SimpleGrid> */}
 
               {documents?.length !== 0 && (
                 <Group position="apart" align="flex-start" noWrap>
