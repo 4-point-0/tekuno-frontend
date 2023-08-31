@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  Group,
   MediaQuery,
+  Paper,
   SimpleGrid,
   Stack,
   Text,
@@ -10,7 +12,7 @@ import {
 } from "@mantine/core";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRight } from "tabler-icons-react";
 
 import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
@@ -29,20 +31,35 @@ import { OwnershipBadge } from "./OwnershipBadge";
 interface NftDetailsProps {
   nft: NftDto;
   disableClaim?: boolean;
+  nftOrder?: any;
 }
 
 const ConfettiExplosion = dynamic(() => import("react-confetti-explosion"));
 
-export const NftDetails = ({ nft, disableClaim }: NftDetailsProps) => {
+export const NftDetails = ({
+  nft,
+  disableClaim,
+  nftOrder,
+}: NftDetailsProps) => {
   const theme = useMantineTheme();
   const { user } = useRamper();
   const [claimed, setClaimed] = useState(false);
+  const [hasEnoughtTokens, setHasEnoughTokens] = useState<boolean>(false);
   const { refetch: refechUserCampaigns } = useCampaignUserControllerFindAll(
     { queryParams: { account_id: user?.profile?.wallet_address as string } },
     { enabled: false, refetchOnWindowFocus: false }
   );
 
   const { isOwned } = useNftOwned(nft.id);
+
+  useEffect(() => {
+    if (user?.profile && nftOrder) {
+      const enoughTokens = user.profile.balance >= nftOrder.price;
+      setHasEnoughTokens(enoughTokens);
+    } else if (nftOrder === undefined) {
+      setHasEnoughTokens(true);
+    }
+  }, [nftOrder, user]);
 
   const handleClaim = () => {
     setClaimed(true);
@@ -89,11 +106,65 @@ export const NftDetails = ({ nft, disableClaim }: NftDetailsProps) => {
             <Box w="100%">
               <AssetPreview file={nft.file} />
             </Box>
+            {!isOwned && (
+              <Box mt="md">
+                <Text fw={700} c="dimmed">
+                  Payment Details
+                </Text>
 
+                <SimpleGrid
+                  mt="md"
+                  cols={2}
+                  breakpoints={[{ maxWidth: "sm", cols: 1 }]}
+                >
+                  <Paper withBorder radius="md" p="xs">
+                    <Group>
+                      <Box mx="auto">
+                        <Text
+                          color="dimmed"
+                          size="xs"
+                          transform="uppercase"
+                          weight={700}
+                        >
+                          NFT COST
+                        </Text>
+                        <Text weight={700} size="xl" ta="center">
+                          {!!nftOrder ? nftOrder.price : 0}
+                        </Text>
+                      </Box>
+                    </Group>
+                  </Paper>
+                  <Paper withBorder radius="md" p="xs">
+                    <Group>
+                      <Box mx="auto">
+                        <Text
+                          color="dimmed"
+                          size="xs"
+                          transform="uppercase"
+                          weight={700}
+                        >
+                          New balance after payment
+                        </Text>
+                        <Text weight={700} size="xl" ta="center">
+                          {user && nftOrder
+                            ? (user?.profile?.balance || 0) - nftOrder?.price
+                            : user?.profile?.balance || 0}
+                        </Text>
+                      </Box>
+                    </Group>
+                  </Paper>
+                </SimpleGrid>
+              </Box>
+            )}
             <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
               <Box w="100%">
                 {!disableClaim && (
-                  <ClaimButton nft={nft} onClaim={handleClaim} />
+                  <ClaimButton
+                    nft={nft}
+                    onClaim={handleClaim}
+                    isDisabled={!hasEnoughtTokens}
+                    shouldCreateOrder={!!nftOrder}
+                  />
                 )}
               </Box>
             </MediaQuery>
@@ -127,7 +198,12 @@ export const NftDetails = ({ nft, disableClaim }: NftDetailsProps) => {
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Box w="100%" pos="fixed" left={0} bottom={0} p="md">
                 {!disableClaim && (
-                  <ClaimButton nft={nft} onClaim={handleClaim} />
+                  <ClaimButton
+                    nft={nft}
+                    onClaim={handleClaim}
+                    isDisabled={!hasEnoughtTokens}
+                    shouldCreateOrder={!!nftOrder}
+                  />
                 )}
               </Box>
             </MediaQuery>
