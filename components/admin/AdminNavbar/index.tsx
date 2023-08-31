@@ -1,6 +1,7 @@
 import { createStyles, Divider, Navbar, rem, Text } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { GiCoins } from "react-icons/gi";
 import { PiHandCoinsDuotone } from "react-icons/pi";
 
@@ -69,10 +70,17 @@ interface AdminNavbarProps {
 export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
   const router = useRouter();
   const { classes } = useStyles({ active: router.route === "/admin/user" });
+  const [organizationBalance, setOrganizationBalance] = useState<
+    number | undefined
+  >(0);
   const { data: session } = useSession();
   const { organization, hasOrganization } = useUserOrganization(
     Boolean(session)
   );
+
+  useEffect(() => {
+    setOrganizationBalance(organization?.balance);
+  }, [organization]);
 
   if (router.route.endsWith("preview") || !session) {
     return null;
@@ -105,7 +113,7 @@ export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
         </Text>
         <Text className={classes.text} fz={17}>
           <GiCoins size={25} style={{ marginRight: "2%" }} />
-          <b style={{ marginRight: "2%" }}>{organization?.balance || "0"}</b>
+          <b style={{ marginRight: "2%" }}>{organizationBalance || "0"}</b>
         </Text>
         <IndigoButton
           onClick={() => router.push("/admin/tokens")}
