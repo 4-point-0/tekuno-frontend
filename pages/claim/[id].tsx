@@ -130,10 +130,6 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
     );
   }
 
-  if (!nftOrder) {
-    return <h1>hello</h1>;
-  }
-
   return (
     <>{nft && <NftDetails key={nft.id} nft={nft} nftOrder={nftOrder} />}</>
   );
