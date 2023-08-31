@@ -1,8 +1,8 @@
 import { Button, Stack, Text } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 
+// import ReCAPTCHA from "react-google-recaptcha";
 import { NftDetails } from "@/components/client/NftDetails";
 import {
   fetchNftControllerFindOneNft,
@@ -11,7 +11,7 @@ import {
 import { NftDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
 
-import { ClientContainer } from "../../components/layout/ClientContainer";
+// import { ClientContainer } from "../../components/layout/ClientContainer";
 
 interface ClaimPageProps {
   initialData?: NftDto;
@@ -50,30 +50,30 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
         agent.indexOf("FB_IAB") > -1
     );
   }, []);
-  const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
-  const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
+  // const key = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
+  // const [recaptchaIsDone, setRecaptchaIsDone] = useState(false);
 
   const { data: nft } = useNftControllerFindOneNft(
     { pathParams: { nftId: initialData?.id as string } },
     { enabled: Boolean(initialData?.id), initialData }
   );
 
-  const onChange = () => {
-    setRecaptchaIsDone(true);
-  };
+  // const onChange = () => {
+  //   setRecaptchaIsDone(true);
+  // };
 
-  if (!recaptchaIsDone) {
-    return (
-      <ClientContainer>
-        <Text pb={30} size="xl" fw={700}>
-          Hold on tight, adventurer! <br /> Before we continue, we must ensure
-          you are not a robot in disguise. Show us your human-like intelligence
-          by completing the reCaptcha challenge.
-        </Text>
-        {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
-      </ClientContainer>
-    );
-  }
+  // if (!recaptchaIsDone) {
+  //   return (
+  //     <ClientContainer>
+  //       <Text pb={30} size="xl" fw={700}>
+  //         Hold on tight, adventurer! <br /> Before we continue, we must ensure
+  //         you are not a robot in disguise. Show us your human-like intelligence
+  //         by completing the reCaptcha challenge.
+  //       </Text>
+  //       {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
+  //     </ClientContainer>
+  //   );
+  // }
 
   if (isInApp) {
     return (
