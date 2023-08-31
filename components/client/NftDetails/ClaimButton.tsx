@@ -28,9 +28,6 @@ export const ClaimButton = ({
   const createNftOrder = useNftControllerCreatePayment({});
   const drop = useNftControllerDropNft({ retry: false });
 
-  const TOKEN =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNkZDgxYzNjLTRmYzQtNDE5OC05YjNlLWRjYmZhOWU3M2Y5MCIsImVtYWlsIjoiZG9taW5pay5ib3NuamFrOTRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJkb21pbmlrLmJvc25qYWs5NCIsInBhc3N3b3JkIjpudWxsLCJyb2xlIjpbIlVzZXIiXSwicHJvdmlkZXIiOm51bGwsInByb3ZpZGVyX2lkIjpudWxsLCJvcmdhbml6YXRpb25faWQiOm51bGwsInN0YXR1cyI6IkFjdGl2ZSIsImNvbmZpcm1hdGlvbl9jb2RlIjpudWxsLCJwYXNzd29yZF9yZXNldF90b2tlbiI6bnVsbCwicGFzc3dvcmRfcmVzZXRfYXQiOm51bGwsImNyZWF0ZWRfYXQiOiIyMDIzLTA4LTI4VDA4OjA5OjQ5LjY4M1oiLCJ1cGRhdGVkX2F0IjoiMjAyMy0wOC0yOFQwODowOTo0OS42ODNaIiwiaWF0IjoxNjkzMzAxMTcxLCJleHAiOjE2OTM5MDU5NzF9.34FXAvoUaLjgKYLqnStOTiEuByzRgjekUzZefRndqvA";
-
   const handleClick = async () => {
     if (user && user.profile) {
       try {
