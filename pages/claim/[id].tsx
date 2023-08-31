@@ -68,7 +68,6 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
           },
         });
         setNftOrder(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       }
