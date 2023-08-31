@@ -22,6 +22,7 @@ import {
 import {
   fetchUserControllerRegister,
   useChainControllerFindAll,
+  useUserControllerAuthenticate,
 } from "@/services/api/client/clientComponents";
 import { UserDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
@@ -40,7 +41,7 @@ const RamperContext = createContext<UseRamper | null>(null);
 export const RamperProvider = ({ children }: PropsWithChildren) => {
   const theme = useMantineTheme();
 
-  const [user, setUser] = useLocalStorage<UserDto | null>({
+  const [user, setUser] = useLocalStorage<any | null>({
     key: "tkn_user",
     deserialize: (value) => (value === undefined ? null : JSON.parse(value)),
     serialize: (value) => JSON.stringify(value),
@@ -59,6 +60,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     const initRamper = async () => {
       const instance = await init({
         appName: "Tekuno",
+        appId: process.env.NEXT_PUBLIC_RAMPER_APP_ID,
         authProviders: [
           AUTH_PROVIDER.GOOGLE,
           AUTH_PROVIDER.FACEBOOK,
@@ -70,7 +72,8 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
         network: process.env.NEXT_PUBLIC_NETWORK,
         theme: theme.colorScheme === "dark" ? THEME.DARK : THEME.LIGHT,
         logoURI: `https://i.imgur.com/BF6sZhU.png`, // TODO: Point this to production url later
-        appId: "siycfmkhwu", // TODO: Change this to production app id later
+        issueIdToken: true,
+        // appId: "siycfmkhwu", // TODO: Change this to production app id later
       });
 
       setRamper(instance);
@@ -96,6 +99,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     }
 
     await registerUser();
+    await signInUser();
   };
 
   const signOut = () => {
@@ -104,7 +108,34 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
   };
 
   const refreshUserData = async () => {
+    await signInUser();
     await registerUser();
+  };
+
+  const authenticateUser = useUserControllerAuthenticate();
+
+  const signInUser = async () => {
+    const user = getUserRamper();
+    if (!user) {
+      return;
+    }
+
+    try {
+      const userData = await authenticateUser.mutateAsync({
+        body: {
+          id_token: user.ramperCredential?.idToken as string,
+          account_id: user.wallets.near.walletId.split("_")[1] as string,
+        },
+      });
+
+      return userData;
+    } catch (error) {
+      console.error("Authentication failed");
+    }
+  };
+
+  type UserCredentials = UserDto & {
+    userJwt: string;
   };
 
   const registerUser = async () => {
@@ -115,6 +146,8 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     }
 
     notifications.create({ message: "Connecting you to Tekuno" });
+
+    const userJWT = await signInUser();
 
     const currentChain = "near";
     const chainId = chainData?.results.filter(
@@ -134,16 +167,23 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
 
     try {
       setLoading(true);
-      const userData = await fetchUserControllerRegister({
-        body: {
-          email: user?.email,
-          wallet_address: walletAddress,
-          chain_id: chainId,
-          wallet_type: walletType,
-        },
-      });
 
-      setUser(userData);
+      const userCredentials = async () => {
+        const userData = await fetchUserControllerRegister({
+          body: {
+            email: user?.email,
+            wallet_address: walletAddress,
+            chain_id: chainId,
+            wallet_type: walletType,
+          },
+        });
+        return {
+          ...userData,
+          userJwt: userJWT?.token,
+        };
+      };
+
+      setUser(await userCredentials());
 
       notifications.success({
         message: "Connected successfully.",
