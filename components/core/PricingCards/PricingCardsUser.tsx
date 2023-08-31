@@ -62,7 +62,6 @@ export const PricingCards = ({ cards }: any) => {
   const [userData, setUserData] = useState<any>();
 
   const { user } = useRamper();
-  console.log("data", user);
 
   useEffect(() => {
     setUserData(user);
