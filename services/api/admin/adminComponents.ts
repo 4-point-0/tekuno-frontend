@@ -4,52 +4,10 @@
  * @version 1.0
  */
 import * as reactQuery from "@tanstack/react-query";
-
-import { AdminContext, useAdminContext } from "./adminContext";
+import { useAdminContext, AdminContext } from "./adminContext";
 import type * as Fetcher from "./adminFetcher";
 import { adminFetch } from "./adminFetcher";
 import type * as Schemas from "./adminSchemas";
-
-export type AuthControllerRegisterError = Fetcher.ErrorWrapper<undefined>;
-
-export type AuthControllerRegisterVariables = {
-  body: Schemas.RegisterDto;
-} & AdminContext["fetcherOptions"];
-
-export const fetchAuthControllerRegister = (
-  variables: AuthControllerRegisterVariables,
-  signal?: AbortSignal
-) =>
-  adminFetch<
-    Schemas.UserDto,
-    AuthControllerRegisterError,
-    Schemas.RegisterDto,
-    {},
-    {},
-    {}
-  >({ url: "/api/v1/auth/register", method: "post", ...variables, signal });
-
-export const useAuthControllerRegister = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      Schemas.UserDto,
-      AuthControllerRegisterError,
-      AuthControllerRegisterVariables
-    >,
-    "mutationFn"
-  >
-) => {
-  const { fetcherOptions } = useAdminContext();
-  return reactQuery.useMutation<
-    Schemas.UserDto,
-    AuthControllerRegisterError,
-    AuthControllerRegisterVariables
-  >(
-    (variables: AuthControllerRegisterVariables) =>
-      fetchAuthControllerRegister({ ...fetcherOptions, ...variables }),
-    options
-  );
-};
 
 export type AuthControllerLoginError = Fetcher.ErrorWrapper<undefined>;
 
@@ -421,7 +379,7 @@ export const useAdminControllerFindMe = <TData = Schemas.UserDto>(
 export type CampaignControllerCreateError = Fetcher.ErrorWrapper<undefined>;
 
 export type CampaignControllerCreateVariables = {
-  body: Schemas.CreateCampaignDto;
+  body: Schemas.CreateCampaingDto;
 } & AdminContext["fetcherOptions"];
 
 export const fetchCampaignControllerCreate = (
@@ -431,7 +389,7 @@ export const fetchCampaignControllerCreate = (
   adminFetch<
     Schemas.CampaignDto,
     CampaignControllerCreateError,
-    Schemas.CreateCampaignDto,
+    Schemas.CreateCampaingDto,
     {},
     {},
     {}
@@ -705,36 +663,6 @@ export const fetchCampaignControllerPause = (
     signal,
   });
 
-export type CampaignControllerChangePaymentTypePathParams = {
-  id: string;
-};
-
-export type CampaignControllerChangePaymentTypeError =
-  Fetcher.ErrorWrapper<undefined>;
-
-export type CampaignControllerChangePaymentTypeVariables = {
-  body: Schemas.CampaignPaymentTypeDto;
-  pathParams: CampaignControllerPausePathParams;
-} & AdminContext["fetcherOptions"];
-
-export const fetchCampaignControllerChangePaymentType = (
-  variables: CampaignControllerChangePaymentTypeVariables,
-  signal?: AbortSignal
-) =>
-  adminFetch<
-    Schemas.CampaignDto,
-    CampaignControllerChangePaymentTypeError,
-    Schemas.CampaignPaymentTypeDto,
-    {},
-    {},
-    CampaignControllerChangePaymentTypePathParams
-  >({
-    url: "/api/v1/campaign/payment-type/{id}",
-    method: "patch",
-    ...variables,
-    signal,
-  });
-
 export const useCampaignControllerPause = (
   options?: Omit<
     reactQuery.UseMutationOptions<
@@ -756,6 +684,36 @@ export const useCampaignControllerPause = (
     options
   );
 };
+
+export type CampaignControllerChangePaymentTypePathParams = {
+  id: string;
+};
+
+export type CampaignControllerChangePaymentTypeError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type CampaignControllerChangePaymentTypeVariables = {
+  body: Schemas.ChangePaymentTypeDto;
+  pathParams: CampaignControllerChangePaymentTypePathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchCampaignControllerChangePaymentType = (
+  variables: CampaignControllerChangePaymentTypeVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.CampaignDto,
+    CampaignControllerChangePaymentTypeError,
+    Schemas.ChangePaymentTypeDto,
+    {},
+    {},
+    CampaignControllerChangePaymentTypePathParams
+  >({
+    url: "/api/v1/campaign/payment-type/{id}",
+    method: "patch",
+    ...variables,
+    signal,
+  });
 
 export const useCampaignControllerChangePaymentType = (
   options?: Omit<
@@ -1659,6 +1617,80 @@ export const useOrganizationControllerFindAll = <
   );
 };
 
+export type OrganizationControllerFindAllInvoicesQueryParams = {
+  offset?: string;
+  limit?: string;
+};
+
+export type OrganizationControllerFindAllInvoicesError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type OrganizationControllerFindAllInvoicesResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.UserDto[];
+};
+
+export type OrganizationControllerFindAllInvoicesVariables = {
+  queryParams?: OrganizationControllerFindAllInvoicesQueryParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrganizationControllerFindAllInvoices = (
+  variables: OrganizationControllerFindAllInvoicesVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    OrganizationControllerFindAllInvoicesResponse,
+    OrganizationControllerFindAllInvoicesError,
+    undefined,
+    {},
+    OrganizationControllerFindAllInvoicesQueryParams,
+    {}
+  >({
+    url: "/api/v1/organization/invoices",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useOrganizationControllerFindAllInvoices = <
+  TData = OrganizationControllerFindAllInvoicesResponse
+>(
+  variables: OrganizationControllerFindAllInvoicesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      OrganizationControllerFindAllInvoicesResponse,
+      OrganizationControllerFindAllInvoicesError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    OrganizationControllerFindAllInvoicesResponse,
+    OrganizationControllerFindAllInvoicesError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/organization/invoices",
+      operationId: "organizationControllerFindAllInvoices",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrganizationControllerFindAllInvoices(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type OrganizationControllerResendInvitePathParams = {
   email: string;
 };
@@ -1814,44 +1846,40 @@ export const useOrganizationControllerRemove = (
   );
 };
 
-/***************************************** PAYMENT ***************************************************/
-
-/***************************************** ORDER ***************************************************/
-
-export type OrderControllerFindOnePathParams = {
-  id: string;
+export type OrderControllerPreviewOrderPathParams = {
+  campaignId: string;
 };
 
-export type OrderControllerFindOneError = Fetcher.ErrorWrapper<undefined>;
+export type OrderControllerPreviewOrderError = Fetcher.ErrorWrapper<undefined>;
 
-export type OrderControllerFindOneVariables = {
-  pathParams: OrderControllerFindOnePathParams;
+export type OrderControllerPreviewOrderVariables = {
+  pathParams: OrderControllerPreviewOrderPathParams;
 } & AdminContext["fetcherOptions"];
 
-export const fetchOrderControllerFindOne = (
-  variables: OrderControllerFindOneVariables,
+export const fetchOrderControllerPreviewOrder = (
+  variables: OrderControllerPreviewOrderVariables,
   signal?: AbortSignal
 ) =>
   adminFetch<
-    Schemas.OrderDto,
-    OrderControllerFindOneError,
+    Schemas.CampaignCostDto,
+    OrderControllerPreviewOrderError,
     undefined,
     {},
     {},
-    OrderControllerFindOnePathParams
+    OrderControllerPreviewOrderPathParams
   >({
-    url: "/api/v1/order/active-order/{id}",
+    url: "/api/v1/order/calculate-order-price/{campaignId}",
     method: "get",
     ...variables,
     signal,
   });
 
-export const useOrderControllerFindOne = <TData = Schemas.OrderDto>(
-  variables: OrderControllerFindOneVariables,
+export const useOrderControllerPreviewOrder = <TData = Schemas.CampaignCostDto>(
+  variables: OrderControllerPreviewOrderVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
-      Schemas.OrderDto,
-      OrderControllerFindOneError,
+      Schemas.CampaignCostDto,
+      OrderControllerPreviewOrderError,
       TData
     >,
     "queryKey" | "queryFn"
@@ -1859,17 +1887,20 @@ export const useOrderControllerFindOne = <TData = Schemas.OrderDto>(
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
   return reactQuery.useQuery<
-    Schemas.OrderDto,
-    OrderControllerFindOneError,
+    Schemas.CampaignCostDto,
+    OrderControllerPreviewOrderError,
     TData
   >(
     queryKeyFn({
-      path: "/api/v1/order/active-order/{id}",
-      operationId: "orderControllerFindOne",
+      path: "/api/v1/order/calculate-order-price/{campaign_id}",
+      operationId: "orderControllerPreviewOrder",
       variables,
     }),
     ({ signal }) =>
-      fetchOrderControllerFindOne({ ...fetcherOptions, ...variables }, signal),
+      fetchOrderControllerPreviewOrder(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
     {
       ...options,
       ...queryOptions,
@@ -1877,20 +1908,20 @@ export const useOrderControllerFindOne = <TData = Schemas.OrderDto>(
   );
 };
 
-export type OrderControllerCreateError = Fetcher.ErrorWrapper<undefined>;
+export type OrderControllerCreateOrderError = Fetcher.ErrorWrapper<undefined>;
 
-export type OrderControllerCreateVariables = {
-  body: Schemas.CreateOrderDto;
+export type OrderControllerCreateOrderVariables = {
+  body: Schemas.CampaignOrderRequestDto;
 } & AdminContext["fetcherOptions"];
 
-export const fetchOrderControllerCreate = (
-  variables: OrderControllerCreateVariables,
+export const fetchOrderControllerCreateOrder = (
+  variables: OrderControllerCreateOrderVariables,
   signal?: AbortSignal
 ) =>
   adminFetch<
-    Schemas.OrderDto,
-    OrderControllerCreateError,
-    Schemas.CreateOrderDto,
+    Schemas.CampaignOrderDto,
+    OrderControllerCreateOrderError,
+    Schemas.CampaignOrderRequestDto,
     {},
     {},
     {}
@@ -1901,24 +1932,258 @@ export const fetchOrderControllerCreate = (
     signal,
   });
 
-export const useOrderControllerCreate = (
+export const useOrderControllerCreateOrder = (
   options?: Omit<
     reactQuery.UseMutationOptions<
-      Schemas.OrderDto,
-      OrderControllerCreateError,
-      OrderControllerCreateVariables
+      Schemas.CampaignOrderDto,
+      OrderControllerCreateOrderError,
+      OrderControllerCreateOrderVariables
     >,
     "mutationFn"
   >
 ) => {
   const { fetcherOptions } = useAdminContext();
   return reactQuery.useMutation<
-    Schemas.OrderDto,
-    OrderControllerCreateError,
-    OrderControllerCreateVariables
+    Schemas.CampaignOrderDto,
+    OrderControllerCreateOrderError,
+    OrderControllerCreateOrderVariables
   >(
-    (variables: OrderControllerCreateVariables) =>
-      fetchOrderControllerCreate({ ...fetcherOptions, ...variables }),
+    (variables: OrderControllerCreateOrderVariables) =>
+      fetchOrderControllerCreateOrder({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type OrderControllerFindAllCampaignOrdersQueryParams = {
+  offset?: string;
+  limit?: string;
+};
+
+export type OrderControllerFindAllCampaignOrdersError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type OrderControllerFindAllCampaignOrdersResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.CampaignOrderDto[];
+};
+
+export type OrderControllerFindAllCampaignOrdersVariables = {
+  queryParams?: OrderControllerFindAllCampaignOrdersQueryParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchOrderControllerFindAllCampaignOrders = (
+  variables: OrderControllerFindAllCampaignOrdersVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    OrderControllerFindAllCampaignOrdersResponse,
+    OrderControllerFindAllCampaignOrdersError,
+    undefined,
+    {},
+    OrderControllerFindAllCampaignOrdersQueryParams,
+    {}
+  >({ url: "/api/v1/order", method: "get", ...variables, signal });
+
+export const useOrderControllerFindAllCampaignOrders = <
+  TData = OrderControllerFindAllCampaignOrdersResponse
+>(
+  variables: OrderControllerFindAllCampaignOrdersVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      OrderControllerFindAllCampaignOrdersResponse,
+      OrderControllerFindAllCampaignOrdersError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    OrderControllerFindAllCampaignOrdersResponse,
+    OrderControllerFindAllCampaignOrdersError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/order",
+      operationId: "orderControllerFindAllCampaignOrders",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchOrderControllerFindAllCampaignOrders(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerGetProductPathParams = {
+  id: string;
+};
+
+export type StripeControllerGetProductError = Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerGetProductVariables = {
+  pathParams: StripeControllerGetProductPathParams;
+} & AdminContext["fetcherOptions"];
+
+export const fetchStripeControllerGetProduct = (
+  variables: StripeControllerGetProductVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.ProductDto,
+    StripeControllerGetProductError,
+    undefined,
+    {},
+    {},
+    StripeControllerGetProductPathParams
+  >({
+    url: "/api/v1/stripe/products/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useStripeControllerGetProduct = <TData = Schemas.ProductDto>(
+  variables: StripeControllerGetProductVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.ProductDto,
+      StripeControllerGetProductError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    Schemas.ProductDto,
+    StripeControllerGetProductError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/stripe/products/{id}",
+      operationId: "stripeControllerGetProduct",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchStripeControllerGetProduct(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerGetProductsError = Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerGetProductsResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.ProductDto[];
+};
+
+export type StripeControllerGetProductsVariables =
+  AdminContext["fetcherOptions"];
+
+export const fetchStripeControllerGetProducts = (
+  variables: StripeControllerGetProductsVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    StripeControllerGetProductsResponse,
+    StripeControllerGetProductsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/stripe/products", method: "get", ...variables, signal });
+
+export const useStripeControllerGetProducts = <
+  TData = StripeControllerGetProductsResponse
+>(
+  variables: StripeControllerGetProductsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      StripeControllerGetProductsResponse,
+      StripeControllerGetProductsError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useAdminContext(options);
+  return reactQuery.useQuery<
+    StripeControllerGetProductsResponse,
+    StripeControllerGetProductsError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/stripe/products",
+      operationId: "stripeControllerGetProducts",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchStripeControllerGetProducts(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerChargeCapturedError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerChargeCapturedVariables =
+  AdminContext["fetcherOptions"];
+
+export const fetchStripeControllerChargeCaptured = (
+  variables: StripeControllerChargeCapturedVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    undefined,
+    StripeControllerChargeCapturedError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/stripe/webhook", method: "post", ...variables, signal });
+
+export const useStripeControllerChargeCaptured = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      StripeControllerChargeCapturedError,
+      StripeControllerChargeCapturedVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    undefined,
+    StripeControllerChargeCapturedError,
+    StripeControllerChargeCapturedVariables
+  >(
+    (variables: StripeControllerChargeCapturedVariables) =>
+      fetchStripeControllerChargeCaptured({ ...fetcherOptions, ...variables }),
     options
   );
 };
@@ -1995,7 +2260,27 @@ export type QueryOperation =
       variables: OrganizationControllerFindAllVariables;
     }
   | {
-      path: "/api/v1/order/active-order/{id}";
-      operationId: "orderControllerFindOne";
-      variables: OrderControllerFindOneVariables;
+      path: "/api/v1/organization/invoices";
+      operationId: "organizationControllerFindAllInvoices";
+      variables: OrganizationControllerFindAllInvoicesVariables;
+    }
+  | {
+      path: "/api/v1/order/calculate-order-price/{campaign_id}";
+      operationId: "orderControllerPreviewOrder";
+      variables: OrderControllerPreviewOrderVariables;
+    }
+  | {
+      path: "/api/v1/order";
+      operationId: "orderControllerFindAllCampaignOrders";
+      variables: OrderControllerFindAllCampaignOrdersVariables;
+    }
+  | {
+      path: "/api/v1/stripe/products/{id}";
+      operationId: "stripeControllerGetProduct";
+      variables: StripeControllerGetProductVariables;
+    }
+  | {
+      path: "/api/v1/stripe/products";
+      operationId: "stripeControllerGetProducts";
+      variables: StripeControllerGetProductsVariables;
     };

@@ -17,6 +17,15 @@ export type ChainDto = {
   description?: string | null;
 };
 
+export type UserInvoiceDto = {
+  user_id: string;
+  /**
+   * @format date-time
+   */
+  created_at: string;
+  invoice_pdf: string;
+};
+
 export type RegisterUserDto = {
   email?: string;
   wallet_address: string;
@@ -29,6 +38,7 @@ export type ProfileDto = {
   wallet_address: string;
   chain_id: string;
   user_id: string;
+  balance: number;
   created_by_id: string;
   /**
    * @format date-time
@@ -50,6 +60,15 @@ export type UserDto = {
   organization_id?: string;
   profile?: ProfileDto;
   status?: "Pending" | "Active";
+};
+
+export type UserLoginDto = {
+  id_token: string;
+  account_id: string;
+};
+
+export type JwtTokenDto = {
+  token: string;
 };
 
 export type CampaignTypeDto = {
@@ -97,11 +116,14 @@ export type NftDto = {
   file: FileDto;
 };
 
-export type CreatorOrderDto = {
-  order_id: string;
+export type CampaignOrderDto = {
+  id: string;
   campaign_id: string;
   price: number;
-  status: string;
+  /**
+   * @format date-time
+   */
+  created_at: string;
 };
 
 export type CampaignDto = {
@@ -123,7 +145,8 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
-  creator_order: CreatorOrderDto;
+  payment_type?: "CreatorPays" | "BothPay";
+  campaign_order?: CampaignOrderDto;
 };
 
 export type NearNftAttribute = {
@@ -133,6 +156,16 @@ export type NearNftAttribute = {
 
 export type NearNftAttributes = {
   attributes: NearNftAttribute[];
+};
+
+export type NftOrderDto = {
+  id: string;
+  nft_id: string;
+  price: number;
+  /**
+   * @format date-time
+   */
+  created_at: string;
 };
 
 export type UserNftDto = {
@@ -146,6 +179,26 @@ export type UserNftDto = {
   properties?: NearNftAttributes;
   supply?: number | null;
   file: FileDto;
+  nft_order?: NftOrderDto;
+};
+
+export type NftCostDto = {
+  nft_id: string;
+  campaign_id: string;
+  price: number;
+};
+
+export type NftOrderRequestDto = {
+  nft_id: string;
+  account_id: string;
 };
 
 export type StreamableFile = {};
+
+export type ProductDto = {
+  id: string;
+  name: string;
+  price?: number;
+  currency: string;
+  payment_url: string;
+};

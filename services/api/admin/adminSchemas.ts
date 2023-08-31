@@ -3,6 +3,32 @@
  *
  * @version 1.0
  */
+export type LoginDto = {
+  email: string;
+  password: string;
+};
+
+export type JwtTokenDto = {
+  token: string;
+};
+
+export type ForgotPasswordDto = {
+  email: string;
+};
+
+export type ResetPasswordDto = {
+  email: string;
+  token: string;
+  password: string;
+  password_confirm: string;
+};
+
+export type ChangePasswordDto = {
+  email: string;
+  old_password: string;
+  new_password: string;
+};
+
 export type RegisterDto = {
   email: string;
   password: string;
@@ -14,6 +40,7 @@ export type ProfileDto = {
   wallet_address: string;
   chain_id: string;
   user_id: string;
+  balance: number;
   created_by_id: string;
   /**
    * @format date-time
@@ -35,30 +62,6 @@ export type UserDto = {
   organization_id?: string;
   profile?: ProfileDto;
   status?: "Pending" | "Active";
-};
-
-export type LoginDto = {
-  email: string;
-  password: string;
-};
-
-export type JwtTokenDto = {};
-
-export type ForgotPasswordDto = {
-  email: string;
-};
-
-export type ResetPasswordDto = {
-  email: string;
-  token: string;
-  password: string;
-  password_confirm: string;
-};
-
-export type ChangePasswordDto = {
-  email: string;
-  old_password: string;
-  new_password: string;
 };
 
 export type GoogleVerificationDto = {
@@ -91,7 +94,7 @@ export type CreateNftDto = {
   supply?: number | null;
 };
 
-export type CreateCampaignDto = {
+export type CreateCampaingDto = {
   name: string;
   campaign_type_id: string;
   chain_id: string;
@@ -160,11 +163,14 @@ export type NftDto = {
   file: FileDto;
 };
 
-export type CreatorOrderDto = {
-  order_id: string;
+export type CampaignOrderDto = {
+  id: string;
   campaign_id: string;
   price: number;
-  status: string;
+  /**
+   * @format date-time
+   */
+  created_at: string;
 };
 
 export type CampaignDto = {
@@ -186,7 +192,8 @@ export type CampaignDto = {
   files?: FileDto[];
   nfts: NftDto[] | null;
   status: "Created" | "Started" | "Paused" | "Ended";
-  creator_order: CreatorOrderDto;
+  payment_type?: "CreatorPays" | "BothPay";
+  campaign_order?: CampaignOrderDto;
 };
 
 export type UpdateCampaignDto = {
@@ -210,8 +217,8 @@ export type CampaignStatusDto = {
   status: "Ended" | "Paused" | "Started";
 };
 
-export type CampaignPaymentTypeDto = {
-  paymentType: "BuyerPays" | "CreatorPays";
+export type ChangePaymentTypeDto = {
+  paymentType: "BothPay" | "CreatorPays";
 };
 
 export type CreateOrganizationDto = {
@@ -224,6 +231,7 @@ export type OrganizationDto = {
   id: string;
   name: string;
   description?: string | null;
+  balance: number;
   file: FileDto;
 };
 
@@ -237,13 +245,19 @@ export type InviteUserDto = {
   role: "Admin" | "Member";
 };
 
-export type OrderDto = {
-  order_id: string;
+export type CampaignCostDto = {
   campaign_id: string;
   price: number;
-  status: string;
 };
 
-export type CreateOrderDto = {
+export type CampaignOrderRequestDto = {
   campaign_id: string;
+};
+
+export type ProductDto = {
+  id: string;
+  name: string;
+  price?: number;
+  currency: string;
+  payment_url: string;
 };

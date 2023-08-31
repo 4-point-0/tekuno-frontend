@@ -172,6 +172,117 @@ export const useUserControllerRegister = (
   );
 };
 
+export type UserControllerAuthenticateError = Fetcher.ErrorWrapper<undefined>;
+
+export type UserControllerAuthenticateVariables = {
+  body: Schemas.UserLoginDto;
+} & ClientContext["fetcherOptions"];
+
+export const fetchUserControllerAuthenticate = (
+  variables: UserControllerAuthenticateVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.JwtTokenDto,
+    UserControllerAuthenticateError,
+    Schemas.UserLoginDto,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/user/auth", method: "post", ...variables, signal });
+
+export const useUserControllerAuthenticate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.JwtTokenDto,
+      UserControllerAuthenticateError,
+      UserControllerAuthenticateVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useClientContext();
+  return reactQuery.useMutation<
+    Schemas.JwtTokenDto,
+    UserControllerAuthenticateError,
+    UserControllerAuthenticateVariables
+  >(
+    (variables: UserControllerAuthenticateVariables) =>
+      fetchUserControllerAuthenticate({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type UserControllerFindAllCampaignOrdersQueryParams = {
+  offset?: string;
+  limit?: string;
+};
+
+export type UserControllerFindAllCampaignOrdersError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type UserControllerFindAllCampaignOrdersResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.UserInvoiceDto[];
+};
+
+export type UserControllerFindAllCampaignOrdersVariables = {
+  queryParams?: UserControllerFindAllCampaignOrdersQueryParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchUserControllerFindAllCampaignOrders = (
+  variables: UserControllerFindAllCampaignOrdersVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    UserControllerFindAllCampaignOrdersResponse,
+    UserControllerFindAllCampaignOrdersError,
+    undefined,
+    {},
+    UserControllerFindAllCampaignOrdersQueryParams,
+    {}
+  >({ url: "/api/v1/user/invoices", method: "get", ...variables, signal });
+
+export const useUserControllerFindAllCampaignOrders = <
+  TData = UserControllerFindAllCampaignOrdersResponse
+>(
+  variables: UserControllerFindAllCampaignOrdersVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      UserControllerFindAllCampaignOrdersResponse,
+      UserControllerFindAllCampaignOrdersError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    UserControllerFindAllCampaignOrdersResponse,
+    UserControllerFindAllCampaignOrdersError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/user/invoices",
+      operationId: "userControllerFindAllCampaignOrders",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchUserControllerFindAllCampaignOrders(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type NftControllerFindAllQueryParams = {
   account_id: string;
   name?: string;
@@ -404,6 +515,180 @@ export const useNftControllerDropNft = (
     (variables: NftControllerDropNftVariables) =>
       fetchNftControllerDropNft({ ...fetcherOptions, ...variables }),
     options
+  );
+};
+
+export type NftControllerPreviewOrderPathParams = {
+  nftId: string;
+};
+
+export type NftControllerPreviewOrderError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerPreviewOrderVariables = {
+  pathParams: NftControllerPreviewOrderPathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerPreviewOrder = (
+  variables: NftControllerPreviewOrderVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.NftCostDto,
+    NftControllerPreviewOrderError,
+    undefined,
+    {},
+    {},
+    NftControllerPreviewOrderPathParams
+  >({
+    url: "/api/v1/nft/calculate-order-price/{nftId}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useNftControllerPreviewOrder = <TData = Schemas.NftCostDto>(
+  variables: NftControllerPreviewOrderVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.NftCostDto,
+      NftControllerPreviewOrderError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.NftCostDto,
+    NftControllerPreviewOrderError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft/calculate-order-price/{nft_id}",
+      operationId: "nftControllerPreviewOrder",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerPreviewOrder(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type NftControllerCreatePaymentError = Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerCreatePaymentVariables = {
+  body: Schemas.NftOrderRequestDto;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerCreatePayment = (
+  variables: NftControllerCreatePaymentVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.NftOrderDto,
+    NftControllerCreatePaymentError,
+    Schemas.NftOrderRequestDto,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/nft/create-order", method: "post", ...variables, signal });
+
+export const useNftControllerCreatePayment = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.NftOrderDto,
+      NftControllerCreatePaymentError,
+      NftControllerCreatePaymentVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useClientContext();
+  return reactQuery.useMutation<
+    Schemas.NftOrderDto,
+    NftControllerCreatePaymentError,
+    NftControllerCreatePaymentVariables
+  >(
+    (variables: NftControllerCreatePaymentVariables) =>
+      fetchNftControllerCreatePayment({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type NftControllerFindAllNftOrdersQueryParams = {
+  offset?: string;
+  limit?: string;
+};
+
+export type NftControllerFindAllNftOrdersError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type NftControllerFindAllNftOrdersResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.NftOrderDto[];
+};
+
+export type NftControllerFindAllNftOrdersVariables = {
+  queryParams?: NftControllerFindAllNftOrdersQueryParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchNftControllerFindAllNftOrders = (
+  variables: NftControllerFindAllNftOrdersVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    NftControllerFindAllNftOrdersResponse,
+    NftControllerFindAllNftOrdersError,
+    undefined,
+    {},
+    NftControllerFindAllNftOrdersQueryParams,
+    {}
+  >({ url: "/api/v1/nft/nft-orders/all", method: "get", ...variables, signal });
+
+export const useNftControllerFindAllNftOrders = <
+  TData = NftControllerFindAllNftOrdersResponse
+>(
+  variables: NftControllerFindAllNftOrdersVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NftControllerFindAllNftOrdersResponse,
+      NftControllerFindAllNftOrdersError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    NftControllerFindAllNftOrdersResponse,
+    NftControllerFindAllNftOrdersError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/nft/nft-orders/all",
+      operationId: "nftControllerFindAllNftOrders",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchNftControllerFindAllNftOrders(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
   );
 };
 
@@ -671,6 +956,173 @@ export const useCampaignUserControllerGetNftMedia = <
   );
 };
 
+export type StripeControllerGetProductPathParams = {
+  id: string;
+};
+
+export type StripeControllerGetProductError = Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerGetProductVariables = {
+  pathParams: StripeControllerGetProductPathParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchStripeControllerGetProduct = (
+  variables: StripeControllerGetProductVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    Schemas.ProductDto,
+    StripeControllerGetProductError,
+    undefined,
+    {},
+    {},
+    StripeControllerGetProductPathParams
+  >({
+    url: "/api/v1/stripe/products/{id}",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useStripeControllerGetProduct = <TData = Schemas.ProductDto>(
+  variables: StripeControllerGetProductVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.ProductDto,
+      StripeControllerGetProductError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    Schemas.ProductDto,
+    StripeControllerGetProductError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/stripe/products/{id}",
+      operationId: "stripeControllerGetProduct",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchStripeControllerGetProduct(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerGetProductsError = Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerGetProductsResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.ProductDto[];
+};
+
+export type StripeControllerGetProductsVariables =
+  ClientContext["fetcherOptions"];
+
+export const fetchStripeControllerGetProducts = (
+  variables: StripeControllerGetProductsVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    StripeControllerGetProductsResponse,
+    StripeControllerGetProductsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/stripe/products", method: "get", ...variables, signal });
+
+export const useStripeControllerGetProducts = <
+  TData = StripeControllerGetProductsResponse
+>(
+  variables: StripeControllerGetProductsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      StripeControllerGetProductsResponse,
+      StripeControllerGetProductsError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    StripeControllerGetProductsResponse,
+    StripeControllerGetProductsError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/stripe/products",
+      operationId: "stripeControllerGetProducts",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchStripeControllerGetProducts(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type StripeControllerChargeCapturedError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type StripeControllerChargeCapturedVariables =
+  ClientContext["fetcherOptions"];
+
+export const fetchStripeControllerChargeCaptured = (
+  variables: StripeControllerChargeCapturedVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    undefined,
+    StripeControllerChargeCapturedError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/api/v1/stripe/webhook", method: "post", ...variables, signal });
+
+export const useStripeControllerChargeCaptured = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      StripeControllerChargeCapturedError,
+      StripeControllerChargeCapturedVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useClientContext();
+  return reactQuery.useMutation<
+    undefined,
+    StripeControllerChargeCapturedError,
+    StripeControllerChargeCapturedVariables
+  >(
+    (variables: StripeControllerChargeCapturedVariables) =>
+      fetchStripeControllerChargeCaptured({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type QueryOperation =
   | {
       path: "/api/v1/chain";
@@ -681,6 +1133,11 @@ export type QueryOperation =
       path: "/api/v1/chain/{id}";
       operationId: "chainControllerFindOne";
       variables: ChainControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/user/invoices";
+      operationId: "userControllerFindAllCampaignOrders";
+      variables: UserControllerFindAllCampaignOrdersVariables;
     }
   | {
       path: "/api/v1/nft";
@@ -696,6 +1153,16 @@ export type QueryOperation =
       path: "/api/v1/nft/{nft_id}";
       operationId: "nftControllerFindOneNft";
       variables: NftControllerFindOneNftVariables;
+    }
+  | {
+      path: "/api/v1/nft/calculate-order-price/{nft_id}";
+      operationId: "nftControllerPreviewOrder";
+      variables: NftControllerPreviewOrderVariables;
+    }
+  | {
+      path: "/api/v1/nft/nft-orders/all";
+      operationId: "nftControllerFindAllNftOrders";
+      variables: NftControllerFindAllNftOrdersVariables;
     }
   | {
       path: "/api/v1/nft/{tokenId}/media";
@@ -716,4 +1183,14 @@ export type QueryOperation =
       path: "/api/v1/campaign-user/{file_id}/media";
       operationId: "campaignUserControllerGetNftMedia";
       variables: CampaignUserControllerGetNftMediaVariables;
+    }
+  | {
+      path: "/api/v1/stripe/products/{id}";
+      operationId: "stripeControllerGetProduct";
+      variables: StripeControllerGetProductVariables;
+    }
+  | {
+      path: "/api/v1/stripe/products";
+      operationId: "stripeControllerGetProducts";
+      variables: StripeControllerGetProductsVariables;
     };
