@@ -1,6 +1,7 @@
 import {
   Box,
   Burger,
+  Button,
   Center,
   Container,
   createStyles,
@@ -10,6 +11,7 @@ import {
   Image,
   Menu,
   NavLink,
+  Popover,
   ScrollArea,
   Skeleton,
   Stack,
@@ -18,8 +20,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { GiCoins } from "react-icons/gi";
-import { PiHandCoinsDuotone } from "react-icons/pi";
+import { PiCoinsDuotone, PiHandCoinsDuotone } from "react-icons/pi";
 import { ChevronDown, Disc, User } from "tabler-icons-react";
 
 import { useRamper } from "@/context/RamperContext";
@@ -63,8 +64,6 @@ export function ClientHeader() {
   const router = useRouter();
 
   const { user } = useRamper();
-
-  console.log("user", user);
 
   const [isClient, setIsClient] = useState(false);
 
@@ -189,13 +188,18 @@ export function ClientHeader() {
             </Link>
             <Group className={classes.hiddenMobile}>
               {campaignDropdownLinks(campaigns?.results)}
-              <Box>Available:</Box>
-              <Box>
-                <Group>
-                  <b>{user?.profile?.balance || "0"}</b> <GiCoins size={20} />
-                </Group>
-              </Box>
-              <Box>{buyTokensLink()}</Box>
+              <Box>Tokens:</Box>
+              <Popover width={200} position="bottom" withArrow shadow="md">
+                <Popover.Target>
+                  <Button rightIcon={<PiCoinsDuotone size={17} />}>
+                    {user?.profile?.balance || "0"}
+                  </Button>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Box>{buyTokensLink()}</Box>
+                </Popover.Dropdown>
+              </Popover>
+
               <Box>{profileLink()}</Box>
             </Group>
 
