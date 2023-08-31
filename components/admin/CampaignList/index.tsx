@@ -24,7 +24,7 @@ import { CampaignStatus } from "../CampaignStatus";
 export const CampaignList = () => {
   const { data, isLoading } = useCampaignControllerFindAll({});
 
-  const getCampaingImage = (campaign: CampaignDto) => {
+  const getCampaignImage = (campaign: CampaignDto) => {
     const imageFile = campaign.files?.find((file) =>
       file.tags.includes("image")
     );
@@ -63,7 +63,7 @@ export const CampaignList = () => {
           >
             <Card.Section mb="xl">
               <Image
-                src={getCampaingImage(campaign)}
+                src={getCampaignImage(campaign)}
                 w="100%"
                 height={184}
                 alt={campaign.name}

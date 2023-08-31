@@ -16,7 +16,7 @@ export default function Admin({
   return (
     <Container fluid sx={{ height: "100%" }}>
       <Paper radius="lg" p="xl" h="100%">
-        <CallToAction hasOrganization={hasOrganization} />
+        <CallToAction hasOrganization={Boolean(user?.organization_id)} />
       </Paper>
     </Container>
   );

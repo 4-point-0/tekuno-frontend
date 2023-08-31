@@ -93,7 +93,7 @@ const campaignSharedValidations = {
   startDate: (value: Date | null) => (!value ? "Start date is required" : null),
   endDate: (value: Date | null, { limitDate }: SharedFormValues) => {
     return limitDate && !value
-      ? "Date range must be selected if the campaing date is limited"
+      ? "Date range must be selected if the campaign date is limited"
       : null;
   },
   image: (value?: UploadedFileValue) =>

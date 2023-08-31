@@ -122,7 +122,7 @@ export const LinkButton = ({
 export const Links = () => {
   const { data } = useCampaignControllerFindAll({});
 
-  const previousCampaings = data?.results;
+  const previousCampaigns = data?.results;
 
   const links = [
     {
@@ -146,7 +146,7 @@ export const Links = () => {
       label: "Previous PODs",
       href: "/admin/previous",
       Icon: Clock,
-      links: previousCampaings?.map(({ name, id, status }) => {
+      links: previousCampaigns?.map(({ name, id, status }) => {
         return {
           label: name.length >= 25 ? `${name.substring(0, 25)}...` : name,
           href: `/admin/previous/${id}`,
