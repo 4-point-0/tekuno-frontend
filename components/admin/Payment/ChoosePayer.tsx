@@ -141,7 +141,7 @@ export const ChoosePayer = ({ campaignId }: any) => {
           <Card.Section className={classes.section} mt="md">
             <Group position="center">
               <Text fz="lg" fw={500}>
-                Creator
+                Creator Pays
               </Text>
             </Group>
           </Card.Section>
@@ -171,7 +171,7 @@ export const ChoosePayer = ({ campaignId }: any) => {
           <Card.Section className={classes.section} mt="md">
             <Group position="center">
               <Text fz="lg" fw={500}>
-                Buyer
+                Creator & User Pay
               </Text>
             </Group>
           </Card.Section>
