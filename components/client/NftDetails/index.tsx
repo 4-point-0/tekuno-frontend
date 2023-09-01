@@ -134,25 +134,30 @@ export const NftDetails = ({
                       </Box>
                     </Group>
                   </Paper>
-                  <Paper withBorder radius="md" p="xs">
-                    <Group>
-                      <Box mx="auto">
-                        <Text
-                          color="dimmed"
-                          size="xs"
-                          transform="uppercase"
-                          weight={700}
-                        >
-                          New balance after payment
-                        </Text>
-                        <Text weight={700} size="xl" ta="center">
-                          {user && nftOrder
-                            ? (user?.profile?.balance || 0) - nftOrder?.price
-                            : user?.profile?.balance || 0}
-                        </Text>
-                      </Box>
-                    </Group>
-                  </Paper>
+                  {user && (
+                    <Paper withBorder radius="md" p="xs">
+                      <Group>
+                        <Box mx="auto">
+                          <Text
+                            color="dimmed"
+                            size="xs"
+                            transform="uppercase"
+                            weight={700}
+                          >
+                            New balance after payment
+                          </Text>
+                          <Text weight={700} size="xl" ta="center">
+                            {user && nftOrder
+                              ? (
+                                  (user?.profile?.balance || 0) -
+                                  nftOrder?.price
+                                ).toFixed(2)
+                              : user?.profile?.balance?.toFixed(2) || 0}
+                          </Text>
+                        </Box>
+                      </Group>
+                    </Paper>
+                  )}
                 </SimpleGrid>
               </Box>
             )}
