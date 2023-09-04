@@ -7,11 +7,20 @@ import {
   Text,
 } from "@mantine/core";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
+import { useRamper } from "@/context/RamperContext";
 
 export const PaymentConfirm = () => {
   const router = useRouter();
+
+  const { refreshUserData } = useRamper();
+
+  useEffect(() => {
+    refreshUserData();
+  }, []);
+
   return (
     <Container>
       <Box mt="xl">
