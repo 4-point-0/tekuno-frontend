@@ -107,22 +107,25 @@ export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
         <UserButton />
       </Navbar.Section>
 
-      <Navbar.Section className={classes.footer}>
-        <Text className={classes.text} c="dimmed">
-          <b>Available Tokens:</b>
-        </Text>
-        <Text className={classes.text} fz={17}>
-          <GiCoins size={25} style={{ marginRight: "2%" }} />
-          <b style={{ marginRight: "2%" }}>{organizationBalance || "0"}</b>
-        </Text>
-        <IndigoButton
-          onClick={() => router.push("/admin/tokens")}
-          mt="sm"
-          leftIcon={<PiHandCoinsDuotone size={20} />}
-        >
-          Buy more tokens
-        </IndigoButton>
-      </Navbar.Section>
+      {hasOrganization && (
+        <Navbar.Section className={classes.footer}>
+          <Text className={classes.text} c="dimmed">
+            <b>Available Tokens:</b>
+          </Text>
+          <Text className={classes.text} fz={17}>
+            <GiCoins size={25} style={{ marginRight: "2%" }} />
+            <b style={{ marginRight: "2%" }}>{organizationBalance || "0"}</b>
+          </Text>
+
+          <IndigoButton
+            onClick={() => router.push("/admin/tokens")}
+            mt="sm"
+            leftIcon={<PiHandCoinsDuotone size={20} />}
+          >
+            Buy more tokens
+          </IndigoButton>
+        </Navbar.Section>
+      )}
     </Navbar>
   );
 };
