@@ -88,14 +88,17 @@ export const AppLayout = ({ children }: PropsWithChildren) => {
     </AppShell>
   );
 
-  if (router.route.includes("payment-confirm")) {
-    return <RamperProvider>{children}</RamperProvider>;
-  }
   return isAdmin ? (
     appShell()
   ) : (
     <>
-      <RamperProvider>{appShell()}</RamperProvider>
+      <RamperProvider>
+        {router.route.includes("payment-confirm") ? (
+          <>{children}</>
+        ) : (
+          appShell()
+        )}
+      </RamperProvider>
     </>
   );
 };
