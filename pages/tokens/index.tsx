@@ -17,8 +17,8 @@ export const Tokens = () => {
         </Title>
       </Box>
       <SimpleGrid
-        cols={3}
-        spacing="md"
+        cols={4}
+        spacing="sm"
         breakpoints={[
           { maxWidth: "sm", cols: 1 },
           { maxWidth: "lg", cols: 2 },
