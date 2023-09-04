@@ -20,7 +20,11 @@ export const PaymentConfirm = () => {
         </Text>
       </Box>
       <AspectRatio ratio={720 / 950} maw={400} mx="auto">
-        <Image src={"/images/confirm-payment.png"} radius="xl" />
+        <Image
+          src={"/images/confirm-payment.png"}
+          alt="Payment is confirmed"
+          radius="xl"
+        />
       </AspectRatio>
       <Text fz="lg" ta="center" mt="md">
         We appreciate your support and hope you enjoy your new tokens.
@@ -35,7 +39,8 @@ export const PaymentConfirm = () => {
           size="lg"
           mt="xl"
           onClick={() => {
-            router.push("/");
+            router.back();
+            router.back();
           }}
         >
           Back to Tekuno

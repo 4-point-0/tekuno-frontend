@@ -88,6 +88,10 @@ export const AppLayout = ({ children }: PropsWithChildren) => {
     </AppShell>
   );
 
+  if (router.route.includes("payment-confirm")) {
+    return <>{children}</>;
+  }
+
   return isAdmin ? (
     appShell()
   ) : (
