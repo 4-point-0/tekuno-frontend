@@ -63,7 +63,7 @@ export function ClientHeader() {
   const { classes } = useStyles();
   const router = useRouter();
 
-  const { user } = useRamper();
+  const { user, refreshTokens } = useRamper();
 
   const [isClient, setIsClient] = useState(false);
 
@@ -77,6 +77,10 @@ export function ClientHeader() {
       enabled: Boolean(user?.profile?.wallet_address),
     }
   );
+
+  useEffect(() => {
+    refreshTokens();
+  }, []);
 
   useEffect(() => {
     setIsClient(true);

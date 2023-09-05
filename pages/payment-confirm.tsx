@@ -7,19 +7,11 @@ import {
   Text,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
-import { useRamper } from "@/context/RamperContext";
 
 export const PaymentConfirm = () => {
   const router = useRouter();
-
-  const { refreshTokens } = useRamper();
-
-  useEffect(() => {
-    refreshTokens();
-  }, []);
 
   return (
     <Container>
@@ -48,8 +40,7 @@ export const PaymentConfirm = () => {
           size="lg"
           mt="xl"
           onClick={() => {
-            router.back();
-            router.back();
+            window.history.go(-3);
           }}
         >
           Back to Tekuno
