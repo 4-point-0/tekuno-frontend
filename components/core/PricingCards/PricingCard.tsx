@@ -89,9 +89,10 @@ const PricingCard = ({ card, userData }: { card: any; userData: any }) => {
       <Button
         mt="md"
         className={classes.button}
-        onClick={() =>
-          router.push(`${card.payment_url}?client_reference_id=${userData.id}`)
-        }
+        onClick={() => {
+          localStorage.setItem("tkn_return_path", router.asPath);
+          router.push(`${card.payment_url}?client_reference_id=${userData.id}`);
+        }}
       >
         Order Now
       </Button>

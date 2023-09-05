@@ -40,7 +40,9 @@ export const PaymentConfirm = () => {
           size="lg"
           mt="xl"
           onClick={() => {
-            window.history.go(-3);
+            const path = localStorage.getItem("tkn_return_path");
+            localStorage.removeItem("tkn_return_path");
+            router.replace(path || "/");
           }}
         >
           Back to Tekuno
