@@ -20,9 +20,9 @@ import {
 } from "react";
 
 import {
+  fetchUserControllerAuthenticate,
   fetchUserControllerRegister,
   useChainControllerFindAll,
-  useUserControllerAuthenticate,
 } from "@/services/api/client/clientComponents";
 import { UserDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
@@ -135,8 +135,6 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     await registerUser();
   };
 
-  const authenticateUser = useUserControllerAuthenticate();
-
   const signInUser = async () => {
     const user = getUserRamper();
     if (!user) {
@@ -144,7 +142,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     }
 
     try {
-      const userData = await authenticateUser.mutateAsync({
+      const userData = await fetchUserControllerAuthenticate({
         body: {
           id_token: user.ramperCredential?.idToken as string,
           account_id: user.wallets.near.walletId.split("_")[1] as string,
