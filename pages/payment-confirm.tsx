@@ -15,10 +15,10 @@ import { useRamper } from "@/context/RamperContext";
 export const PaymentConfirm = () => {
   const router = useRouter();
 
-  const { refreshUserData } = useRamper();
+  const { refreshTokens } = useRamper();
 
   useEffect(() => {
-    refreshUserData();
+    refreshTokens();
   }, []);
 
   return (

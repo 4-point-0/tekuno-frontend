@@ -34,6 +34,7 @@ interface UseRamper {
   signIn: () => Promise<void>;
   signOut: () => void;
   refreshUserData: () => Promise<void>;
+  refreshTokens: () => Promise<void>;
 }
 
 const RamperContext = createContext<UseRamper | null>(null);
@@ -41,7 +42,7 @@ const RamperContext = createContext<UseRamper | null>(null);
 export const RamperProvider = ({ children }: PropsWithChildren) => {
   const theme = useMantineTheme();
 
-  const [user, setUser] = useLocalStorage<any | null>({
+  const [user, setUser] = useLocalStorage<UserCredentials | null>({
     key: "tkn_user",
     deserialize: (value) => (value === undefined ? null : JSON.parse(value)),
     serialize: (value) => JSON.stringify(value),
@@ -105,6 +106,28 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
   const signOut = () => {
     setUser(null);
     signOutRamper();
+  };
+
+  const refreshTokens = async () => {
+    if (!user) return;
+
+    const walletType = user?.provider ? "Ramper" : "SelfCreated";
+
+    const userData = await fetchUserControllerRegister({
+      body: {
+        email: user?.email,
+        wallet_address: user?.profile?.wallet_address!,
+        chain_id: user?.profile?.chain_id!,
+        wallet_type: walletType,
+      },
+    });
+
+    const newUser = {
+      ...userData,
+      userJwt: user?.userJwt,
+    };
+
+    setUser(newUser);
   };
 
   const refreshUserData = async () => {
@@ -179,7 +202,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
         });
         return {
           ...userData,
-          userJwt: userJWT?.token,
+          userJwt: userJWT?.token || "",
         };
       };
 
@@ -208,6 +231,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
         signIn,
         signOut,
         refreshUserData,
+        refreshTokens,
       }}
     >
       {children}
