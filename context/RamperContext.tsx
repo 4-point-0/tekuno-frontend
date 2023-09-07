@@ -180,7 +180,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    const key = process.env.NEXT_PUBLIC_RAMPER_ENCRYPTION_KEY as string;
+    const key = process.env.NEXT_PUBLIC_RAMPER_ENCRYPT as string;
     const { ciphertext, iv } = await encryptSymmetric(
       user?.wallets[currentChain].publicKey,
       key
