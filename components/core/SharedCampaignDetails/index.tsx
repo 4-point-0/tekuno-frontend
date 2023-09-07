@@ -58,7 +58,7 @@ export const SharedCampaignDetails = ({
   const isClient = useIsClient();
 
   const { isBurned, isCollected, collectedReward, progress } = useCollectedNfts(
-    campaign,
+    campaign as any,
     user
   );
 
