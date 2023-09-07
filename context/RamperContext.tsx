@@ -40,6 +40,8 @@ interface UseRamper {
 const RamperContext = createContext<UseRamper | null>(null);
 
 export const RamperProvider = ({ children }: PropsWithChildren) => {
+  const currentChain = "near";
+
   const theme = useMantineTheme();
 
   const [user, setUser] = useLocalStorage<UserCredentials | null>({
@@ -135,17 +137,60 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     await registerUser();
   };
 
+  const encryptSymmetric = async (plaintext: string, key: string) => {
+    // create a random 96-bit initialization vector (IV)
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+
+    // encode the text you want to encrypt
+    const encodedPlaintext = new TextEncoder().encode(plaintext);
+
+    // prepare the secret key for encryption
+    const secretKey = await crypto.subtle.importKey(
+      "raw",
+      Buffer.from(key, "base64"),
+      {
+        name: "AES-GCM",
+        length: 256,
+      },
+      true,
+      ["encrypt", "decrypt"]
+    );
+
+    // encrypt the text with the secret key
+    const ciphertext = await crypto.subtle.encrypt(
+      {
+        name: "AES-GCM",
+        iv,
+      },
+      secretKey,
+      encodedPlaintext
+    );
+
+    // return the encrypted text "ciphertext" and the IV
+    // encoded in base64
+    return {
+      ciphertext: Buffer.from(ciphertext).toString("base64"),
+      iv: Buffer.from(iv).toString("base64"),
+    };
+  };
+
   const signInUser = async () => {
     const user = getUserRamper();
     if (!user) {
       return;
     }
 
+    const key = process.env.NEXT_PUBLIC_RAMPER_ENCRYPTION_KEY as string;
+    const { ciphertext, iv } = await encryptSymmetric(
+      user?.wallets[currentChain].publicKey,
+      key
+    );
+
     try {
       const userData = await fetchUserControllerAuthenticate({
         body: {
-          id_token: user.ramperCredential?.idToken as string,
-          account_id: user.wallets.near.walletId.split("_")[1] as string,
+          token: ciphertext,
+          pass: iv,
         },
       });
 
@@ -170,7 +215,6 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
 
     const userJWT = await signInUser();
 
-    const currentChain = "near";
     const chainId = chainData?.results.filter(
       (chain) => chain.name === currentChain
     )[0].id;

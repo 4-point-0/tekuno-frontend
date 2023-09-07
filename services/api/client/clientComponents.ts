@@ -4,8 +4,7 @@
  * @version 1.0
  */
 import * as reactQuery from "@tanstack/react-query";
-
-import { ClientContext, useClientContext } from "./clientContext";
+import { useClientContext, ClientContext } from "./clientContext";
 import type * as Fetcher from "./clientFetcher";
 import { clientFetch } from "./clientFetcher";
 import type * as Schemas from "./clientSchemas";
@@ -211,6 +210,76 @@ export const useUserControllerAuthenticate = (
     (variables: UserControllerAuthenticateVariables) =>
       fetchUserControllerAuthenticate({ ...fetcherOptions, ...variables }),
     options
+  );
+};
+
+export type UserControllerFindAllCampaignOrdersQueryParams = {
+  offset?: string;
+  limit?: string;
+};
+
+export type UserControllerFindAllCampaignOrdersError =
+  Fetcher.ErrorWrapper<undefined>;
+
+export type UserControllerFindAllCampaignOrdersResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  count: number;
+  results: Schemas.UserInvoiceDto[];
+};
+
+export type UserControllerFindAllCampaignOrdersVariables = {
+  queryParams?: UserControllerFindAllCampaignOrdersQueryParams;
+} & ClientContext["fetcherOptions"];
+
+export const fetchUserControllerFindAllCampaignOrders = (
+  variables: UserControllerFindAllCampaignOrdersVariables,
+  signal?: AbortSignal
+) =>
+  clientFetch<
+    UserControllerFindAllCampaignOrdersResponse,
+    UserControllerFindAllCampaignOrdersError,
+    undefined,
+    {},
+    UserControllerFindAllCampaignOrdersQueryParams,
+    {}
+  >({ url: "/api/v1/user/invoices", method: "get", ...variables, signal });
+
+export const useUserControllerFindAllCampaignOrders = <
+  TData = UserControllerFindAllCampaignOrdersResponse
+>(
+  variables: UserControllerFindAllCampaignOrdersVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      UserControllerFindAllCampaignOrdersResponse,
+      UserControllerFindAllCampaignOrdersError,
+      TData
+    >,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useClientContext(options);
+  return reactQuery.useQuery<
+    UserControllerFindAllCampaignOrdersResponse,
+    UserControllerFindAllCampaignOrdersError,
+    TData
+  >(
+    queryKeyFn({
+      path: "/api/v1/user/invoices",
+      operationId: "userControllerFindAllCampaignOrders",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchUserControllerFindAllCampaignOrders(
+        { ...fetcherOptions, ...variables },
+        signal
+      ),
+    {
+      ...options,
+      ...queryOptions,
+    }
   );
 };
 
@@ -1064,6 +1133,11 @@ export type QueryOperation =
       path: "/api/v1/chain/{id}";
       operationId: "chainControllerFindOne";
       variables: ChainControllerFindOneVariables;
+    }
+  | {
+      path: "/api/v1/user/invoices";
+      operationId: "userControllerFindAllCampaignOrders";
+      variables: UserControllerFindAllCampaignOrdersVariables;
     }
   | {
       path: "/api/v1/nft";

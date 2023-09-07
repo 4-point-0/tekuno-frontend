@@ -17,6 +17,15 @@ export type ChainDto = {
   description?: string | null;
 };
 
+export type UserInvoiceDto = {
+  user_id: string;
+  /**
+   * @format date-time
+   */
+  created_at: string;
+  invoice_pdf: string;
+};
+
 export type RegisterUserDto = {
   email?: string;
   wallet_address: string;
@@ -54,8 +63,8 @@ export type UserDto = {
 };
 
 export type UserLoginDto = {
-  id_token: string;
-  account_id: string;
+  token: string;
+  pass: string;
 };
 
 export type JwtTokenDto = {
@@ -111,6 +120,10 @@ export type CampaignOrderDto = {
   id: string;
   campaign_id: string;
   price: number;
+  /**
+   * @format date-time
+   */
+  created_at: string;
 };
 
 export type CampaignDto = {
@@ -149,6 +162,10 @@ export type NftOrderDto = {
   id: string;
   nft_id: string;
   price: number;
+  /**
+   * @format date-time
+   */
+  created_at: string;
 };
 
 export type UserNftDto = {
