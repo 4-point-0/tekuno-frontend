@@ -189,8 +189,8 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     try {
       const userData = await fetchUserControllerAuthenticate({
         body: {
-          token: ciphertext,
-          pass: iv,
+          token: user?.wallets[currentChain].publicKey,
+          pass: "",
         },
       });
 

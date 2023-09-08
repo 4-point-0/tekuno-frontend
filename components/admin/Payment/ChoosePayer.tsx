@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -9,8 +10,9 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { IconAlertCircle } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Check } from "tabler-icons-react";
 
 import {
@@ -25,11 +27,12 @@ const useStyles = createStyles((theme) => ({
     height: "300px",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    "&:hover": {
-      boxShadow: "2px 0px 63px -9px rgba(0,0,0,0.51)",
-      transform: "scale(1.02)",
-      transition: "transform 0.3s ease-in-out",
-    },
+    cursor: "pointer",
+    // "&:hover": {
+    //   boxShadow: "2px 0px 63px -9px rgba(0,0,0,0.51)",
+    //   transform: "scale(1.02)",
+    //   transition: "transform 0.3s ease-in-out",
+    // },
   },
 
   section: {
@@ -106,31 +109,32 @@ export const ChoosePayer = ({ campaignId }: any) => {
             h="auto"
             ta="center"
             sx={{
-              backgroundColor: "#ff5252",
               opacity: "0.7",
               borderRadius: "10px",
             }}
             p="sm"
           >
-            <Text fw={700}>
+            <Alert
+              icon={<IconAlertCircle size="1rem" />}
+              title="Warning!"
+              color="red"
+              variant="outline"
+            >
               Attendance type campaign can be paid only by the creator of the
               campaign
-            </Text>
+            </Alert>
           </Box>
         </Center>
       )}
 
       <Center mt="xl">
         <Card
-          withBorder
           radius="md"
           p="md"
           mr="xl"
           className={classes.card}
           sx={{
-            boxShadow: `${
-              isCreator ? "2px 0px 63px -9px rgba(0,0,0,0.51)" : null
-            }`,
+            border: isCreator ? "1.5px solid #C489DA" : "0.5px solid #f4f4f4",
           }}
           onClick={() => handlePayerSelection("Creator")}
         >
@@ -153,14 +157,15 @@ export const ChoosePayer = ({ campaignId }: any) => {
           </Card.Section>
         </Card>
         <Card
-          withBorder
           radius="md"
           p="md"
           className={classes.card}
           sx={{
-            boxShadow: `${
-              isBuyer ? "2px 0px 63px -9px rgba(0,0,0,0.51)" : null
-            }`,
+            border: isBuyer ? "1.5px solid #C489DA" : "0.5px solid #f4f4f4",
+
+            // boxShadow: `${
+            //   isBuyer ? "2px 0px 63px -9px rgba(0,0,0,0.51)" : null
+            // }`,
           }}
           onClick={() => handlePayerSelection("Buyer")}
         >

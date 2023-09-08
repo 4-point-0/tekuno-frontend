@@ -1,10 +1,8 @@
 import { Button, Stack, Text } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 
 import { NftDetails } from "@/components/client/NftDetails";
-import { ClientContainer } from "@/components/layout/ClientContainer";
 import { useRamper } from "@/context/RamperContext";
 import {
   fetchNftControllerFindOneNft,
@@ -87,18 +85,18 @@ const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
     setRecaptchaIsDone(true);
   };
 
-  if (!recaptchaIsDone) {
-    return (
-      <ClientContainer>
-        <Text pb={30} size="xl" fw={700}>
-          Hold on tight, adventurer! <br /> Before we continue, we must ensure
-          you are not a robot in disguise. Show us your human-like intelligence
-          by completing the reCaptcha challenge.
-        </Text>
-        {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
-      </ClientContainer>
-    );
-  }
+  // if (!recaptchaIsDone) {
+  //   return (
+  //     <ClientContainer>
+  //       <Text pb={30} size="xl" fw={700}>
+  //         Hold on tight, adventurer! <br /> Before we continue, we must ensure
+  //         you are not a robot in disguise. Show us your human-like intelligence
+  //         by completing the reCaptcha challenge.
+  //       </Text>
+  //       {key && <ReCAPTCHA sitekey={key} onChange={onChange} />}
+  //     </ClientContainer>
+  //   );
+  // }
 
   if (isInApp) {
     return (
