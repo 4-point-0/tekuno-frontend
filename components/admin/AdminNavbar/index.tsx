@@ -110,19 +110,16 @@ export const AdminNavbar = ({ opened }: AdminNavbarProps) => {
       {hasOrganization && (
         <Navbar.Section className={classes.footer}>
           <Text className={classes.text} c="dimmed">
-            <b>Available Tokens:</b>
+            Available Tekunos
           </Text>
           <Text className={classes.text} fz={17}>
-            <GiCoins size={25} style={{ marginRight: "2%" }} />
+            <Image src={"/tekuno-symbol.svg"} width={16} mr="2px"></Image>
             <b style={{ marginRight: "2%" }}>{organizationBalance || "0"}</b>
           </Text>
 
-          <IndigoButton
-            onClick={() => router.push("/admin/tokens")}
-            mt="sm"
-            leftIcon={<PiHandCoinsDuotone size={20} />}
-          >
-            Buy more tokens
+          <IndigoButton onClick={() => router.push("/admin/tokens")} mt="sm">
+            Buy more Tekunos
+            <Image src={"/tekuno-symbol.svg"} width={16} ml="2px" />
           </IndigoButton>
         </Navbar.Section>
       )}

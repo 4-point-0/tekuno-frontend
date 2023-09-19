@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  Center,
   createStyles,
   Image,
   rem,
@@ -33,22 +34,29 @@ const useStyles = createStyles((theme) => ({
 
 type CardName = "Small" | "Medium" | "Large" | "Custom";
 
-const CardData: Record<CardName, { image: string; description: string }> = {
+const CardData: Record<
+  CardName,
+  { image: string; description: string; symbol: string }
+> = {
   Small: {
     image: "/images/small.png",
-    description: "10 Tokens",
+    description: "10 Tekunos",
+    symbol: "/tekuno-symbol.svg",
   },
   Medium: {
     image: "/images/medium.png",
-    description: "20 Tokens",
+    description: "20 Tekunos",
+    symbol: "/tekuno-symbol.svg",
   },
   Large: {
     image: "/images/large.png",
-    description: "50 Tokens",
+    description: "50 Tekunos",
+    symbol: "/tekuno-symbol.svg",
   },
   Custom: {
     image: "/images/custom.png",
-    description: "5 - 10k Tokens",
+    description: "5 - 10k Tekunos",
+    symbol: "/tekuno-symbol.svg",
   },
 };
 
@@ -79,12 +87,12 @@ const PricingCard = ({ card, userData }: { card: any; userData: any }) => {
             euros
           </Text>
         </Box>
-
-        <Box mt="md">
+        <Center mt="md" display="flex">
           <Text size="lg" c="dimmed">
             {values.description}
           </Text>
-        </Box>
+          <Image src={values.symbol} width={20} ml="4px"></Image>
+        </Center>
       </Box>
       <Button
         mt="md"
