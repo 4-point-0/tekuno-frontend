@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
 
+import { useRamper } from "../context/RamperContext";
+
 export const PaymentConfirm = () => {
   const router = useRouter();
 
@@ -28,11 +30,11 @@ export const PaymentConfirm = () => {
         />
       </AspectRatio>
       <Text fz="lg" ta="center" mt="md">
-        We appreciate your support and hope you enjoy your new tokens.
+        We appreciate your support and hope you enjoy your new Tekunost!
       </Text>
       <Text fz="lg" ta="center" mt="md">
         If you have any questions or need assistance, feel free to contact our
-        support team.
+        Tekuno support team.
       </Text>
       <Center>
         <IndigoButton

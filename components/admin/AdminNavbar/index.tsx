@@ -1,4 +1,4 @@
-import { createStyles, Divider, Navbar, rem, Text } from "@mantine/core";
+import { createStyles, Divider, Image, Navbar, rem, Text } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
