@@ -30,7 +30,7 @@ export const PaymentConfirm = () => {
         />
       </AspectRatio>
       <Text fz="lg" ta="center" mt="md">
-        We appreciate your support and hope you enjoy your new Tekunost!
+        We appreciate your support and hope you enjoy your new Tekunos!
       </Text>
       <Text fz="lg" ta="center" mt="md">
         If you have any questions or need assistance, feel free to contact our
