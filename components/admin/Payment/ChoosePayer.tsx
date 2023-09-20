@@ -1,6 +1,4 @@
 import {
-  Alert,
-  Box,
   Button,
   Card,
   Center,
@@ -10,9 +8,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconAlertCircle } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowLeft, Check } from "tabler-icons-react";
 
 import {
@@ -28,11 +25,11 @@ const useStyles = createStyles((theme) => ({
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     cursor: "pointer",
-    // "&:hover": {
-    //   boxShadow: "2px 0px 63px -9px rgba(0,0,0,0.51)",
-    //   transform: "scale(1.02)",
-    //   transition: "transform 0.3s ease-in-out",
-    // },
+    "&:hover": {
+      boxShadow: "2px 0px 63px -9px rgba(0,0,0,0.51)",
+      transform: "scale(1.02)",
+      transition: "transform 0.3s ease-in-out",
+    },
   },
 
   section: {
@@ -53,8 +50,6 @@ export const ChoosePayer = ({ campaignId }: any) => {
   const router = useRouter();
   const [isCreator, setIsCreator] = useState(false);
   const [isBuyer, setIsBuyer] = useState(false);
-  const [isAttendance, setIsAttendance] = useState(false);
-
   const { data: campaign } = useCampaignControllerFindOne({
     pathParams: {
       id: campaignId as string,
@@ -93,39 +88,11 @@ export const ChoosePayer = ({ campaignId }: any) => {
     }
   };
 
-  useEffect(() => {
-    if (campaign?.campaign_type.name === "attendance") setIsAttendance(true);
-  }, []);
-
   return (
     <>
       <Group position="center" mt={50}>
         <Title order={2}>Select the prefered payer</Title>
       </Group>
-
-      {isAttendance && isBuyer && (
-        <Center mt="xl">
-          <Box
-            h="auto"
-            ta="center"
-            sx={{
-              opacity: "0.7",
-              borderRadius: "10px",
-            }}
-            p="sm"
-          >
-            <Alert
-              icon={<IconAlertCircle size="1rem" />}
-              title="Warning!"
-              color="red"
-              variant="outline"
-            >
-              Attendance type campaign can be paid only by the creator of the
-              campaign
-            </Alert>
-          </Box>
-        </Center>
-      )}
 
       <Center mt="xl">
         <Card
@@ -162,10 +129,6 @@ export const ChoosePayer = ({ campaignId }: any) => {
           className={classes.card}
           sx={{
             border: isBuyer ? "1.5px solid #C489DA" : "0.5px solid #f4f4f4",
-
-            // boxShadow: `${
-            //   isBuyer ? "2px 0px 63px -9px rgba(0,0,0,0.51)" : null
-            // }`,
           }}
           onClick={() => handlePayerSelection("Buyer")}
         >
@@ -201,10 +164,7 @@ export const ChoosePayer = ({ campaignId }: any) => {
           mt={50}
           leftIcon={<Check size={20} />}
           color="dark"
-          disabled={
-            (!isBuyer && !isCreator) ||
-            (campaign?.campaign_type.name === "attendance" && isBuyer)
-          }
+          disabled={!isBuyer && !isCreator}
           onClick={() => handleSubmit()}
         >
           Proceed to Order
