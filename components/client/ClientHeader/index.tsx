@@ -118,11 +118,8 @@ export function ClientHeader() {
 
   const buyTokensLink = () => {
     return (
-      <IndigoButton
-        onClick={() => router.push("/tokens")}
-        leftIcon={<PiHandCoinsDuotone size={20} />}
-      >
-        Buy more tokens
+      <IndigoButton onClick={() => router.push("/tokens")}>
+        Buy more Tekunos
       </IndigoButton>
     );
   };
@@ -192,10 +189,12 @@ export function ClientHeader() {
             </Link>
             <Group className={classes.hiddenMobile}>
               {campaignDropdownLinks(campaigns?.results)}
-              <Box>Tokens:</Box>
+              <Box>Tekunos</Box>
               <Popover width={200} position="bottom" withArrow shadow="md">
                 <Popover.Target>
-                  <Button rightIcon={<PiCoinsDuotone size={17} />}>
+                  <Button>
+                    {" "}
+                    <Image src={"/tekuno-symbol.svg"} width={16} mr="5px" />
                     {user?.profile?.balance || "0"}
                   </Button>
                 </Popover.Target>

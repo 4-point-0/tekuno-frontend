@@ -268,7 +268,7 @@ const Payment = () => {
               }}
               py="sm"
             >
-              <Text fw={600}>Not enough funds, please buy more tokens</Text>
+              <Text fw={600}>Not enough funds, please buy more Tekunos</Text>
             </Box>
           )}
         </SimpleGrid>
@@ -292,7 +292,7 @@ const Payment = () => {
                     transform="uppercase"
                     weight={700}
                   >
-                    Available tokens
+                    Available Tekunos
                   </Text>
                   <Text weight={700} ta="center" size="xl">
                     {`${organization?.balance}` || `0`}

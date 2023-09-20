@@ -122,7 +122,9 @@ export const LinkButton = ({
 export const Links = () => {
   const { data } = useCampaignControllerFindAll({});
 
-  const previousCampaigns = data?.results;
+  const previousCampaigns = data?.results.filter(
+    (campaign) => campaign.status != "Ended"
+  );
 
   const links = [
     {
