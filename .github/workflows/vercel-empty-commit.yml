@@ -1,9 +1,8 @@
 name: Empty commit
 on:
   push:
-    branches-ignore:
-      - main
-      - staging
+    branches:
+      - "**"
   workflow_dispatch:
 
 jobs:
