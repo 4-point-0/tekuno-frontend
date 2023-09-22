@@ -45,7 +45,7 @@ npm run api:codegen:admin
 npm run api:codegen:client
 ```
 
-## Project URL's
+## Project URLs
 
 [Development](https://development-tekuno-app.vercel.app/)
 
