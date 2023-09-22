@@ -2,25 +2,27 @@ name: Empty commit
 on:
   push:
     branches-ignore:
-        - main
-        - staging
+      - main
+      - staging
+  workflow_dispatch:
+
 jobs:
   test:
     name: Run test suite
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ github.event.push.head.repo.full_name }}
-        ref: ${{ github.event.push.head.ref }}
-​
-    - name: Trigger deploy
-      env:
-        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-      run: |
-        git config --global user.email andrej.saric.du@gmail.com
-        git config --global user.name "AndWa"
-        git pull origin ${BRANCH_NAME}
-        git commit --allow-empty -m "Deploy to vercel"        
-        git push origin "${BRANCH_NAME}"
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.push.head.repo.full_name }}
+          ref: ${{ github.event.push.head.ref }}
+
+      - name: Trigger deploy
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: |
+          git config --global user.email andrej.saric.du@gmail.com
+          git config --global user.name "AndWa"
+          git pull origin ${BRANCH_NAME}
+          git commit --allow-empty -m "Deploy to vercel"        
+          git push origin "${BRANCH_NAME}"
