@@ -1,6 +1,5 @@
 import { createGetInitialProps } from "@mantine/next";
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import Script from "next/script";
 
 const getInitialProps = createGetInitialProps();
 
@@ -32,18 +31,6 @@ export default class _Document extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
           <meta name="msapplication-TileColor" content="#603cba" />
           <meta name="theme-color" content="#ffffff"></meta>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`}
-          />
-          <Script id="google-analytics">
-            {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
- 
-          gtag('config', ${process.env.GOOGLE_ANALYTICS_ID});
-        `}
-          </Script>
         </Head>
         <body>
           <Main />

@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Script from "next/script";
 
 import { AppLayout } from "@/components/layout/AppLayout";
 import { tekunoTheme } from "@/styles/theme";
@@ -21,8 +22,6 @@ export default function App({
   const isAdminPages = router.route.startsWith("/admin");
   const isCampaignPages = router.route.startsWith("/campaign");
 
-  const deploymentTest = "deployment test";
-
   return (
     <>
       <Head>
@@ -33,6 +32,19 @@ export default function App({
         />
         {!isCampaignPages && <meta name="robots" content="noindex" />}
       </Head>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-RNT4H9E0L1`}
+      />
+      <Script strategy="afterInteractive" id="google-analytics">
+        {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+          
+                    gtag('config', 'G-RNT4H9E0L1');
+                  `}
+      </Script>
 
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
