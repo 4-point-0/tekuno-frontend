@@ -2,13 +2,12 @@ name: Vercel Preview Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-  NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
 
 on:
   push:
-    branches:
-      - development
+    branches-ignore:
+      - main
+      - staging
 jobs:
   Deploy-Preview:
     runs-on: ubuntu-latest
