@@ -22,6 +22,8 @@ export default function App({
   const isAdminPages = router.route.startsWith("/admin");
   const isCampaignPages = router.route.startsWith("/campaign");
 
+  const deploymnetTest = "deploymentTest";
+
   return (
     <>
       <Head>
