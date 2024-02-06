@@ -66,7 +66,7 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
           AUTH_PROVIDER.APPLE,
           AUTH_PROVIDER.EMAIL,
         ],
-        walletProviders: [WALLET_PROVIDER.NEAR_WALLET],
+        walletProviders: [WALLET_PROVIDER.MY_NEAR_WALLET],
         network: process.env.NEXT_PUBLIC_NETWORK,
         theme: theme.colorScheme === "dark" ? THEME.DARK : THEME.LIGHT,
         logoURI: `https://i.imgur.com/BF6sZhU.png`, // TODO: Point this to production url later
