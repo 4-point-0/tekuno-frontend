@@ -8,7 +8,9 @@ export type LoginDto = {
   password: string;
 };
 
-export type JwtTokenDto = {};
+export type JwtTokenDto = {
+  token: string;
+};
 
 export type ForgotPasswordDto = {
   email: string;
@@ -54,7 +56,7 @@ export type UserDto = {
   id: string;
   email: string;
   username: string;
-  role: string[];
+  role: "Admin" | "User" | "Member";
   provider?: "Apple" | "Facebook" | "Google";
   provider_id?: string;
   organization_id?: string;
@@ -165,6 +167,10 @@ export type CampaignOrderDto = {
   id: string;
   campaign_id: string;
   price: number;
+  /**
+   * @format date-time
+   */
+  created_at: string;
 };
 
 export type CampaignDto = {
@@ -213,6 +219,15 @@ export type CampaignStatusDto = {
 
 export type ChangePaymentTypeDto = {
   paymentType: "BothPay" | "CreatorPays";
+};
+
+export type OrganizationInvoiceDto = {
+  organization_id: string;
+  /**
+   * @format date-time
+   */
+  created_at: string;
+  invoice_pdf: string;
 };
 
 export type CreateOrganizationDto = {
