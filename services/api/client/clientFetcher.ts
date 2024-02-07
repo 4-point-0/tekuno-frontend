@@ -1,8 +1,6 @@
-import fetch from "isomorphic-fetch";
-
 import { ClientContext } from "./clientContext";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL; // TODO add your baseUrl
 
 export type ErrorWrapper<TError> =
   | TError
@@ -59,7 +57,7 @@ export async function clientFetch<
       delete requestHeaders["Content-Type"];
     }
 
-    const response = await fetch(
+    const response = await window.fetch(
       `${baseUrl}${resolveUrl(url, queryParams, pathParams)}`,
       {
         signal,
