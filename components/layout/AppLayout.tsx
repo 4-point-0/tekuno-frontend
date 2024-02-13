@@ -2,7 +2,7 @@ import { AppShell, Burger, MediaQuery } from "@mantine/core";
 import { useRouter } from "next/router";
 import { PropsWithChildren, useState } from "react";
 
-import { RamperProvider } from "@/context/RamperContext";
+import { NetworkProvider } from "@/context/NetworkContext";
 
 import { AdminHeader } from "../admin/AdminHeader";
 import { AdminNavbar } from "../admin/AdminNavbar";
@@ -92,13 +92,13 @@ export const AppLayout = ({ children }: PropsWithChildren) => {
     appShell()
   ) : (
     <>
-      <RamperProvider>
+      <NetworkProvider>
         {router.route.includes("payment-confirm") ? (
           <>{children}</>
         ) : (
           appShell()
         )}
-      </RamperProvider>
+      </NetworkProvider>
     </>
   );
 };
