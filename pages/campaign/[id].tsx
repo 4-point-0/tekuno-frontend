@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 
 import { SharedCampaignDetails } from "@/components/core/SharedCampaignDetails";
 import { ClientContainer } from "@/components/layout/ClientContainer";
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 import { CampaignDto } from "@/services/api/admin/adminSchemas";
 import { fetchCampaignUserControllerFindOne } from "@/services/api/client/clientComponents";
 import { getCampaignAssets } from "@/utils/campaign";
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export const Campaign: NextPage<CampaignPageProps> = ({ campaign }) => {
-  const { user } = useRamper();
+  const { user } = useNetwork();
   const { image } = getCampaignAssets(campaign);
 
   return (

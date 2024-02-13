@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 
 import { ClientOnly } from "@/components/layout/ClientOnly";
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 import { useNftOwned } from "@/hooks/useNftOwned";
 import {
   useNftControllerCreatePayment,
@@ -23,7 +23,7 @@ export const ClaimButton = ({
   isDisabled,
   shouldCreateOrder,
 }: ClaimButtonProps) => {
-  const { user, loading: isRamperLoading, signIn }: any = useRamper();
+  const { user, loading: isRamperLoading, signIn }: any = useNetwork();
   const { isOwned, isLoading, refetch } = useNftOwned(nft.id);
   const createNftOrder = useNftControllerCreatePayment({});
   const drop = useNftControllerDropNft({ retry: false });

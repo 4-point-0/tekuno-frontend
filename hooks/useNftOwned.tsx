@@ -1,8 +1,8 @@
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 import { useNftControllerFindOne } from "@/services/api/client/clientComponents";
 
 export function useNftOwned(nftId: string) {
-  const { user } = useRamper();
+  const { user } = useNetwork();
 
   const {
     data: userNft,

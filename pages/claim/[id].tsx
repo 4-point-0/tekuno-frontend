@@ -3,7 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 
 import { NftDetails } from "@/components/client/NftDetails";
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 import {
   fetchNftControllerFindOneNft,
   fetchNftControllerPreviewOrder,
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const ClaimPage: NextPage<ClaimPageProps> = ({ initialData }) => {
-  const { user }: any = useRamper();
+  const { user }: any = useNetwork();
   const [isInApp, setIsInApp] = useState(false);
   const [nftOrder, setNftOrder] = useState<any>();
 

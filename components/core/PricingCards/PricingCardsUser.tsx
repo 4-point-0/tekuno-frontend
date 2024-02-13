@@ -1,14 +1,14 @@
 import { Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 
 import PricingCard from "./PricingCard";
 
 export const PricingCards = ({ cards }: any) => {
   const [userData, setUserData] = useState<any>();
 
-  const { user } = useRamper();
+  const { user } = useNetwork();
 
   useEffect(() => {
     setUserData(user);

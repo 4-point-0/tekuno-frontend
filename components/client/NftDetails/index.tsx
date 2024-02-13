@@ -19,7 +19,7 @@ import { AssetPreview } from "@/components/admin/CampaignForm/AssetPreview";
 import { FormattedHTML } from "@/components/core/FormattedHTML";
 import { ClientContainer } from "@/components/layout/ClientContainer";
 import { ClientOnly } from "@/components/layout/ClientOnly";
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 import { useNftOwned } from "@/hooks/useNftOwned";
 import { useCampaignUserControllerFindAll } from "@/services/api/client/clientComponents";
 import { NftDto } from "@/services/api/client/clientSchemas";
@@ -42,7 +42,7 @@ export const NftDetails = ({
   nftOrder,
 }: NftDetailsProps) => {
   const theme = useMantineTheme();
-  const { user } = useRamper();
+  const { user } = useNetwork();
   const [claimed, setClaimed] = useState(false);
   const [hasEnoughtTokens, setHasEnoughTokens] = useState<boolean>(false);
   const { refetch: refechUserCampaigns } = useCampaignUserControllerFindAll(
