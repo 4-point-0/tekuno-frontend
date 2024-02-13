@@ -6,14 +6,19 @@ import {
   MediaQuery,
   Stack,
 } from "@mantine/core";
+import { ConnectModal, useCurrentAccount } from "@mysten/dapp-kit";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useRamper } from "@/context/RamperContext";
+import { useNetwork } from "@/context/NetworkContext";
 
 export default function Login() {
-  const { signIn, loading, user } = useRamper();
+  const { signIn, loading, user, signInSuiUser } = useNetwork();
+  const currentAccount = useCurrentAccount();
+
   const router = useRouter();
+
+  const suiAddress = useCurrentAccount()?.address;
 
   const { redirect } = router.query;
 
@@ -26,6 +31,12 @@ export default function Login() {
       }
     }
   }, [router, user, redirect]);
+
+  useEffect(() => {
+    if (suiAddress) {
+      signInSuiUser();
+    }
+  }, [suiAddress]);
 
   return (
     <Container>
@@ -41,15 +52,40 @@ export default function Login() {
           <Image mt={40} src="/tekuno.svg" width={300} alt="Tekuno logo" />
           <Button
             loading={loading}
-            mt={"lg"}
-            variant="filled"
-            color="dark"
-            radius={"xl"}
-            size="lg"
+            variant={"default"}
             onClick={signIn}
+            size={"md"}
+            mt={"7%"}
           >
-            Connect to Tekuno
+            <>
+              <Image
+                src={"/logo/near-logo.svg"}
+                width={20}
+                style={{ marginRight: 8 }}
+                alt="Connect Icon"
+              />
+              {"Connect to Tekuno with NEAR"}
+            </>
           </Button>
+          <ConnectModal
+            trigger={
+              <Button loading={loading} variant="default" size="md">
+                {currentAccount ? (
+                  "Connecting to Tekuno"
+                ) : (
+                  <>
+                    <Image
+                      src={"/logo/sui-logo.svg"}
+                      width={20}
+                      style={{ marginRight: 8 }}
+                      alt="Connect Icon"
+                    />
+                    {"Connect to Tekuno with SUI"}
+                  </>
+                )}
+              </Button>
+            }
+          />
         </Stack>
       </MediaQuery>
 
@@ -65,15 +101,40 @@ export default function Login() {
           <Image mt={80} src="/tekuno.svg" width={300} alt="Tekuno logo" />
           <Button
             loading={loading}
-            mt={"lg"}
-            variant="filled"
-            color="dark"
-            radius={"xl"}
-            size="lg"
+            variant={"default"}
             onClick={signIn}
+            size={"md"}
+            mt={"7%"}
           >
-            Connect to Tekuno
+            <>
+              <Image
+                src={"/logo/near-logo.svg"}
+                width={18}
+                style={{ marginRight: 10 }}
+                alt="Connect Icon"
+              />
+              {"Connect to Tekuno with NEAR"}
+            </>
           </Button>
+          <ConnectModal
+            trigger={
+              <Button loading={loading} variant="default" size={"md"}>
+                {currentAccount ? (
+                  "Connecting to Tekuno"
+                ) : (
+                  <>
+                    <Image
+                      src={"/logo/sui-logo.svg"}
+                      width={20}
+                      style={{ marginRight: 8 }}
+                      alt="Connect Icon"
+                    />
+                    {"Connect to Tekuno with SUI"}
+                  </>
+                )}
+              </Button>
+            }
+          />
         </Stack>
       </MediaQuery>
     </Container>
