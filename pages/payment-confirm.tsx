@@ -10,8 +10,6 @@ import { useRouter } from "next/router";
 
 import { IndigoButton } from "@/components/core/IndigoButton";
 
-import { useRamper } from "../context/RamperContext";
-
 export const PaymentConfirm = () => {
   const router = useRouter();
 
