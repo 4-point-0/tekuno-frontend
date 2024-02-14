@@ -110,6 +110,7 @@ export const CampaignForm = () => {
   const form = useForm({
     initialValues: {
       name: "",
+      chainName: "",
       limitDate: false,
       startDate: null,
       endDate: null,
@@ -166,17 +167,9 @@ export const CampaignForm = () => {
       title: "Creating the campaign",
     });
 
-    const chainId = chains?.results[0].id;
-    const campaignTypeId = campaignTypes?.results.find(
-      ({ name }) => name === campaignType
-    )?.id;
-
-    if (!(chainId && campaignTypeId && nftTypes?.results)) {
-      return;
-    }
-
     const {
       name,
+      chainName,
       startDate,
       endDate,
       image,
@@ -185,6 +178,15 @@ export const CampaignForm = () => {
       documents,
       limitDate,
     } = values;
+
+    const chain = chains?.results.find((chain) => chain.name === chainName);
+    const campaignTypeId = campaignTypes?.results.find(
+      ({ name }) => name === campaignType
+    )?.id;
+
+    if (!(chain && campaignTypeId && nftTypes?.results)) {
+      return;
+    }
 
     const fileIds = [
       image?.response?.id,
@@ -202,7 +204,7 @@ export const CampaignForm = () => {
         body: {
           name,
           campaign_type_id: campaignTypeId,
-          chain_id: chainId,
+          chain_id: chain.id,
           start_date: startDate?.toISOString() as string,
           end_date: limitDate ? endDate?.toISOString() : null,
           description,
