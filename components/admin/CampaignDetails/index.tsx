@@ -1,5 +1,6 @@
 import {
   Alert,
+  Badge,
   Box,
   Button,
   Container,
@@ -95,6 +96,17 @@ export const CampaignDetails = () => {
                 style={{ aspectRatio: 3 / 1 }}
               >
                 <Box>
+                  {campaign.chain.name === "sui" ? (
+                    <Badge size="lg" variant="filled" color="cyan">
+                      SUI Campaign
+                    </Badge>
+                  ) : (
+                    <Badge size="lg" variant="filled" color="dark">
+                      NEAR Campaign
+                    </Badge>
+                  )}
+                </Box>
+                <Box mt={"md"}>
                   <Image src={getImageUrl(image)} radius="lg" alt="" />
                 </Box>
               </Skeleton>
