@@ -17,6 +17,8 @@ import { Photo, Upload, X } from "tabler-icons-react";
 
 import { MAX_FILE_SIZE } from "@/components/admin/CampaignForm/FormContext";
 
+import { IndigoButton } from "../../core/IndigoButton";
+
 interface DropzoneProps extends Partial<MantineDropzoneProps> {
   title: string;
   description: string;
@@ -138,9 +140,12 @@ export const Dropzone = ({
           }}
         >
           <Group position="center">
-            <Button onClick={() => openRef.current?.()} loading={isLoading}>
+            <IndigoButton
+              onClick={() => openRef.current?.()}
+              loading={isLoading}
+            >
               {label}
-            </Button>
+            </IndigoButton>
           </Group>
         </Box>
       </MantineDropzone>
