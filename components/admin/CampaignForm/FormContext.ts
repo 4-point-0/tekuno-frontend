@@ -47,6 +47,7 @@ export interface FormNFTValue {
 
 export interface SharedFormValues {
   name: string;
+  chainName: string;
   limitDate: boolean;
   startDate: Date | null;
   endDate: Date | null;
