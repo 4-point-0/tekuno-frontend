@@ -1,8 +1,19 @@
-import { Box, Group, Stack, Switch, TextInput } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Center,
+  Group,
+  Menu,
+  Stack,
+  Switch,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { FileWithPath } from "@mantine/dropzone";
 import { useIsMutating } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { Calendar } from "tabler-icons-react";
 
 import { Dropzone } from "@/components/form/Dropzone";
@@ -20,6 +31,24 @@ export const SetupStep = () => {
   const isMutating = useIsMutating();
   const uploadFile = useFileControllerUploadFile({});
   const removeFile = useFileControllerRemove({});
+  const [selectedNetwork, setSelectedNetwork] = useState({
+    title: "Available Networks",
+    chainName: "",
+    color: "",
+  });
+
+  const handleNetworkSelect = (
+    networkTitle: string,
+    chainName: string,
+    color: string
+  ) => {
+    setSelectedNetwork({
+      title: networkTitle,
+      chainName: chainName,
+      color: color,
+    });
+    form.setFieldValue("chainName", chainName);
+  };
 
   const handleDrop = async (files: FileWithPath[]) => {
     const file = files[0];
@@ -57,7 +86,40 @@ export const SetupStep = () => {
 
   return (
     <Stack>
-      <Box my="xl">
+      <Field withAsterisk label="Select Network">
+        <Box my="sm">
+          <Menu shadow="md" width={200}>
+            <Menu.Target>
+              <Button
+                color={selectedNetwork.color}
+                {...form.getInputProps("chainId")}
+              >
+                {selectedNetwork.title}
+              </Button>
+            </Menu.Target>
+
+            <Menu.Dropdown>
+              <Menu.Label>Available Networks</Menu.Label>
+              <Menu.Item
+                onClick={() =>
+                  handleNetworkSelect("NEAR Network", "near", "dark")
+                }
+              >
+                NEAR
+              </Menu.Item>
+              <Menu.Item
+                onClick={() =>
+                  handleNetworkSelect("SUI Network", "sui", "cyan")
+                }
+              >
+                SUI
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Box>
+      </Field>
+
+      <Box my="md">
         <Dropzone
           title="Upload Image"
           description="Drag’n’ drop the campaign banner here. Max file size is 20 MB, supported formats are PNG and JPEG."
