@@ -126,7 +126,15 @@ export default function Login() {
                 style={{ width: "35%" }}
               >
                 {currentAccount ? (
-                  "Connecting to Tekuno"
+                  <>
+                    <Image
+                      src={"/logo/sui-logo.svg"}
+                      width={20}
+                      style={{ marginRight: 8 }}
+                      alt="Connect Icon"
+                    />
+                    {"Connecting to Tekuno"}
+                  </>
                 ) : (
                   <>
                     <Image
