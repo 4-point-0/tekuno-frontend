@@ -1,6 +1,11 @@
 import { useMantineTheme } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import {
+  useCurrentAccount,
+  useDisconnectWallet,
+  useSignPersonalMessage,
+} from "@mysten/dapp-kit";
+import {
   AUTH_PROVIDER,
   getUser as getUserRamper,
   init,
@@ -27,7 +32,9 @@ import {
 import { UserDto } from "@/services/api/client/clientSchemas";
 import { notifications } from "@/utils/notifications";
 
-interface UseRamper {
+import { useAuthControllerVerifySuiUser } from "../services/api/admin/adminComponents";
+
+interface UseNetwork {
   user: UserDto | null;
   loading: boolean;
   openWallet: () => void;
@@ -35,14 +42,39 @@ interface UseRamper {
   signOut: () => void;
   refreshUserData: () => Promise<void>;
   refreshTokens: () => Promise<void>;
+  signInSuiUser: () => Promise<void>;
+  signOutSuiUser: () => void;
+  refreshSuiUserData: () => Promise<void>;
+  refreshSuiTokens: () => Promise<void>;
 }
 
-const RamperContext = createContext<UseRamper | null>(null);
+const NetworkContext = createContext<UseNetwork | null>(null);
 
-export const RamperProvider = ({ children }: PropsWithChildren) => {
+export const NetworkProvider = ({ children }: PropsWithChildren) => {
+  const theme = useMantineTheme();
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [ramper, setRamper] = useState<RamperInstance>();
+
+  const { mutate: disconnectWallet } = useDisconnectWallet();
+
   const currentChain = "near";
 
-  const theme = useMantineTheme();
+  const { data: chainData } = useChainControllerFindAll({});
+
+  const verifySuiUser = useAuthControllerVerifySuiUser({
+    onSuccess: (data) => {
+      console.log("JWT Token:", data);
+      return data;
+    },
+    onError: (error) => {
+      console.error("Error:", error);
+    },
+  });
+
+  const suiAddress = useCurrentAccount()?.address;
+
+  const { mutate: signPersonalMessage } = useSignPersonalMessage();
 
   const [user, setUser] = useLocalStorage<UserCredentials | null>({
     key: "tkn_user",
@@ -51,11 +83,8 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     defaultValue: null,
     getInitialValueInEffect: true,
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const { data: chainData } = useChainControllerFindAll({});
 
-  const [ramper, setRamper] = useState<RamperInstance>();
-
+  //Ramper
   useEffect(() => {
     const ramperTheme =
       theme.colorScheme === "light" ? THEME.LIGHT : THEME.DARK;
@@ -264,8 +293,113 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const signInSuiUser = async () => {
+    setLoading(true);
+    // const result = await signInRamper();
+
+    // // Check if user stopped the sing in process
+    // if (!result.user) {
+    //   setLoading(false);
+    //   return;
+    // }
+
+    await signSuiMessage();
+    // await signInUser();
+  };
+
+  // TODO: refactor implement suiSignMessage
+  const signSuiMessage = async () => {
+    await signPersonalMessage(
+      {
+        message: new TextEncoder().encode(suiAddress),
+      },
+      {
+        onSuccess: (result) => {
+          // TODO: handle signature verification
+          const jwtToken = verifySuiUser.mutate({
+            body: {
+              signature: result.signature,
+              bytes: result.bytes,
+              wallet_address: suiAddress || "",
+              zkLogin: true,
+            },
+          });
+
+          console.log("jwtToken2", jwtToken);
+
+          registerSuiUser(jwtToken);
+          return result;
+        },
+      }
+    );
+  };
+
+  const registerSuiUser = async (jwtToken: any) => {
+    notifications.create({ message: "Connecting you to Tekuno" });
+
+    // const { token } = jwtToken;
+
+    // console.log("jwtToken", token);
+
+    const userJWT = jwtToken;
+
+    const suiChain = chainData?.results.find((chain) => chain.name === "sui");
+    const walletAddress = suiAddress;
+    const walletType = "SelfCreated";
+
+    if (!suiChain || !walletAddress) {
+      notifications.error({
+        message: "Something went wrong. Please try again.",
+      });
+      signOutSuiUser();
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const userCredentials = async () => {
+        const userData = await fetchUserControllerRegister({
+          body: {
+            email: undefined,
+            wallet_address: walletAddress,
+            chain_id: suiChain.id,
+            wallet_type: walletType,
+          },
+        });
+        return {
+          ...userData,
+          userJwt: userJWT?.token || "",
+        };
+      };
+
+      setUser(await userCredentials());
+
+      notifications.success({
+        message: "Connected successfully.",
+      });
+    } catch {
+      notifications.error({
+        message: "Something went wrong. Please try again.",
+      });
+
+      signOutSuiUser();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signOutSuiUser = () => {
+    disconnectWallet();
+    setUser(null);
+  };
+
+  const refreshSuiTokens = async () => {};
+
+  const refreshSuiUserData = async () => {};
+
   return (
-    <RamperContext.Provider
+    <NetworkContext.Provider
       value={{
         user,
         loading,
@@ -274,18 +408,22 @@ export const RamperProvider = ({ children }: PropsWithChildren) => {
         signOut,
         refreshUserData,
         refreshTokens,
+        signInSuiUser,
+        signOutSuiUser,
+        refreshSuiTokens,
+        refreshSuiUserData,
       }}
     >
       {children}
-    </RamperContext.Provider>
+    </NetworkContext.Provider>
   );
 };
 
-export function useRamper() {
-  const context = useContext(RamperContext);
+export function useNetwork() {
+  const context = useContext(NetworkContext);
 
   if (!context) {
-    throw new Error("userRamper must be used within a RamperContext");
+    throw new Error("user must be used within a NetworkContext");
   }
 
   return context;
