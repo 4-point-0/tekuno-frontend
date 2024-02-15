@@ -64,6 +64,13 @@ export type UserDto = {
   status?: "Pending" | "Active";
 };
 
+export type VerifySuiUserDto = {
+  signature: string;
+  bytes: string;
+  wallet_address: string;
+  zkLogin: boolean;
+};
+
 export type GoogleVerificationDto = {
   token: string;
 };

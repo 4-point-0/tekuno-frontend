@@ -4,8 +4,7 @@
  * @version 1.0
  */
 import * as reactQuery from "@tanstack/react-query";
-
-import { AdminContext, useAdminContext } from "./adminContext";
+import { useAdminContext, AdminContext } from "./adminContext";
 import type * as Fetcher from "./adminFetcher";
 import { adminFetch } from "./adminFetcher";
 import type * as Schemas from "./adminSchemas";
@@ -236,6 +235,52 @@ export const useAuthControllerConfirmInvite = (
   >(
     (variables: AuthControllerConfirmInviteVariables) =>
       fetchAuthControllerConfirmInvite({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
+export type AuthControllerVerifySuiUserError = Fetcher.ErrorWrapper<undefined>;
+
+export type AuthControllerVerifySuiUserVariables = {
+  body: Schemas.VerifySuiUserDto;
+} & AdminContext["fetcherOptions"];
+
+export const fetchAuthControllerVerifySuiUser = (
+  variables: AuthControllerVerifySuiUserVariables,
+  signal?: AbortSignal
+) =>
+  adminFetch<
+    Schemas.JwtTokenDto,
+    AuthControllerVerifySuiUserError,
+    Schemas.VerifySuiUserDto,
+    {},
+    {},
+    {}
+  >({
+    url: "/api/v1/auth/verify-sui-user",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useAuthControllerVerifySuiUser = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.JwtTokenDto,
+      AuthControllerVerifySuiUserError,
+      AuthControllerVerifySuiUserVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useAdminContext();
+  return reactQuery.useMutation<
+    Schemas.JwtTokenDto,
+    AuthControllerVerifySuiUserError,
+    AuthControllerVerifySuiUserVariables
+  >(
+    (variables: AuthControllerVerifySuiUserVariables) =>
+      fetchAuthControllerVerifySuiUser({ ...fetcherOptions, ...variables }),
     options
   );
 };
