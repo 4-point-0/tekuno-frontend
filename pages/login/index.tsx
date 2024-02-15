@@ -105,6 +105,7 @@ export default function Login() {
             onClick={signIn}
             size={"md"}
             mt={"7%"}
+            style={{ width: "35%" }}
           >
             <>
               <Image
@@ -118,7 +119,12 @@ export default function Login() {
           </Button>
           <ConnectModal
             trigger={
-              <Button loading={loading} variant="default" size={"md"}>
+              <Button
+                loading={loading}
+                variant="default"
+                size={"md"}
+                style={{ width: "35%" }}
+              >
                 {currentAccount ? (
                   "Connecting to Tekuno"
                 ) : (
